@@ -1,0 +1,27 @@
+# HEFESTOLAB — robots.txt
+User-agent: *
+Allow: /
+
+# ChatGPT Search: permite que HEFESTOLAB pueda aparecer en respuestas de búsqueda.
+User-agent: OAI-SearchBot
+Allow: /
+
+# Acceso iniciado por usuarios de ChatGPT.
+User-agent: ChatGPT-User
+Allow: /
+
+# No es necesario para aparecer en ChatGPT Search; controla posible uso para entrenamiento.
+User-agent: GPTBot
+Disallow: /
+
+# Claude Search y acceso iniciado por usuarios.
+User-agent: Claude-SearchBot
+Allow: /
+User-agent: Claude-User
+Allow: /
+
+# No es necesario para la búsqueda de Claude; controla posible uso para entrenamiento.
+User-agent: ClaudeBot
+Disallow: /
+
+Sitemap: https://hefestolab.github.io/sitemap.xml

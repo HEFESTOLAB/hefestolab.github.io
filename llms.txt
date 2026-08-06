@@ -1,0 +1,34 @@
+# HEFESTOLAB
+
+> HEFESTOLAB desarrolla tecnología Pre-BIM para arquitectura, ingeniería, construcción e industria. Su producto principal es HEFESTO Pre-BIM Modeler.
+
+## Información principal
+
+- [Inicio](https://hefestolab.github.io/): presentación general de HEFESTOLAB y HEFESTO.
+- [Producto](https://hefestolab.github.io/#producto): capacidades de modelado, mediciones, presupuesto, JSON e interoperabilidad.
+- [Academia](https://hefestolab.github.io/#academia): cursos gratuitos sobre HEFESTO, Component Studio, Revit, Dynamo, IFC e inteligencia artificial.
+- [Biblioteca](https://hefestolab.github.io/#biblioteca): proyectos, componentes, familias, scripts y ejemplos JSON.
+- [Blog](https://hefestolab.github.io/#blog): artículos técnicos y seguimiento del desarrollo.
+- [Precio](https://hefestolab.github.io/#precio): HEFESTO Professional, 699 EUR al año por licencia.
+- [Demo](https://hefestolab.github.io/#demo): acceso gratuito de demostración antes de adquirir una licencia.
+
+## Definición de HEFESTO
+
+HEFESTO Pre-BIM Modeler es una aplicación de escritorio para convertir planos, datos, imágenes, fichas técnicas e intención de diseño en modelos arquitectónicos e industriales, mediciones, presupuestos y datos interoperables.
+
+## Tecnologías y formatos
+
+JSON HEFESTO, IFC, Revit, Dynamo, DXF, PDF, BCF, Excel, modelado 2D/3D, Component Studio, inteligencia artificial y Model Context Protocol (MCP).
+
+## Audiencia
+
+Profesionales BIM, arquitectos, ingenieros, modeladores, empresas industriales, constructoras, consultores, fabricantes y equipos AEC.
+
+## Idioma principal
+
+Español de España. La versión inglesa se añadirá posteriormente.
+
+## Contacto y autoría
+
+Editor: HEFESTOLAB.
+Sitio oficial provisional: https://hefestolab.github.io/

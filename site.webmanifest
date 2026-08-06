@@ -1,0 +1,16 @@
+{
+  "name": "HEFESTOLAB",
+  "short_name": "HEFESTOLAB",
+  "description": "HEFESTO Pre-BIM Modeler, academia y biblioteca BIM.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0879e8",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    }
+  ]
+}
