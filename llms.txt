@@ -1,34 +1,25 @@
 # HEFESTOLAB
 
-> HEFESTOLAB desarrolla tecnología Pre-BIM para arquitectura, ingeniería, construcción e industria. Su producto principal es HEFESTO Pre-BIM Modeler.
+> HEFESTOLAB desarrolla HEFESTO Pre-BIM Modeler y explora nuevos flujos de interoperabilidad, automatización e inteligencia artificial para AEC e industria.
 
-## Información principal
+## HEFESTO Pre-BIM Modeler
 
-- [Inicio](https://hefestolab.github.io/): presentación general de HEFESTOLAB y HEFESTO.
-- [Producto](https://hefestolab.github.io/#producto): capacidades de modelado, mediciones, presupuesto, JSON e interoperabilidad.
-- [Academia](https://hefestolab.github.io/#academia): cursos gratuitos sobre HEFESTO, Component Studio, Revit, Dynamo, IFC e inteligencia artificial.
-- [Biblioteca](https://hefestolab.github.io/#biblioteca): proyectos, componentes, familias, scripts y ejemplos JSON.
-- [Blog](https://hefestolab.github.io/#blog): artículos técnicos y seguimiento del desarrollo.
-- [Precio](https://hefestolab.github.io/#precio): HEFESTO Professional, 699 EUR al año por licencia.
-- [Demo](https://hefestolab.github.io/#demo): acceso gratuito de demostración antes de adquirir una licencia.
+HEFESTO es un software en desarrollo orientado a modelado 2D/3D, mediciones, presupuesto y organización de datos desde fases tempranas de proyecto. Su arquitectura utiliza JSON HEFESTO como núcleo de información y trabaja con flujos de interoperabilidad relacionados con IFC, DXF, Excel, Revit y Dynamo, según módulo y versión.
 
-## Definición de HEFESTO
+## Component Studio
 
-HEFESTO Pre-BIM Modeler es una aplicación de escritorio para convertir planos, datos, imágenes, fichas técnicas e intención de diseño en modelos arquitectónicos e industriales, mediciones, presupuestos y datos interoperables.
+Component Studio es una línea integrada en HEFESTO para crear componentes técnicos mediante primitivas geométricas, parámetros y propiedades. El desarrollo también explora la interpretación de planos y fichas técnicas mediante IA y Model Context Protocol (MCP).
 
-## Tecnologías y formatos
+## HEFESTOLAB
 
-JSON HEFESTO, IFC, Revit, Dynamo, DXF, PDF, BCF, Excel, modelado 2D/3D, Component Studio, inteligencia artificial y Model Context Protocol (MCP).
+La web de HEFESTOLAB irá incorporando documentación, formación, biblioteca de recursos, proyectos de ejemplo y contenido técnico sobre HEFESTO, Revit, Dynamo, IFC, JSON, automatización e IA aplicada al sector AEC.
 
-## Audiencia
+## Estado
 
-Profesionales BIM, arquitectos, ingenieros, modeladores, empresas industriales, constructoras, consultores, fabricantes y equipos AEC.
+HEFESTO y varios contenidos de HEFESTOLAB están actualmente en desarrollo. La web evita presentar como publicadas funciones, cursos o recursos que todavía estén en preparación.
 
-## Idioma principal
+## Enlaces
 
-Español de España. La versión inglesa se añadirá posteriormente.
-
-## Contacto y autoría
-
-Editor: HEFESTOLAB.
-Sitio oficial provisional: https://hefestolab.github.io/
+- Sitio oficial provisional: https://hefestolab.github.io/
+- GitHub: https://github.com/HEFESTOLAB
+- Contacto: info@solucionesbim.com

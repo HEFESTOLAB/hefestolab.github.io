@@ -3,963 +3,142 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>HEFESTOLAB | HEFESTO Pre-BIM Modeler, Academia y Biblioteca BIM</title>
-  <meta name="description" content="HEFESTOLAB desarrolla HEFESTO Pre-BIM Modeler: modelado arquitectónico e industrial, mediciones, presupuesto, JSON, IFC, Revit, Dynamo e inteligencia artificial. Demo gratuita y academia abierta.">
-  <meta name="author" content="HEFESTOLAB">
+  <title>HEFESTOLAB | HEFESTO Pre-BIM Modeler</title>
+  <meta name="description" content="HEFESTOLAB desarrolla HEFESTO Pre-BIM Modeler, un entorno en desarrollo para modelado 2D/3D, mediciones, presupuesto, Component Studio e interoperabilidad BIM mediante JSON, IFC, Revit y Dynamo.">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
-  <meta name="theme-color" content="#0879e8">
-  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#0b77dd">
   <link rel="canonical" href="https://hefestolab.github.io/">
-  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
   <link rel="alternate" type="text/plain" href="llms.txt" title="HEFESTOLAB para modelos de lenguaje">
 
   <meta property="og:type" content="website">
   <meta property="og:locale" content="es_ES">
   <meta property="og:site_name" content="HEFESTOLAB">
-  <meta property="og:title" content="HEFESTOLAB | Modela antes del BIM">
-  <meta property="og:description" content="HEFESTO convierte planos, datos e intención en modelos, mediciones, presupuesto e interoperabilidad.">
+  <meta property="og:title" content="HEFESTOLAB | BIM desde el primer trazo">
+  <meta property="og:description" content="HEFESTO Pre-BIM Modeler: modelado, mediciones, presupuesto, Component Studio e interoperabilidad abierta para AEC e industria.">
   <meta property="og:url" content="https://hefestolab.github.io/">
   <meta property="og:image" content="https://hefestolab.github.io/assets/images/og-hefestolab.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="HEFESTOLAB — HEFESTO Pre-BIM Modeler">
-
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="HEFESTOLAB | Modela antes del BIM">
-  <meta name="twitter:description" content="Modelado Pre-BIM, mediciones, presupuesto, JSON, IFC, Revit, Dynamo e IA.">
+  <meta name="twitter:title" content="HEFESTOLAB | BIM desde el primer trazo">
+  <meta name="twitter:description" content="HEFESTO Pre-BIM Modeler: tecnología Pre-BIM, interoperabilidad, automatización e IA para AEC e industria.">
   <meta name="twitter:image" content="https://hefestolab.github.io/assets/images/og-hefestolab.jpg">
 
   <script type="application/ld+json">
   {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Organization",
-      "@id": "https://hefestolab.github.io/#organization",
-      "name": "HEFESTOLAB",
-      "url": "https://hefestolab.github.io/",
-      "logo": "https://hefestolab.github.io/assets/images/hefesto-symbol.png",
-      "description": "Laboratorio de tecnología Pre-BIM, interoperabilidad, automatización e inteligencia artificial aplicada al sector AEC."
-    },
-    {
-      "@type": "WebSite",
-      "@id": "https://hefestolab.github.io/#website",
-      "url": "https://hefestolab.github.io/",
-      "name": "HEFESTOLAB",
-      "inLanguage": "es-ES",
-      "publisher": {
-        "@id": "https://hefestolab.github.io/#organization"
-      }
-    },
-    {
-      "@type": "SoftwareApplication",
-      "@id": "https://hefestolab.github.io/#hefesto",
-      "name": "HEFESTO Pre-BIM Modeler",
-      "url": "https://hefestolab.github.io/#producto",
-      "image": "https://hefestolab.github.io/assets/images/og-hefestolab.jpg",
-      "description": "Software profesional Pre-BIM para modelado arquitectónico e industrial, mediciones, presupuesto y flujos abiertos con JSON, IFC, Revit, Dynamo, DXF y Excel.",
-      "applicationCategory": "DesignApplication",
-      "operatingSystem": "Windows",
-      "softwareVersion": "En desarrollo",
-      "isAccessibleForFree": false,
-      "offers": {
-        "@type": "Offer",
-        "price": "699",
-        "priceCurrency": "EUR",
-        "category": "Suscripción anual por licencia",
-        "availability": "https://schema.org/PreOrder",
-        "url": "https://hefestolab.github.io/#precio"
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://hefestolab.github.io/#organization",
+        "name": "HEFESTOLAB",
+        "url": "https://hefestolab.github.io/",
+        "logo": "https://hefestolab.github.io/assets/brand/hefesto-symbol.svg",
+        "description": "HEFESTOLAB desarrolla tecnología Pre-BIM, interoperabilidad, automatización e inteligencia artificial aplicada al sector AEC y a entornos industriales.",
+        "email": "info@solucionesbim.com"
       },
-      "publisher": {
-        "@id": "https://hefestolab.github.io/#organization"
+      {
+        "@type": "WebSite",
+        "@id": "https://hefestolab.github.io/#website",
+        "url": "https://hefestolab.github.io/",
+        "name": "HEFESTOLAB",
+        "inLanguage": "es-ES",
+        "publisher": {"@id": "https://hefestolab.github.io/#organization"}
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://hefestolab.github.io/#hefesto",
+        "name": "HEFESTO Pre-BIM Modeler",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "Windows",
+        "url": "https://hefestolab.github.io/#producto",
+        "description": "Aplicación Pre-BIM en desarrollo para modelado 2D/3D, mediciones, presupuesto, componentes e interoperabilidad BIM.",
+        "publisher": {"@id": "https://hefestolab.github.io/#organization"}
       }
-    },
-    {
-      "@type": "ItemList",
-      "@id": "https://hefestolab.github.io/#courses",
-      "name": "Cursos gratuitos de la Academia HEFESTOLAB",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "item": {
-            "@type": "Course",
-            "name": "HEFESTO desde cero",
-            "description": "Curso práctico para aprender el flujo completo de HEFESTO Pre-BIM Modeler.",
-            "provider": {
-              "@id": "https://hefestolab.github.io/#organization"
-            },
-            "url": "https://hefestolab.github.io/#academia"
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "item": {
-            "@type": "Course",
-            "name": "Component Studio industrial",
-            "description": "Creación de componentes paramétricos industriales mediante primitivas y datos técnicos.",
-            "provider": {
-              "@id": "https://hefestolab.github.io/#organization"
-            },
-            "url": "https://hefestolab.github.io/#academia"
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "item": {
-            "@type": "Course",
-            "name": "HEFESTO, Revit, Dynamo e IFC",
-            "description": "Interoperabilidad, JSON HEFESTO y conversión de información entre plataformas BIM.",
-            "provider": {
-              "@id": "https://hefestolab.github.io/#organization"
-            },
-            "url": "https://hefestolab.github.io/#academia"
-          }
-        }
-      ]
-    }
-  ]
-}
+    ]
+  }
   </script>
 
   <style>
-    :root {
-      --bg: #ffffff;
-      --bg-soft: #f5f8fc;
-      --surface: rgba(255,255,255,.82);
-      --surface-solid: #ffffff;
-      --text: #10233f;
-      --muted: #5e6f85;
-      --line: #dbe5ef;
-      --primary: #0879e8;
-      --primary-2: #32a9ff;
-      --primary-soft: #eaf5ff;
-      --navy: #07182f;
-      --success: #0a9b71;
-      --shadow: 0 20px 60px rgba(13,45,81,.12);
-      --shadow-soft: 0 12px 38px rgba(13,45,81,.08);
-      --radius: 22px;
-      --radius-sm: 14px;
-      --max: 1180px;
-    }
-    [data-theme="dark"] {
-      --bg: #07111f;
-      --bg-soft: #0b192b;
-      --surface: rgba(10,25,43,.82);
-      --surface-solid: #0e2036;
-      --text: #edf6ff;
-      --muted: #a7b7ca;
-      --line: #223852;
-      --primary-soft: #0d2e4c;
-      --navy: #030a13;
-      --shadow: 0 25px 70px rgba(0,0,0,.35);
-      --shadow-soft: 0 12px 38px rgba(0,0,0,.2);
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 14% 8%, rgba(29,157,255,.10), transparent 24rem),
-        radial-gradient(circle at 92% 20%, rgba(0,104,222,.08), transparent 26rem),
-        var(--bg);
-      line-height: 1.55;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-    }
-    img { max-width: 100%; display: block; }
-    a { color: inherit; text-decoration: none; }
-    button, input { font: inherit; }
-    .container { width: min(var(--max), calc(100% - 40px)); margin-inline: auto; }
-    .skip-link {
-      position: fixed; left: 12px; top: -60px; z-index: 999;
-      background: var(--navy); color: white; padding: 10px 16px; border-radius: 10px;
-    }
-    .skip-link:focus { top: 12px; }
-    .site-header {
-      position: sticky; top: 0; z-index: 50;
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      background: color-mix(in srgb, var(--bg) 80%, transparent);
-      border-bottom: 1px solid color-mix(in srgb, var(--line) 82%, transparent);
-    }
-    .nav {
-      height: 68px; display: grid; grid-template-columns: auto 1fr auto;
-      align-items: center; gap: 28px;
-    }
-    .brand { display:flex; align-items:center; gap:11px; min-width:max-content; }
-    .brand img { width: 34px; height: 40px; object-fit: contain; }
-    .brand-name { font-weight: 800; letter-spacing: -.035em; font-size: 1.02rem; }
-    .brand-name small { display:block; font-size:.58rem; color:var(--muted); letter-spacing:.16em; font-weight:700; }
-    .nav-links { display:flex; justify-content:center; gap:4px; }
-    .nav-links a {
-      padding: 9px 11px; border-radius: 10px; color:var(--muted); font-weight:650; font-size:.91rem;
-    }
-    .nav-links a:hover, .nav-links a:focus-visible { background:var(--bg-soft); color:var(--text); }
-    .nav-actions { display:flex; align-items:center; gap:8px; }
-    .icon-btn, .menu-btn {
-      width:40px; height:40px; border:1px solid var(--line); border-radius:12px;
-      background:var(--surface); color:var(--text); display:grid; place-items:center; cursor:pointer;
-    }
-    .menu-btn { display:none; }
-    .btn {
-      display:inline-flex; align-items:center; justify-content:center; gap:8px;
-      min-height:44px; padding: 0 17px; border-radius:12px; border:1px solid transparent;
-      font-weight:750; letter-spacing:-.01em; transition:.2s ease; cursor:pointer;
-    }
-    .btn:hover { transform:translateY(-1px); }
-    .btn-primary { color:#fff; background:linear-gradient(135deg,var(--primary),#075cc8); box-shadow:0 10px 28px rgba(8,121,232,.25); }
-    .btn-secondary { background:var(--surface-solid); border-color:var(--line); color:var(--text); }
-    .btn-ghost { background:transparent; border-color:color-mix(in srgb, var(--primary) 25%, var(--line)); color:var(--primary); }
-    .mobile-menu {
-      display:none; border-top:1px solid var(--line); padding:12px 20px 18px;
-      background:var(--surface-solid);
-    }
-    .mobile-menu.open { display:grid; gap:6px; }
-    .mobile-menu a { padding:12px; border-radius:10px; color:var(--muted); font-weight:700; }
-    .hero { padding: 82px 0 70px; }
-    .hero-grid { display:grid; grid-template-columns: 1.06fr .94fr; gap:58px; align-items:center; }
-    .eyebrow {
-      display:inline-flex; align-items:center; gap:9px; padding:7px 11px;
-      border:1px solid color-mix(in srgb,var(--primary) 25%,var(--line));
-      background:var(--primary-soft); color:var(--primary); border-radius:999px;
-      font-weight:800; font-size:.78rem; letter-spacing:.06em; text-transform:uppercase;
-    }
-    .eyebrow-dot { width:7px; height:7px; border-radius:50%; background:var(--success); box-shadow:0 0 0 5px rgba(10,155,113,.12); }
-    h1,h2,h3 { line-height:1.08; letter-spacing:-.045em; margin:0; }
-    h1 { font-size:clamp(3rem,7vw,5.8rem); max-width:780px; margin-top:24px; }
-    h1 span { color:var(--primary); }
-    .hero-lead { font-size:clamp(1.05rem,1.6vw,1.26rem); color:var(--muted); max-width:650px; margin:24px 0 0; }
-    .hero-actions { display:flex; flex-wrap:wrap; gap:11px; margin-top:30px; }
-    .hero-note { display:flex; gap:18px; flex-wrap:wrap; margin-top:23px; color:var(--muted); font-size:.86rem; }
-    .hero-note span { display:inline-flex; align-items:center; gap:6px; }
-    .check { width:18px; height:18px; border-radius:50%; background:var(--primary-soft); color:var(--primary); display:grid; place-items:center; font-size:.72rem; font-weight:900; }
-    .visual-wrap { position:relative; min-height:520px; }
-    .visual-glow {
-      position:absolute; inset:8% 4% 8% 8%; border-radius:50%;
-      background:radial-gradient(circle,rgba(26,144,255,.26),transparent 67%);
-      filter:blur(25px);
-    }
-    .app-shell {
-      position:relative; z-index:2; overflow:hidden; border:1px solid var(--line);
-      border-radius:26px; background:var(--surface-solid); box-shadow:var(--shadow);
-      transform:perspective(1200px) rotateY(-4deg) rotateX(2deg);
-    }
-    .app-top {
-      height:46px; display:flex; align-items:center; gap:7px; padding:0 14px;
-      border-bottom:1px solid var(--line); background:var(--bg-soft);
-    }
-    .dot { width:9px; height:9px; border-radius:50%; background:#b7c8d8; }
-    .app-title { margin-left:9px; font-size:.72rem; color:var(--muted); font-weight:700; }
-    .app-body { display:grid; grid-template-columns:86px 1fr 128px; min-height:408px; }
-    .toolrail { border-right:1px solid var(--line); padding:14px 10px; display:grid; align-content:start; gap:9px; }
-    .tool { height:46px; border-radius:11px; background:var(--bg-soft); display:grid; place-items:center; color:var(--muted); }
-    .tool.active { background:var(--primary); color:white; }
-    .canvas {
-      position:relative; overflow:hidden;
-      background:
-        linear-gradient(var(--line) 1px, transparent 1px),
-        linear-gradient(90deg,var(--line) 1px, transparent 1px),
-        var(--surface-solid);
-      background-size:28px 28px;
-    }
-    .plan {
-      position:absolute; inset:48px 34px 58px 38px; border:4px solid var(--primary);
-      border-radius:3px; clip-path:polygon(0 0, 78% 0, 78% 23%, 100% 23%, 100% 100%, 26% 100%, 26% 76%, 0 76%);
-      opacity:.82;
-    }
-    .plan:before,.plan:after { content:""; position:absolute; background:var(--primary); }
-    .plan:before { width:4px; height:100%; left:44%; top:0; }
-    .plan:after { height:4px; width:100%; top:56%; left:0; }
-    .measure-chip {
-      position:absolute; left:26%; top:28%; background:var(--navy); color:#fff;
-      padding:6px 9px; border-radius:8px; font-size:.68rem; box-shadow:var(--shadow-soft);
-    }
-    .model-card {
-      position:absolute; right:22px; bottom:20px; width:150px; height:130px; border-radius:15px;
-      background:linear-gradient(145deg,#0d2340,#102f56); box-shadow:0 18px 40px rgba(2,23,49,.28);
-      overflow:hidden;
-    }
-    .model-card svg { width:100%; height:100%; }
-    .properties { border-left:1px solid var(--line); padding:14px 10px; display:grid; align-content:start; gap:9px; }
-    .prop-title { font-size:.7rem; font-weight:800; }
-    .prop { height:28px; border-radius:8px; background:var(--bg-soft); }
-    .floating-card {
-      position:absolute; z-index:4; padding:13px 15px; border:1px solid var(--line); border-radius:15px;
-      background:var(--surface); backdrop-filter:blur(16px); box-shadow:var(--shadow-soft);
-    }
-    .floating-card strong { display:block; font-size:.8rem; }
-    .floating-card small { color:var(--muted); }
-    .float-json { left:-22px; bottom:40px; }
-    .float-cost { right:-28px; top:66px; }
-    .section { padding:88px 0; }
-    .section.soft { background:linear-gradient(180deg,transparent,var(--bg-soft) 9%,var(--bg-soft) 91%,transparent); }
-    .section-heading { display:flex; justify-content:space-between; gap:28px; align-items:end; margin-bottom:34px; }
-    .section-heading h2 { font-size:clamp(2.1rem,4.7vw,3.65rem); max-width:760px; }
-    .section-heading p { color:var(--muted); max-width:460px; margin:0; }
-    .mini-label { color:var(--primary); font-weight:850; text-transform:uppercase; letter-spacing:.11em; font-size:.73rem; margin-bottom:12px; }
-    .feature-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
-    .feature-card {
-      border:1px solid var(--line); border-radius:var(--radius); padding:25px;
-      background:var(--surface-solid); box-shadow:var(--shadow-soft); min-height:220px;
-      transition:.22s ease;
-    }
-    .feature-card:hover { transform:translateY(-4px); border-color:color-mix(in srgb,var(--primary) 42%,var(--line)); }
-    .icon {
-      width:44px; height:44px; border-radius:14px; display:grid; place-items:center;
-      background:var(--primary-soft); color:var(--primary); margin-bottom:28px;
-    }
-    .feature-card h3 { font-size:1.22rem; letter-spacing:-.025em; }
-    .feature-card p { color:var(--muted); margin:10px 0 0; font-size:.93rem; }
-    .feature-link { display:inline-flex; gap:7px; align-items:center; color:var(--primary); font-size:.87rem; font-weight:800; margin-top:18px; }
-    .workflow {
-      margin-top:22px; display:grid; grid-template-columns:repeat(4,1fr); border:1px solid var(--line);
-      border-radius:var(--radius); overflow:hidden; background:var(--surface-solid);
-    }
-    .workflow-step { padding:27px 22px; position:relative; min-height:150px; }
-    .workflow-step + .workflow-step { border-left:1px solid var(--line); }
-    .step-no { color:var(--primary); font-weight:900; font-size:.72rem; letter-spacing:.1em; }
-    .workflow-step strong { display:block; font-size:1.04rem; margin-top:25px; }
-    .workflow-step span { display:block; color:var(--muted); font-size:.86rem; margin-top:6px; }
-    .academy-shell {
-      display:grid; grid-template-columns:270px 1fr; overflow:hidden;
-      border:1px solid var(--line); border-radius:25px; background:var(--surface-solid); box-shadow:var(--shadow);
-    }
-    .academy-sidebar { padding:22px; border-right:1px solid var(--line); background:var(--bg-soft); }
-    .academy-sidebar .side-brand { display:flex; align-items:center; gap:10px; font-weight:850; margin-bottom:24px; }
-    .academy-sidebar img { width:28px; height:32px; object-fit:contain; }
-    .side-search { padding:10px 11px; border:1px solid var(--line); border-radius:10px; color:var(--muted); font-size:.82rem; background:var(--surface-solid); }
-    .side-group { margin-top:22px; }
-    .side-group strong { font-size:.71rem; text-transform:uppercase; letter-spacing:.11em; color:var(--muted); }
-    .side-group a { display:block; padding:7px 9px; margin-top:3px; border-radius:8px; font-size:.84rem; color:var(--muted); }
-    .side-group a.active { color:var(--primary); background:var(--primary-soft); font-weight:800; }
-    .academy-main { padding:42px; }
-    .academy-main h3 { font-size:clamp(2rem,4vw,3rem); max-width:650px; }
-    .academy-main > p { color:var(--muted); max-width:650px; }
-    .course-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:30px; }
-    .course {
-      position:relative; border:1px solid var(--line); border-radius:16px; padding:20px; overflow:hidden;
-      min-height:178px; background:linear-gradient(145deg,var(--surface-solid),var(--bg-soft));
-    }
-    .course:after { content:""; position:absolute; width:120px; height:120px; border-radius:50%; background:var(--primary-soft); right:-42px; bottom:-56px; }
-    .course-kicker { font-size:.72rem; color:var(--primary); font-weight:850; letter-spacing:.08em; text-transform:uppercase; }
-    .course h4 { font-size:1.12rem; margin:13px 0 7px; letter-spacing:-.025em; }
-    .course p { color:var(--muted); font-size:.85rem; margin:0; }
-    .course-meta { display:flex; gap:12px; color:var(--muted); font-size:.74rem; margin-top:17px; }
-    .library-grid { display:grid; grid-template-columns:1.15fr .85fr; gap:18px; }
-    .library-feature, .library-side { border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; background:var(--surface-solid); }
-    .library-feature { display:grid; grid-template-columns:1fr 1fr; min-height:420px; }
-    .library-visual {
-      background:
-        radial-gradient(circle at 34% 28%,rgba(73,178,255,.55),transparent 30%),
-        linear-gradient(145deg,#07182f,#0c3f76);
-      position:relative; display:grid; place-items:center; padding:35px;
-    }
-    .library-visual .equipment {
-      width:235px; height:165px; position:relative; filter:drop-shadow(0 20px 20px rgba(0,0,0,.25));
-    }
-    .equipment .body { position:absolute; width:132px; height:88px; border:4px solid #7ad0ff; border-radius:50%; left:37px; top:37px; }
-    .equipment .pipe { position:absolute; height:22px; background:#58bfff; border-radius:7px; }
-    .equipment .pipe.a { width:70px; left:0; top:69px; }
-    .equipment .pipe.b { width:82px; right:0; top:69px; }
-    .equipment .base { position:absolute; width:180px; height:13px; border-radius:5px; background:#3c91d9; left:26px; bottom:7px; }
-    .library-copy { padding:34px; align-self:center; }
-    .tag-row { display:flex; flex-wrap:wrap; gap:7px; margin:18px 0; }
-    .tag { padding:5px 8px; border-radius:8px; background:var(--bg-soft); border:1px solid var(--line); color:var(--muted); font-size:.74rem; font-weight:750; }
-    .library-copy p { color:var(--muted); }
-    .library-side { display:grid; padding:16px; gap:12px; }
-    .resource-card { display:grid; grid-template-columns:82px 1fr; gap:14px; align-items:center; padding:12px; border:1px solid var(--line); border-radius:15px; }
-    .resource-thumb { height:72px; border-radius:12px; background:linear-gradient(145deg,var(--primary-soft),var(--bg-soft)); display:grid; place-items:center; color:var(--primary); }
-    .resource-card strong { display:block; font-size:.93rem; }
-    .resource-card span { color:var(--muted); font-size:.76rem; }
-    .blog-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
-    .post { border:1px solid var(--line); border-radius:var(--radius); background:var(--surface-solid); overflow:hidden; }
-    .post-cover { height:170px; position:relative; background:linear-gradient(145deg,#081b34,#0e64b4); overflow:hidden; }
-    .post-cover:before,.post-cover:after { content:""; position:absolute; border:1px solid rgba(102,203,255,.65); transform:rotate(-10deg); }
-    .post-cover:before { width:180px; height:115px; right:-20px; top:28px; }
-    .post-cover:after { width:110px; height:170px; left:28px; top:40px; }
-    .post-body { padding:22px; }
-    .post-meta { display:flex; justify-content:space-between; gap:12px; font-size:.73rem; color:var(--muted); }
-    .post h3 { font-size:1.12rem; margin-top:13px; }
-    .post p { color:var(--muted); font-size:.86rem; }
-    .pricing-card {
-      display:grid; grid-template-columns:1fr auto; gap:36px; align-items:center;
-      padding:40px; border-radius:28px; color:#fff; background:
-        radial-gradient(circle at 80% 0%,rgba(44,177,255,.5),transparent 35%),
-        linear-gradient(135deg,#06172d,#0a4e91);
-      box-shadow:var(--shadow);
-    }
-    .pricing-card h2 { font-size:clamp(2.2rem,5vw,4rem); }
-    .pricing-card p { color:#cfe5fa; max-width:650px; }
-    .pricing-features { display:flex; gap:10px; flex-wrap:wrap; margin-top:20px; }
-    .pricing-features span { padding:7px 10px; border:1px solid rgba(255,255,255,.18); border-radius:999px; font-size:.78rem; color:#e7f5ff; }
-    .price-box { min-width:265px; padding:26px; border-radius:20px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); backdrop-filter:blur(12px); }
-    .price { font-size:3.1rem; font-weight:900; letter-spacing:-.06em; }
-    .price small { font-size:.9rem; font-weight:600; letter-spacing:0; }
-    .price-box p { font-size:.84rem; margin:3px 0 19px; }
-    .price-box .btn { width:100%; background:#fff; color:#0a4c88; }
-    .faq-grid { display:grid; grid-template-columns:.82fr 1.18fr; gap:40px; }
-    .faq-intro h2 { font-size:clamp(2rem,4.5vw,3.4rem); }
-    .faq-intro p { color:var(--muted); }
-    details { border-bottom:1px solid var(--line); }
-    summary { cursor:pointer; list-style:none; padding:21px 36px 21px 0; font-weight:780; position:relative; }
-    summary::-webkit-details-marker { display:none; }
-    summary:after { content:"+"; position:absolute; right:5px; font-size:1.35rem; color:var(--primary); }
-    details[open] summary:after { content:"−"; }
-    details p { color:var(--muted); margin:0; padding:0 30px 20px 0; }
-    .site-footer { border-top:1px solid var(--line); padding:42px 0; margin-top:40px; background:var(--bg-soft); }
-    .footer-grid { display:grid; grid-template-columns:1.3fr repeat(3,1fr); gap:34px; }
-    .footer-brand { display:flex; align-items:center; gap:11px; font-weight:850; }
-    .footer-brand img { width:34px; height:40px; object-fit:contain; }
-    .footer-copy { color:var(--muted); font-size:.85rem; max-width:330px; margin-top:13px; }
-    .footer-col strong { display:block; font-size:.78rem; text-transform:uppercase; letter-spacing:.1em; margin-bottom:13px; }
-    .footer-col a { display:block; color:var(--muted); font-size:.85rem; padding:4px 0; }
-    .footer-bottom { border-top:1px solid var(--line); margin-top:32px; padding-top:19px; display:flex; justify-content:space-between; gap:20px; color:var(--muted); font-size:.78rem; }
-    .search-modal {
-      position:fixed; inset:0; z-index:90; display:none; align-items:flex-start; justify-content:center;
-      padding:90px 18px 20px; background:rgba(1,10,20,.52); backdrop-filter:blur(7px);
-    }
-    .search-modal.open { display:flex; }
-    .search-panel { width:min(680px,100%); background:var(--surface-solid); border:1px solid var(--line); border-radius:20px; box-shadow:var(--shadow); overflow:hidden; }
-    .search-input { display:flex; align-items:center; gap:12px; padding:15px 17px; border-bottom:1px solid var(--line); }
-    .search-input input { width:100%; border:0; outline:0; background:transparent; color:var(--text); font-size:1.05rem; }
-    .search-results { padding:11px; }
-    .search-result { display:block; padding:13px; border-radius:11px; }
-    .search-result:hover { background:var(--bg-soft); }
-    .search-result strong { display:block; }
-    .search-result span { color:var(--muted); font-size:.82rem; }
-    .reveal { opacity:0; transform:translateY(18px); transition:opacity .65s ease, transform .65s ease; }
-    .reveal.visible { opacity:1; transform:none; }
-
-    @media (max-width: 1000px) {
-      .nav-links { display:none; }
-      .menu-btn { display:grid; }
-      .nav { grid-template-columns:auto 1fr auto; }
-      .nav-actions { justify-self:end; }
-      .nav-actions > .btn { display:none; }
-      .hero-grid { grid-template-columns:1fr; }
-      .hero { padding-top:58px; }
-      .hero-copy { text-align:center; }
-      .hero-lead { margin-inline:auto; }
-      .hero-actions,.hero-note { justify-content:center; }
-      .visual-wrap { width:min(720px,100%); margin-inline:auto; }
-      .feature-grid { grid-template-columns:repeat(2,1fr); }
-      .library-grid { grid-template-columns:1fr; }
-      .footer-grid { grid-template-columns:1.4fr 1fr 1fr; }
-      .footer-col:last-child { display:none; }
-    }
-    @media (max-width: 760px) {
-      .container { width:min(100% - 26px,var(--max)); }
-      .brand-name small { display:none; }
-      .brand img { width:29px; height:34px; }
-      .nav { height:60px; gap:10px; }
-      .icon-btn,.menu-btn { width:37px; height:37px; border-radius:10px; }
-      .hero { padding:46px 0 46px; }
-      h1 { font-size:clamp(2.75rem,16vw,4.4rem); }
-      .hero-lead { font-size:1rem; }
-      .hero-actions { display:grid; grid-template-columns:1fr; }
-      .hero-actions .btn { width:100%; }
-      .hero-note { display:grid; grid-template-columns:1fr 1fr; text-align:left; }
-      .visual-wrap { min-height:390px; margin-top:12px; }
-      .app-shell { transform:none; border-radius:19px; }
-      .app-body { grid-template-columns:54px 1fr 76px; min-height:310px; }
-      .toolrail { padding:9px 7px; }
-      .tool { height:37px; }
-      .properties { padding:9px 7px; }
-      .model-card { width:110px; height:92px; right:10px; }
-      .float-cost { right:5px; top:-20px; }
-      .float-json { left:4px; bottom:-24px; }
-      .section { padding:65px 0; }
-      .section-heading { display:block; }
-      .section-heading p { margin-top:16px; }
-      .feature-grid { grid-template-columns:1fr; }
-      .feature-card { min-height:auto; }
-      .workflow { grid-template-columns:1fr 1fr; }
-      .workflow-step:nth-child(3) { border-left:0; border-top:1px solid var(--line); }
-      .workflow-step:nth-child(4) { border-top:1px solid var(--line); }
-      .academy-shell { grid-template-columns:1fr; }
-      .academy-sidebar { display:none; }
-      .academy-main { padding:25px 18px; }
-      .course-grid { grid-template-columns:1fr; }
-      .library-feature { grid-template-columns:1fr; }
-      .library-visual { min-height:270px; }
-      .library-copy { padding:25px; }
-      .blog-grid { grid-template-columns:1fr; }
-      .pricing-card { grid-template-columns:1fr; padding:26px 19px; }
-      .price-box { min-width:0; }
-      .faq-grid { grid-template-columns:1fr; gap:10px; }
-      .footer-grid { grid-template-columns:1fr 1fr; }
-      .footer-grid > div:first-child { grid-column:1/-1; }
-      .footer-bottom { display:block; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      * { scroll-behavior:auto !important; animation:none !important; transition:none !important; }
-      .reveal { opacity:1; transform:none; }
-    }
+    @font-face{font-family:Inter;src:url('assets/fonts/inter-latin-400.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+    @font-face{font-family:Inter;src:url('assets/fonts/inter-latin-600.woff2') format('woff2');font-weight:600;font-style:normal;font-display:swap}
+    @font-face{font-family:Inter;src:url('assets/fonts/inter-latin-700.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
+    @font-face{font-family:Inter;src:url('assets/fonts/inter-latin-800.woff2') format('woff2');font-weight:800;font-style:normal;font-display:swap}
+    :root{--bg:#fff;--surface:#fff;--soft:#f5f8fc;--text:#0d2038;--muted:#60738a;--line:#dce6f0;--blue:#0879e8;--blue2:#34a8ff;--deep:#07182f;--green:#118d68;--shadow:0 20px 60px rgba(10,45,85,.10);--r:20px;--max:1180px}
+    [data-theme="dark"]{--bg:#07111f;--surface:#0d1d31;--soft:#0a1829;--text:#f1f7ff;--muted:#a9b9cb;--line:#20364f;--deep:#030a13;--shadow:0 20px 60px rgba(0,0,0,.30)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 15% 5%,rgba(52,168,255,.10),transparent 25rem),var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration:none}button{font:inherit}.wrap{width:min(var(--max),calc(100% - 40px));margin:auto}.skip{position:fixed;left:12px;top:-60px;z-index:100;background:var(--deep);color:#fff;padding:10px 14px;border-radius:10px}.skip:focus{top:12px}
+    header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid color-mix(in srgb,var(--line) 80%,transparent)}.nav{height:66px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:24px}.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.03em}.brand img{width:31px;height:38px}.brand small{display:block;color:var(--muted);font-size:.58rem;letter-spacing:.13em}.links{display:flex;justify-content:center;gap:3px}.links a{padding:9px 11px;border-radius:10px;color:var(--muted);font-size:.9rem;font-weight:600}.links a:hover{background:var(--soft);color:var(--text)}.actions{display:flex;gap:8px;align-items:center}.iconbtn{width:40px;height:40px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--text);cursor:pointer}.menu{display:none}.mobile{display:none;border-top:1px solid var(--line);background:var(--surface);padding:10px 20px 16px}.mobile.open{display:grid}.mobile a{padding:11px;border-radius:9px;color:var(--muted);font-weight:650}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 17px;border-radius:12px;font-weight:750;border:1px solid transparent;transition:.2s}.btn:hover{transform:translateY(-1px)}.primary{background:linear-gradient(135deg,var(--blue),#075ec6);color:#fff;box-shadow:0 12px 30px rgba(8,121,232,.22)}.secondary{background:var(--surface);border-color:var(--line)}
+    .hero{padding:86px 0 70px}.heroGrid{display:grid;grid-template-columns:1.04fr .96fr;gap:62px;align-items:center}.badge{display:inline-flex;align-items:center;gap:9px;padding:7px 11px;border:1px solid color-mix(in srgb,var(--blue) 25%,var(--line));background:color-mix(in srgb,var(--blue) 9%,var(--surface));color:var(--blue);border-radius:999px;font-weight:800;font-size:.75rem;letter-spacing:.06em;text-transform:uppercase}.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 5px rgba(17,141,104,.12)}h1,h2,h3{line-height:1.08;letter-spacing:-.045em;margin:0}h1{font-size:clamp(3rem,7vw,5.65rem);margin-top:23px;max-width:760px}h1 span{color:var(--blue)}.lead{font-size:clamp(1.02rem,1.6vw,1.22rem);color:var(--muted);max-width:690px;margin:24px 0 0}.heroBtns{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:23px}.chip{padding:6px 9px;border:1px solid var(--line);background:var(--surface);border-radius:999px;color:var(--muted);font-size:.76rem;font-weight:650}
+    .visual{position:relative;min-height:500px;display:grid;place-items:center}.glow{position:absolute;width:95%;height:80%;border-radius:50%;background:radial-gradient(circle,rgba(48,165,255,.25),transparent 67%);filter:blur(28px)}.window{position:relative;z-index:2;width:100%;overflow:hidden;border:1px solid var(--line);border-radius:24px;background:var(--surface);box-shadow:var(--shadow)}.bar{height:44px;display:flex;align-items:center;gap:6px;padding:0 13px;border-bottom:1px solid var(--line);background:var(--soft)}.bar i{width:8px;height:8px;border-radius:50%;background:#b8c8d7}.bar span{margin-left:7px;color:var(--muted);font-size:.72rem;font-weight:700}.workspace{display:grid;grid-template-columns:64px 1fr 126px;min-height:360px}.tools{border-right:1px solid var(--line);padding:11px 8px;display:grid;align-content:start;gap:8px}.tool{height:41px;border-radius:10px;background:var(--soft);display:grid;place-items:center;color:var(--muted)}.tool.on{background:var(--blue);color:#fff}.canvas{position:relative;overflow:hidden;background:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px),var(--surface);background-size:26px 26px}.model{position:absolute;inset:42px 24px 43px 28px}.model svg{width:100%;height:100%}.props{border-left:1px solid var(--line);padding:13px 9px}.props b{font-size:.7rem}.line{height:27px;border-radius:7px;background:var(--soft);margin-top:8px}.float{position:absolute;z-index:4;border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:blur(12px);box-shadow:var(--shadow);padding:12px 14px;border-radius:14px}.float b{display:block;font-size:.8rem}.float small{color:var(--muted)}.f1{left:-18px;bottom:32px}.f2{right:-20px;top:58px}
+    .section{padding:84px 0}.soft{background:linear-gradient(180deg,transparent,var(--soft) 9%,var(--soft) 91%,transparent)}.head{display:flex;justify-content:space-between;align-items:end;gap:28px;margin-bottom:32px}.kicker{font-size:.72rem;color:var(--blue);font-weight:850;letter-spacing:.11em;text-transform:uppercase;margin-bottom:11px}.head h2{font-size:clamp(2rem,4.5vw,3.55rem);max-width:760px}.head p{max-width:460px;color:var(--muted);margin:0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.card{padding:24px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);box-shadow:0 10px 34px rgba(10,45,85,.06)}.cardIcon{width:43px;height:43px;border-radius:13px;background:color-mix(in srgb,var(--blue) 10%,var(--surface));color:var(--blue);display:grid;place-items:center;margin-bottom:26px;font-size:1.1rem}.card h3{font-size:1.16rem;letter-spacing:-.025em}.card p{color:var(--muted);font-size:.91rem;margin:9px 0 0}.status{display:inline-flex;margin-top:16px;padding:5px 8px;border-radius:8px;background:var(--soft);color:var(--muted);font-size:.72rem;font-weight:750}.flow{display:grid;grid-template-columns:repeat(4,1fr);overflow:hidden;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}.step{padding:25px 21px;min-height:148px}.step+.step{border-left:1px solid var(--line)}.n{color:var(--blue);font-weight:850;font-size:.72rem;letter-spacing:.09em}.step b{display:block;margin-top:23px}.step span{display:block;color:var(--muted);font-size:.84rem;margin-top:5px}
+    .coming{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);padding:30px;min-height:285px;position:relative;overflow:hidden}.panel:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-75px;bottom:-90px;background:color-mix(in srgb,var(--blue) 10%,transparent)}.panel h3{font-size:1.45rem}.panel p{color:var(--muted);max-width:520px}.miniList{display:grid;gap:10px;margin-top:22px}.mini{display:flex;gap:10px;align-items:flex-start}.mini i{width:25px;height:25px;border-radius:8px;background:var(--soft);color:var(--blue);display:grid;place-items:center;font-style:normal;font-weight:800;font-size:.75rem}.mini span{color:var(--muted);font-size:.88rem}.topics{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.topic{border:1px solid var(--line);border-radius:17px;padding:22px;background:var(--surface)}.topic b{display:block}.topic span{display:block;color:var(--muted);font-size:.84rem;margin-top:7px}
+    .contact{display:grid;grid-template-columns:1fr auto;align-items:center;gap:32px;padding:40px;border-radius:28px;background:radial-gradient(circle at 85% 0%,rgba(52,168,255,.45),transparent 35%),linear-gradient(135deg,#06172d,#0a4b89);color:#fff;box-shadow:var(--shadow)}.contact h2{font-size:clamp(2rem,4vw,3.4rem)}.contact p{color:#d3e8fb;max-width:670px}.contactBtns{display:grid;gap:10px;min-width:255px}.contact .secondary{background:#fff;color:#0a4b89;border:0}.contact .outline{border:1px solid rgba(255,255,255,.25);color:#fff;background:rgba(255,255,255,.07)}
+    footer{border-top:1px solid var(--line);background:var(--soft);padding:38px 0;margin-top:40px}.foot{display:flex;justify-content:space-between;gap:30px;align-items:center}.footBrand{display:flex;align-items:center;gap:10px;font-weight:800}.footBrand img{width:28px;height:34px}.foot p{color:var(--muted);font-size:.82rem;margin:7px 0 0}.footlinks{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);font-size:.83rem}
+    @media(max-width:980px){.links{display:none}.menu{display:inline-grid;place-items:center}.actions>.primary{display:none}.heroGrid{grid-template-columns:1fr}.heroCopy{text-align:center}.lead{margin-inline:auto}.heroBtns,.chips{justify-content:center}.visual{width:min(720px,100%);margin:auto}.grid{grid-template-columns:repeat(2,1fr)}.topics{grid-template-columns:1fr 1fr}}
+    @media(max-width:720px){.wrap{width:min(var(--max),calc(100% - 26px))}.nav{height:60px;gap:10px}.brand small{display:none}.hero{padding:48px 0 52px}h1{font-size:clamp(2.7rem,15vw,4.25rem)}.heroBtns{display:grid}.heroBtns .btn{width:100%}.visual{min-height:380px}.window{border-radius:18px}.workspace{grid-template-columns:48px 1fr 74px;min-height:295px}.tools{padding:8px 6px}.tool{height:35px}.props{padding:9px 6px}.f1{left:4px;bottom:-23px}.f2{right:4px;top:-19px}.section{padding:62px 0}.head{display:block}.head p{margin-top:14px}.grid,.coming,.topics{grid-template-columns:1fr}.flow{grid-template-columns:1fr 1fr}.step:nth-child(3){border-left:0;border-top:1px solid var(--line)}.step:nth-child(4){border-top:1px solid var(--line)}.contact{grid-template-columns:1fr;padding:26px 19px}.contactBtns{min-width:0}.foot{display:block}.footlinks{margin-top:20px}}
+    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
   </style>
 </head>
 <body>
-  <a class="skip-link" href="#contenido">Saltar al contenido</a>
-
-  <header class="site-header" aria-label="Cabecera principal">
-    <div class="container nav">
-      <a class="brand" href="#inicio" aria-label="HEFESTOLAB, inicio">
-        <img src="assets/images/hefesto-symbol.png" alt="" width="34" height="40">
-        <span class="brand-name">HEFESTOLAB<small>PRE-BIM · AEC · IA</small></span>
-      </a>
-
-      <nav class="nav-links" aria-label="Navegación principal">
-        <a href="#producto">Producto</a>
-        <a href="#flujo">Flujo</a>
-        <a href="#academia">Academia</a>
-        <a href="#biblioteca">Biblioteca</a>
-        <a href="#blog">Blog</a>
-        <a href="#precio">Precio</a>
-      </nav>
-
-      <div class="nav-actions">
-        <button class="icon-btn" id="searchButton" type="button" aria-label="Buscar" title="Buscar">
-          <svg width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        </button>
-        <button class="icon-btn" id="themeButton" type="button" aria-label="Cambiar modo claro u oscuro" title="Cambiar tema">
-          <svg id="themeIcon" width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-        </button>
-        <a class="btn btn-primary" href="#demo">Probar demo</a>
-        <button class="menu-btn" id="menuButton" type="button" aria-label="Abrir menú" aria-expanded="false">
-          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        </button>
-      </div>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#inicio" aria-label="HEFESTOLAB, inicio"><img src="assets/brand/hefesto-symbol.svg" alt=""><span>HEFESTOLAB<small>PRE-BIM · AEC · IA</small></span></a>
+    <nav class="links" aria-label="Navegación principal"><a href="#producto">HEFESTO</a><a href="#flujo">Flujo</a><a href="#componentes">Component Studio</a><a href="#academia">Academia</a><a href="#contenido-tecnico">Contenido</a><a href="#contacto">Contacto</a></nav>
+    <div class="actions"><button class="iconbtn" id="theme" aria-label="Cambiar tema" title="Cambiar tema">◐</button><a class="btn primary" href="mailto:info@solucionesbim.com?subject=Información%20sobre%20HEFESTO">Contactar</a><button class="iconbtn menu" id="menu" aria-label="Abrir menú">☰</button></div>
+  </div>
+  <nav class="mobile" id="mobile" aria-label="Menú móvil"><a href="#producto">HEFESTO</a><a href="#flujo">Flujo</a><a href="#componentes">Component Studio</a><a href="#academia">Academia</a><a href="#contenido-tecnico">Contenido</a><a href="#contacto">Contacto</a></nav>
+</header>
+<main id="contenido">
+<section class="hero" id="inicio">
+  <div class="wrap heroGrid">
+    <div class="heroCopy">
+      <span class="badge"><span class="dot"></span> HEFESTO Pre-BIM Modeler · En desarrollo</span>
+      <h1>BIM desde el <span>primer trazo.</span></h1>
+      <p class="lead">HEFESTO es un entorno Pre-BIM en desarrollo para modelar, medir y organizar información de proyecto desde las primeras fases. Su núcleo de datos facilita interoperabilidad, automatización y nuevos flujos con herramientas BIM y modelos de lenguaje.</p>
+      <div class="heroBtns"><a class="btn primary" href="mailto:info@solucionesbim.com?subject=Información%20sobre%20HEFESTO">Quiero saber más</a><a class="btn secondary" href="#producto">Ver qué estamos construyendo</a></div>
+      <div class="chips"><span class="chip">Modelado 2D / 3D</span><span class="chip">Mediciones y presupuesto</span><span class="chip">JSON · IFC · Revit · Dynamo</span><span class="chip">Component Studio</span></div>
     </div>
-    <nav class="mobile-menu" id="mobileMenu" aria-label="Menú móvil">
-      <a href="#producto">Producto</a>
-      <a href="#flujo">Flujo</a>
-      <a href="#academia">Academia</a>
-      <a href="#biblioteca">Biblioteca</a>
-      <a href="#blog">Blog</a>
-      <a href="#precio">Precio</a>
-      <a href="#demo">Probar demo gratuita</a>
-    </nav>
-  </header>
-
-  <main id="contenido">
-    <section class="hero" id="inicio">
-      <div class="container hero-grid">
-        <div class="hero-copy">
-          <span class="eyebrow"><span class="eyebrow-dot"></span> HEFESTO Pre-BIM Modeler</span>
-          <h1>Modela antes <span>del BIM.</span></h1>
-          <p class="hero-lead">Convierte planos, datos e intención en geometría, mediciones y presupuesto. Un flujo ligero y abierto conectado con JSON, IFC, Revit, Dynamo, DXF, Excel e inteligencia artificial.</p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="#demo">
-              Probar demo gratuita
-              <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
-            <a class="btn btn-secondary" href="#academia">Explorar la academia</a>
-          </div>
-          <div class="hero-note">
-            <span><i class="check">✓</i> Demo sin tarjeta</span>
-            <span><i class="check">✓</i> Academia gratuita</span>
-            <span><i class="check">✓</i> Datos abiertos</span>
-          </div>
-        </div>
-
-        <div class="visual-wrap" aria-label="Vista conceptual de la interfaz de HEFESTO">
-          <div class="visual-glow"></div>
-          <div class="app-shell">
-            <div class="app-top">
-              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-              <span class="app-title">HEFESTO · Proyecto industrial 001</span>
-            </div>
-            <div class="app-body">
-              <div class="toolrail" aria-hidden="true">
-                <div class="tool active">▱</div>
-                <div class="tool">⌗</div>
-                <div class="tool">◫</div>
-                <div class="tool">○</div>
-                <div class="tool">↗</div>
-              </div>
-              <div class="canvas" aria-hidden="true">
-                <div class="plan"></div>
-                <div class="measure-chip">6,30 m</div>
-                <div class="model-card">
-                  <svg viewBox="0 0 150 130">
-                    <g fill="none" stroke="#55c4ff" stroke-width="2">
-                      <path d="M25 92 76 66l48 21-49 28Z"/>
-                      <path d="M25 92V50l51-25 48 19v43"/>
-                      <path d="M76 66V25"/>
-                      <path d="M25 50 76 76l48-32"/>
-                      <path d="M48 103V62M102 101V56"/>
-                    </g>
-                  </svg>
-                </div>
-              </div>
-              <div class="properties" aria-hidden="true">
-                <div class="prop-title">Propiedades</div>
-                <div class="prop"></div><div class="prop"></div><div class="prop"></div>
-                <div class="prop-title" style="margin-top:10px">Medición</div>
-                <div class="prop"></div><div class="prop"></div>
-              </div>
-            </div>
-          </div>
-          <div class="floating-card float-json"><strong>JSON HEFESTO</strong><small>Modelo legible por LLM</small></div>
-          <div class="floating-card float-cost"><strong>42.680,00 €</strong><small>Presupuesto vinculado</small></div>
+    <div class="visual" aria-label="Representación conceptual de la interfaz de HEFESTO">
+      <div class="glow"></div>
+      <div class="window">
+        <div class="bar"><i></i><i></i><i></i><span>HEFESTO · Proyecto de demostración</span></div>
+        <div class="workspace">
+          <div class="tools" aria-hidden="true"><div class="tool on">▱</div><div class="tool">⌗</div><div class="tool">◫</div><div class="tool">○</div><div class="tool">↗</div></div>
+          <div class="canvas" aria-hidden="true"><div class="model"><svg viewBox="0 0 500 330"><g fill="none" stroke="#2197f3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M70 250 250 155l177 76-180 95Z"/><path d="M70 250V105L250 25l177 70v136"/><path d="M250 155V25"/><path d="M70 105l180 94 177-104"/><path d="M135 283V139M355 270V136"/><path d="M70 175h357" opacity=".55"/></g></svg></div></div>
+          <div class="props" aria-hidden="true"><b>Propiedades</b><div class="line"></div><div class="line"></div><div class="line"></div><b style="display:block;margin-top:14px">Medición</b><div class="line"></div><div class="line"></div></div>
         </div>
       </div>
-    </section>
-
-    <section class="section soft" id="producto">
-      <div class="container">
-        <div class="section-heading reveal">
-          <div>
-            <div class="mini-label">Una plataforma, un flujo</div>
-            <h2>Del concepto al dato técnico sin una pared de herramientas.</h2>
-          </div>
-          <p>HEFESTO reúne modelado preliminar, componentes, cantidades, costes e interoperabilidad en una experiencia directa y visual.</p>
-        </div>
-
-        <div class="feature-grid">
-          <article class="feature-card reveal">
-            <div class="icon"><svg width="23" height="23" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5h16v14H4Zm5 0V9h6v10M4 12h5m6 0h5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></div>
-            <h3>Modelado Pre-BIM</h3>
-            <p>Arquitectura, estructura, obra civil, instalaciones y equipos industriales desde una interfaz ligera.</p>
-            <a class="feature-link" href="#flujo">Ver el flujo →</a>
-          </article>
-          <article class="feature-card reveal">
-            <div class="icon"><svg width="23" height="23" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Zm0 0v9m8-4.5-8 4.5-8-4.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></div>
-            <h3>Component Studio</h3>
-            <p>Componentes industriales paramétricos creados mediante primitivas, restricciones y propiedades técnicas.</p>
-            <a class="feature-link" href="#biblioteca">Explorar componentes →</a>
-          </article>
-          <article class="feature-card reveal">
-            <div class="icon"><svg width="23" height="23" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5V4Zm3 4h8M8 12h3m2 0h3M8 16h3m2 0h3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></div>
-            <h3>Mediciones y presupuesto</h3>
-            <p>Longitudes, superficies, volúmenes, capítulos, partidas y costes vinculados a los objetos del modelo.</p>
-            <a class="feature-link" href="#precio">Conocer la licencia →</a>
-          </article>
-          <article class="feature-card reveal">
-            <div class="icon"><svg width="23" height="23" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5 3 12l5 7m8-14 5 7-5 7M14 3l-4 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-            <h3>JSON abierto</h3>
-            <p>Un núcleo de datos comprensible para aplicaciones, scripts, automatizaciones, agentes y modelos de lenguaje.</p>
-            <a class="feature-link" href="#blog">Entender el enfoque →</a>
-          </article>
-          <article class="feature-card reveal">
-            <div class="icon"><svg width="23" height="23" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7h11m0 0-3-3m3 3-3 3M16 17H5m0 0 3 3m-3-3 3-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            <h3>Interoperabilidad</h3>
-            <p>Flujos con IFC, Revit, Dynamo, DXF, PDF, BCF, Excel y formatos HEFESTO sin encerrar el proyecto.</p>
-            <a class="feature-link" href="#academia">Aprender interoperabilidad →</a>
-          </article>
-          <article class="feature-card reveal">
-            <div class="icon"><svg width="23" height="23" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1m0-12.8-2.1 2.1m-8.6 8.6-2.1 2.1M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-            <h3>IA y MCP</h3>
-            <p>Preparado para trabajar con planos, fichas técnicas, documentación y asistentes como Claude o ChatGPT.</p>
-            <a class="feature-link" href="#blog">Seguir el desarrollo →</a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="flujo">
-      <div class="container">
-        <div class="section-heading reveal">
-          <div>
-            <div class="mini-label">Flujo HEFESTO</div>
-            <h2>Información dispersa dentro. Datos utilizables fuera.</h2>
-          </div>
-          <p>La propuesta se entiende en cuatro pasos; el usuario no necesita conocer toda la arquitectura para obtener valor.</p>
-        </div>
-        <div class="workflow reveal">
-          <div class="workflow-step"><span class="step-no">01 · ENTRADA</span><strong>Plano y documentación</strong><span>PDF, imagen, croquis, fichas técnicas, tablas y requisitos.</span></div>
-          <div class="workflow-step"><span class="step-no">02 · MODELO</span><strong>Geometría y objetos</strong><span>Arquitectura, estructura, equipos, tuberías y componentes.</span></div>
-          <div class="workflow-step"><span class="step-no">03 · INFORMACIÓN</span><strong>Medición y coste</strong><span>Cantidades, códigos, capítulos, precios y presupuesto preliminar.</span></div>
-          <div class="workflow-step"><span class="step-no">04 · SALIDA</span><strong>JSON · IFC · Revit</strong><span>Datos abiertos para coordinación, automatización y continuidad BIM.</span></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section soft" id="academia">
-      <div class="container">
-        <div class="section-heading reveal">
-          <div>
-            <div class="mini-label">Academia HEFESTOLAB</div>
-            <h2>Cursos visuales, proyectos reales y documentación técnica.</h2>
-          </div>
-          <p>Inspirada en Material for MkDocs: navegación precisa, buscador rápido y lecciones compactas que evitan páginas interminables.</p>
-        </div>
-
-        <div class="academy-shell reveal">
-          <aside class="academy-sidebar" aria-label="Ejemplo de navegación de la academia">
-            <div class="side-brand"><img src="assets/images/hefesto-symbol.png" alt=""> Academia</div>
-            <div class="side-search">⌕ Buscar en la academia</div>
-            <div class="side-group">
-              <strong>Empezar</strong>
-              <a class="active" href="#academia">Presentación</a>
-              <a href="#academia">Instalar HEFESTO</a>
-              <a href="#academia">Primer proyecto</a>
-            </div>
-            <div class="side-group">
-              <strong>HEFESTO</strong>
-              <a href="#academia">Modelado</a>
-              <a href="#academia">Mediciones</a>
-              <a href="#academia">Presupuesto</a>
-            </div>
-            <div class="side-group">
-              <strong>Interoperabilidad</strong>
-              <a href="#academia">JSON HEFESTO</a>
-              <a href="#academia">Revit y Dynamo</a>
-              <a href="#academia">IFC</a>
-            </div>
-          </aside>
-          <div class="academy-main">
-            <div class="mini-label">Aprende construyendo</div>
-            <h3>De cero a un proyecto Pre-BIM completo.</h3>
-            <p>Cada curso combina explicación breve, demostración, ejercicio, archivos descargables y una comprobación final.</p>
-            <div class="course-grid">
-              <article class="course">
-                <span class="course-kicker">Nivel inicial</span>
-                <h4>HEFESTO desde cero</h4>
-                <p>Interfaz, niveles, modelado, mediciones y exportación del primer proyecto.</p>
-                <div class="course-meta"><span>8 módulos</span><span>Proyecto incluido</span></div>
-              </article>
-              <article class="course">
-                <span class="course-kicker">Nivel intermedio</span>
-                <h4>Component Studio industrial</h4>
-                <p>Placas, depósitos, bombas e intercambiadores creados desde datos técnicos.</p>
-                <div class="course-meta"><span>10 módulos</span><span>4 componentes</span></div>
-              </article>
-              <article class="course">
-                <span class="course-kicker">Nivel avanzado</span>
-                <h4>HEFESTO ↔ Revit</h4>
-                <p>JSON, Dynamo, elementos nativos, IFC y control de interoperabilidad.</p>
-                <div class="course-meta"><span>6 módulos</span><span>Revit 2024–2026</span></div>
-              </article>
-              <article class="course">
-                <span class="course-kicker">Nivel avanzado</span>
-                <h4>IA y MCP para AEC</h4>
-                <p>Agentes que interpretan planos, fichas, normas y estructuras de datos.</p>
-                <div class="course-meta"><span>7 módulos</span><span>Claude · ChatGPT</span></div>
-              </article>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="biblioteca">
-      <div class="container">
-        <div class="section-heading reveal">
-          <div>
-            <div class="mini-label">Biblioteca</div>
-            <h2>Proyectos, componentes, familias y automatizaciones.</h2>
-          </div>
-          <p>Un catálogo visual para descubrir los recursos; las descargas profesionales pueden vincularse a la licencia activa.</p>
-        </div>
-
-        <div class="library-grid">
-          <article class="library-feature reveal">
-            <div class="library-visual" aria-hidden="true">
-              <div class="equipment"><div class="pipe a"></div><div class="body"></div><div class="pipe b"></div><div class="base"></div></div>
-            </div>
-            <div class="library-copy">
-              <div class="mini-label">Componente destacado</div>
-              <h3>Bomba centrífuga horizontal</h3>
-              <div class="tag-row"><span class="tag">HEFESTO</span><span class="tag">RFA</span><span class="tag">IFC</span><span class="tag">JSON</span></div>
-              <p>Geometría ligera, conexiones, parámetros técnicos, medición y documentación para flujos industriales.</p>
-              <a class="btn btn-secondary" href="#demo">Ver componente</a>
-            </div>
-          </article>
-          <div class="library-side reveal">
-            <article class="resource-card"><div class="resource-thumb">⬡</div><div><strong>Placas de anclaje</strong><span>Component Studio · 24 variantes</span></div></article>
-            <article class="resource-card"><div class="resource-thumb">⌗</div><div><strong>Scripts Dynamo</strong><span>Revit 2024 y Revit 2026</span></div></article>
-            <article class="resource-card"><div class="resource-thumb">▦</div><div><strong>Proyectos de ejemplo</strong><span>Arquitectura, industria y estructura</span></div></article>
-            <article class="resource-card"><div class="resource-thumb">{ }</div><div><strong>JSON HEFESTO</strong><span>Esquemas, ejemplos y validadores</span></div></article>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section soft" id="blog">
-      <div class="container">
-        <div class="section-heading reveal">
-          <div>
-            <div class="mini-label">Blog técnico</div>
-            <h2>Desarrollo abierto, interoperabilidad y nuevas formas de modelar.</h2>
-          </div>
-          <p>Portadas visuales, resúmenes cortos y profundidad técnica solo cuando el lector entra en cada publicación.</p>
-        </div>
-        <div class="blog-grid">
-          <article class="post reveal">
-            <div class="post-cover"></div>
-            <div class="post-body">
-              <div class="post-meta"><span>JSON · IA</span><time datetime="2026-08-06">6 ago 2026</time></div>
-              <h3>Por qué un modelo legible por LLM cambia el flujo BIM</h3>
-              <p>Del archivo cerrado a una estructura que puede analizarse, transformarse y verificarse.</p>
-            </div>
-          </article>
-          <article class="post reveal">
-            <div class="post-cover" style="background:linear-gradient(145deg,#0c253d,#15828e)"></div>
-            <div class="post-body">
-              <div class="post-meta"><span>Revit · Dynamo</span><time datetime="2026-08-04">4 ago 2026</time></div>
-              <h3>Revit a HEFESTO: qué información debe conservar el JSON</h3>
-              <p>Identidad, niveles, tipos, dimensiones, materiales y relaciones necesarias para reconstruir el modelo.</p>
-            </div>
-          </article>
-          <article class="post reveal">
-            <div class="post-cover" style="background:linear-gradient(145deg,#1c163b,#275ec3)"></div>
-            <div class="post-body">
-              <div class="post-meta"><span>Industria</span><time datetime="2026-08-02">2 ago 2026</time></div>
-              <h3>Component Studio: de una ficha técnica a un objeto paramétrico</h3>
-              <p>Cómo organizar primitivas, restricciones, conectores y propiedades sin crear una familia Revit.</p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="precio">
-      <div class="container">
-        <article class="pricing-card reveal">
-          <div>
-            <div class="mini-label" style="color:#71c8ff">HEFESTO PROFESSIONAL</div>
-            <h2>Una licencia. Todo el ecosistema.</h2>
-            <p>Aplicación completa, actualizaciones, biblioteca profesional, Academia HEFESTOLAB, nuevos conectores y soporte.</p>
-            <div class="pricing-features"><span>Modelado completo</span><span>Component Studio</span><span>Mediciones</span><span>Presupuesto</span><span>Interoperabilidad</span></div>
-          </div>
-          <div class="price-box">
-            <div class="price">699 € <small>/ año</small></div>
-            <p>Por licencia. Demo gratuita antes de comprar.</p>
-            <a class="btn" href="#demo">Probar la demo</a>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section class="section soft" id="demo">
-      <div class="container faq-grid">
-        <div class="faq-intro reveal">
-          <div class="mini-label">Demo y lanzamiento</div>
-          <h2>Prueba el enfoque antes de instalar el producto completo.</h2>
-          <p>La demo web puede enseñar el flujo principal y conducir después a una prueba real de escritorio.</p>
-          <a class="btn btn-primary" href="#" onclick="alert('El formulario de demo se conectará después a GitHub Issues o al sistema de licencias.'); return false;">Solicitar acceso</a>
-        </div>
-        <div class="faq-list reveal">
-          <details open>
-            <summary>¿La demo será gratuita?</summary>
-            <p>Sí. La propuesta contempla una demo gratuita para conocer el flujo, sin convertir HEFESTO en una edición gratuita permanente.</p>
-          </details>
-          <details>
-            <summary>¿La academia y el blog pueden publicarse en GitHub?</summary>
-            <p>Sí. La landing puede alojarse en GitHub Pages y la academia puede construirse con Material for MkDocs usando contenidos Markdown.</p>
-          </details>
-          <details>
-            <summary>¿Los proyectos siguen siendo del usuario?</summary>
-            <p>El planteamiento debe mantener los datos en formatos abiertos y permitir al menos consultar o exportar los proyectos propios.</p>
-          </details>
-          <details>
-            <summary>¿HEFESTO pretende sustituir a Revit?</summary>
-            <p>No necesariamente. Su posición más sólida es acelerar la fase Pre-BIM y entregar información preparada para Revit, IFC y otros entornos profesionales.</p>
-          </details>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div>
-          <div class="footer-brand"><img src="assets/images/hefesto-symbol.png" alt=""> HEFESTOLAB</div>
-          <p class="footer-copy">Tecnología Pre-BIM, automatización e inteligencia artificial aplicada a arquitectura, ingeniería, construcción e industria.</p>
-        </div>
-        <div class="footer-col"><strong>Producto</strong><a href="#producto">HEFESTO</a><a href="#biblioteca">Component Studio</a><a href="#precio">Precio</a><a href="#demo">Demo</a></div>
-        <div class="footer-col"><strong>Aprender</strong><a href="#academia">Academia</a><a href="#blog">Blog</a><a href="#biblioteca">Biblioteca</a><a href="llms.txt">llms.txt</a></div>
-        <div class="footer-col"><strong>Proyecto</strong><a href="#">GitHub</a><a href="#">Roadmap</a><a href="#">Documentación</a><a href="#">Contacto</a></div>
-      </div>
-      <div class="footer-bottom">
-        <span>© 2026 HEFESTOLAB. Prototipo de landing.</span>
-        <span>Diseñado para GitHub Pages · SEO técnico · Accesibilidad · LLM discovery</span>
-      </div>
-    </div>
-  </footer>
-
-  <div class="search-modal" id="searchModal" role="dialog" aria-modal="true" aria-label="Buscar en HEFESTOLAB">
-    <div class="search-panel">
-      <div class="search-input">
-        <svg width="21" height="21" viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-        <input id="searchField" type="search" placeholder="Buscar producto, academia, IFC, Revit…" autocomplete="off">
-        <button class="icon-btn" id="closeSearch" type="button" aria-label="Cerrar búsqueda">×</button>
-      </div>
-      <div class="search-results" id="searchResults">
-        <a class="search-result" href="#producto"><strong>HEFESTO Pre-BIM Modeler</strong><span>Modelado, mediciones, presupuesto e interoperabilidad.</span></a>
-        <a class="search-result" href="#academia"><strong>Academia HEFESTOLAB</strong><span>Cursos de HEFESTO, Component Studio, Revit, Dynamo, IFC e IA.</span></a>
-        <a class="search-result" href="#biblioteca"><strong>Biblioteca</strong><span>Familias, proyectos, componentes, JSON y scripts.</span></a>
-      </div>
+      <div class="float f1"><b>JSON HEFESTO</b><small>Datos estructurados</small></div><div class="float f2"><b>Modelo + cantidades</b><small>Información vinculada</small></div>
     </div>
   </div>
+</section>
 
-  <script>
-    (() => {
-      const root = document.documentElement;
-      const themeButton = document.getElementById('themeButton');
-      const menuButton = document.getElementById('menuButton');
-      const mobileMenu = document.getElementById('mobileMenu');
-      const searchModal = document.getElementById('searchModal');
-      const searchButton = document.getElementById('searchButton');
-      const closeSearch = document.getElementById('closeSearch');
-      const searchField = document.getElementById('searchField');
-      const results = [...document.querySelectorAll('.search-result')];
+<section class="section soft" id="producto"><div class="wrap"><div class="head"><div><div class="kicker">HEFESTO</div><h2>Un espacio ligero para trabajar antes y alrededor del BIM.</h2></div><p>La prioridad es reducir fricción entre el primer planteamiento, el modelo, las cantidades y la información que después debe continuar en otros entornos.</p></div><div class="grid">
+  <article class="card"><div class="cardIcon">▱</div><h3>Modelado Pre-BIM</h3><p>Herramientas 2D y 3D para arquitectura, estructura, obra civil, instalaciones y entornos industriales.</p><span class="status">En desarrollo continuo</span></article>
+  <article class="card"><div class="cardIcon">Σ</div><h3>Mediciones y presupuesto</h3><p>Cantidades y datos económicos vinculados al modelo para trabajar con información desde fases tempranas.</p><span class="status">Integrado en HEFESTO</span></article>
+  <article class="card"><div class="cardIcon">{ }</div><h3>Datos abiertos</h3><p>JSON HEFESTO como núcleo legible para automatizaciones, intercambio de información y trabajo asistido por LLM.</p><span class="status">Núcleo del proyecto</span></article>
+  <article class="card"><div class="cardIcon">⇄</div><h3>Interoperabilidad</h3><p>Flujos con formatos y herramientas como IFC, DXF, Excel, Revit y Dynamo, según módulo y versión.</p><span class="status">En evolución</span></article>
+  <article class="card"><div class="cardIcon">✦</div><h3>Automatización e IA</h3><p>Una arquitectura orientada a incorporar asistentes, MCP y procesos capaces de interpretar documentación técnica.</p><span class="status">Línea activa de desarrollo</span></article>
+  <article class="card"><div class="cardIcon">⌁</div><h3>Industrial y AEC</h3><p>El mismo enfoque de datos para edificios, estructuras, instalaciones, equipos y componentes industriales.</p><span class="status">Casos de uso diversos</span></article>
+</div></div></section>
 
-      const saved = localStorage.getItem('hefestolab-theme');
-      if (saved) root.dataset.theme = saved;
-      else if (window.matchMedia('(prefers-color-scheme: dark)').matches) root.dataset.theme = 'dark';
+<section class="section" id="flujo"><div class="wrap"><div class="head"><div><div class="kicker">Flujo de trabajo</div><h2>De la información inicial a un modelo utilizable.</h2></div><p>HEFESTO busca que el dato nazca pronto y pueda seguir evolucionando sin depender de una única herramienta.</p></div><div class="flow"><div class="step"><span class="n">01 · ENTRADA</span><b>Planos y datos</b><span>Información gráfica, requisitos, fichas y datos de proyecto.</span></div><div class="step"><span class="n">02 · MODELO</span><b>Geometría y objetos</b><span>Elementos 2D/3D con propiedades y relaciones útiles.</span></div><div class="step"><span class="n">03 · INFORMACIÓN</span><b>Cantidades y coste</b><span>Mediciones y presupuesto vinculados al modelo.</span></div><div class="step"><span class="n">04 · CONTINUIDAD</span><b>Interoperabilidad</b><span>Datos preparados para otros formatos, herramientas y automatizaciones.</span></div></div></div></section>
 
-      themeButton.addEventListener('click', () => {
-        const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
-        root.dataset.theme = next;
-        localStorage.setItem('hefestolab-theme', next);
-      });
+<section class="section soft" id="componentes"><div class="wrap"><div class="head"><div><div class="kicker">Component Studio</div><h2>Componentes técnicos sin convertir cada pieza en un proyecto aparte.</h2></div><p>Component Studio amplía HEFESTO con geometría paramétrica basada en primitivas y propiedades para piezas y equipos.</p></div><div class="coming"><article class="panel"><h3>Componentes industriales</h3><p>El objetivo es construir piezas ligeras a partir de dimensiones y documentación técnica, manteniendo geometría y datos conectados.</p><div class="miniList"><div class="mini"><i>1</i><span>Primitivas y operaciones geométricas.</span></div><div class="mini"><i>2</i><span>Parámetros, dimensiones y propiedades técnicas.</span></div><div class="mini"><i>3</i><span>Placas, depósitos, equipos y otros objetos reutilizables.</span></div></div></article><article class="panel"><h3>Del documento al objeto</h3><p>Una de las líneas de desarrollo es facilitar que planos y fichas técnicas puedan convertirse en información estructurada y componentes mediante IA y MCP.</p><div class="miniList"><div class="mini"><i>→</i><span>Documentación técnica como entrada.</span></div><div class="mini"><i>→</i><span>Datos interpretables por modelos de lenguaje.</span></div><div class="mini"><i>→</i><span>Revisión humana antes de incorporar el resultado.</span></div></div></article></div></div></section>
 
-      menuButton.addEventListener('click', () => {
-        const open = mobileMenu.classList.toggle('open');
-        menuButton.setAttribute('aria-expanded', String(open));
-      });
-      mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-        mobileMenu.classList.remove('open');
-        menuButton.setAttribute('aria-expanded', 'false');
-      }));
+<section class="section" id="academia"><div class="wrap"><div class="head"><div><div class="kicker">HEFESTOLAB</div><h2>Academia y biblioteca: en preparación.</h2></div><p>La intención es reunir formación gratuita, documentación, proyectos de ejemplo y recursos técnicos alrededor de HEFESTO y sus flujos de interoperabilidad.</p></div><div class="coming"><article class="panel"><h3>Academia HEFESTOLAB</h3><p>Contenido visual y práctico sobre HEFESTO, Revit, Dynamo, IFC, JSON, Component Studio e inteligencia artificial aplicada al AEC.</p><span class="status">Próximamente</span></article><article class="panel"><h3>Biblioteca técnica</h3><p>Proyectos de ejemplo, componentes, familias, scripts y archivos de demostración organizados para que sea sencillo encontrarlos y reutilizarlos.</p><span class="status">Próximamente</span></article></div></div></section>
 
-      function openSearch() {
-        searchModal.classList.add('open');
-        document.body.style.overflow = 'hidden';
-        setTimeout(() => searchField.focus(), 40);
-      }
-      function closeSearchModal() {
-        searchModal.classList.remove('open');
-        document.body.style.overflow = '';
-      }
-      searchButton.addEventListener('click', openSearch);
-      closeSearch.addEventListener('click', closeSearchModal);
-      searchModal.addEventListener('click', e => { if (e.target === searchModal) closeSearchModal(); });
-      document.addEventListener('keydown', e => {
-        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); openSearch(); }
-        if (e.key === 'Escape') closeSearchModal();
-      });
-      results.forEach(a => a.addEventListener('click', closeSearchModal));
-      searchField.addEventListener('input', () => {
-        const q = searchField.value.toLowerCase().trim();
-        results.forEach(r => {
-          r.style.display = r.textContent.toLowerCase().includes(q) ? 'block' : 'none';
-        });
-      });
+<section class="section soft" id="contenido-tecnico"><div class="wrap"><div class="head"><div><div class="kicker">Contenido técnico</div><h2>Desarrollo, pruebas e interoperabilidad sin convertir la portada en un manual.</h2></div><p>El blog se centrará en problemas reales, resultados de pruebas y decisiones de desarrollo, con artículos más profundos fuera de la landing.</p></div><div class="topics"><article class="topic"><b>Revit · Dynamo · JSON</b><span>Flujos entre modelos nativos, automatización y datos estructurados.</span></article><article class="topic"><b>IFC e interoperabilidad</b><span>Pruebas, limitaciones y estrategias para mantener información entre plataformas.</span></article><article class="topic"><b>IA · MCP · AEC</b><span>Uso de asistentes y agentes sobre documentación, modelos y componentes técnicos.</span></article></div></div></section>
 
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-      }, { threshold: .12 });
-      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    })();
-  </script>
-</body>
-</html>
+<section class="section" id="contacto"><div class="wrap"><div class="contact"><div><div class="kicker" style="color:#7bcaff">Contacto</div><h2>¿Quieres hablar de HEFESTO o de un flujo concreto?</h2><p>Si quieres conocer el estado del proyecto, comentar un caso de uso, participar en pruebas o plantear una integración, escríbeme directamente.</p></div><div class="contactBtns"><a class="btn secondary" href="mailto:info@solucionesbim.com?subject=Información%20sobre%20HEFESTO">Enviar correo</a><a class="btn outline" href="https://github.com/HEFESTOLAB" target="_blank" rel="noopener">Ver HEFESTOLAB en GitHub</a></div></div></div></section>
+</main>
+<footer><div class="wrap foot"><div><div class="footBrand"><img src="assets/brand/hefesto-symbol.svg" alt=""> HEFESTOLAB</div><p>HEFESTO Pre-BIM Modeler · Proyecto en desarrollo.</p></div><div class="footlinks"><a href="mailto:info@solucionesbim.com">Contacto</a><a href="https://github.com/HEFESTOLAB" target="_blank" rel="noopener">GitHub</a><a href="https://solucionesbim.com/" target="_blank" rel="noopener">SB Soluciones BIM</a><a href="llms.txt">llms.txt</a></div></div></footer>
+<script>
+(()=>{const root=document.documentElement,t=document.getElementById('theme'),m=document.getElementById('menu'),mob=document.getElementById('mobile');const saved=localStorage.getItem('hefestolab-theme');if(saved)root.dataset.theme=saved;else if(matchMedia('(prefers-color-scheme: dark)').matches)root.dataset.theme='dark';t.addEventListener('click',()=>{const next=root.dataset.theme==='dark'?'light':'dark';root.dataset.theme=next;localStorage.setItem('hefestolab-theme',next)});m.addEventListener('click',()=>mob.classList.toggle('open'));mob.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mob.classList.remove('open')));})();
+</script>
+</body></html>
