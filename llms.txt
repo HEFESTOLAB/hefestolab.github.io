@@ -1,25 +1,28 @@
 # HEFESTOLAB
 
-> HEFESTOLAB desarrolla HEFESTO Pre-BIM Modeler y explora nuevos flujos de interoperabilidad, automatización e inteligencia artificial para AEC e industria.
+> HEFESTOLAB desarrolla HEFESTO Pre-BIM Modeler y explora flujos de interoperabilidad, automatización e inteligencia artificial para AEC e industria. / HEFESTOLAB develops HEFESTO Pre-BIM Modeler and explores interoperability, automation and AI workflows for AEC and industry.
 
-## HEFESTO Pre-BIM Modeler
+## Español
 
-HEFESTO es un software en desarrollo orientado a modelado 2D/3D, mediciones, presupuesto y organización de datos desde fases tempranas de proyecto. Su arquitectura utiliza JSON HEFESTO como núcleo de información y trabaja con flujos de interoperabilidad relacionados con IFC, DXF, Excel, Revit y Dynamo, según módulo y versión.
+- Inicio: https://hefestolab.github.io/
+- Blog técnico: https://hefestolab.github.io/blog/
+- Artículo: JSON HEFESTO: hacia un BIM nativo para inteligencia artificial: https://hefestolab.github.io/blog/json-hefesto-ia-bim.html
 
-## Component Studio
+JSON HEFESTO es el núcleo de información de HEFESTO. Está diseñado como una representación operativa compacta y estructurada que facilita automatización, interoperabilidad y trabajo asistido por modelos de lenguaje. No se presenta como sustituto de IFC; IFC sigue siendo una capa abierta de intercambio entre plataformas.
 
-Component Studio es una línea integrada en HEFESTO para crear componentes técnicos mediante primitivas geométricas, parámetros y propiedades. El desarrollo también explora la interpretación de planos y fichas técnicas mediante IA y Model Context Protocol (MCP).
+## English
 
-## HEFESTOLAB
+- Home: https://hefestolab.github.io/en/
+- Technical blog: https://hefestolab.github.io/en/blog/
+- Article: JSON HEFESTO: towards AI-native BIM: https://hefestolab.github.io/en/blog/json-hefesto-ai-bim.html
 
-La web de HEFESTOLAB irá incorporando documentación, formación, biblioteca de recursos, proyectos de ejemplo y contenido técnico sobre HEFESTO, Revit, Dynamo, IFC, JSON, automatización e IA aplicada al sector AEC.
+JSON HEFESTO is HEFESTO's information core. It is designed as a compact, structured operational representation for automation, interoperability and LLM-assisted workflows. It is not presented as a replacement for IFC; IFC remains an open exchange layer across platforms.
 
-## Estado
+## Product state / Estado
 
-HEFESTO y varios contenidos de HEFESTOLAB están actualmente en desarrollo. La web evita presentar como publicadas funciones, cursos o recursos que todavía estén en preparación.
+HEFESTO and several HEFESTOLAB resources are currently in development. Published pages distinguish current functionality from research and future development targets.
 
-## Enlaces
+## Links
 
-- Sitio oficial provisional: https://hefestolab.github.io/
 - GitHub: https://github.com/HEFESTOLAB
-- Contacto: info@solucionesbim.com
+- Contact: info@solucionesbim.com
