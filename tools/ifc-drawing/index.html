@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#1f2937">
+  <title>IFC Drawing · HEFESTOLAB Tools</title>
+  <meta name="description" content="Herramienta experimental de HEFESTOLAB para abrir IFC localmente, generar proyecciones 2D, acotar, componer planos y exportar PDF/DXF.">
+  <link rel="canonical" href="https://hefestolab.github.io/tools/ifc-drawing/">
+  <link rel="alternate" hreflang="es" href="https://hefestolab.github.io/tools/ifc-drawing/">
+  <link rel="alternate" hreflang="x-default" href="https://hefestolab.github.io/tools/ifc-drawing/">
+  <link rel="icon" href="../../assets/brand/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/ifc-drawing.css?v=0.4.0">
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <header class="app-topbar">
+      <a class="app-brand" href="../../index.html" title="Volver a HEFESTOLAB">
+        <img src="../../assets/brand/hefesto-symbol.svg" alt="">
+        <span><b>HEFESTOLAB</b><small>IFC DRAWING · TOOLS</small></span>
+      </a>
+      <span class="top-sep"></span>
+      <div class="file-meta">
+        <span id="projectName">Proyecto sin guardar</span>
+        <small id="fileMeta">Ningún IFC cargado</small>
+      </div>
+      <div class="top-spacer"></div>
+      <button class="top-btn" id="btnDemo" type="button" title="Cargar proyecto de demostración">Demo</button>
+      <label class="top-btn primary" for="ifcInput" title="Abrir un archivo IFC desde este dispositivo">Abrir IFC</label>
+      <input id="ifcInput" type="file" accept=".ifc,.IFC" hidden>
+      <button class="icon-btn top-icon" id="btnTheme" type="button" title="Cambiar tema" aria-label="Cambiar tema">◐</button>
+      <a class="icon-btn top-icon" href="../../index.html" title="Cerrar herramienta y volver a HEFESTOLAB" aria-label="Cerrar">×</a>
+    </header>
+
+    <nav class="modebar" aria-label="Modo de trabajo">
+      <div class="mode-tabs">
+        <button class="mode-tab active" data-mode="model" type="button"><span class="mode-ico">◇</span> Modelo</button>
+        <button class="mode-tab" data-mode="drawing" type="button"><span class="mode-ico">▤</span> Documentación</button>
+        <button class="mode-tab" data-mode="sheet" type="button"><span class="mode-ico">▱</span> Planos</button>
+      </div>
+      <span class="mode-sep"></span>
+      <div class="context-tools" id="modelTools">
+        <button class="tool-btn" id="btnFit" type="button" title="Encuadrar modelo">Encuadrar</button>
+        <button class="tool-btn" id="btnCreateLevel" type="button" title="Crear un nivel de documentación local">+ Nivel</button>
+        <button class="tool-btn" id="btnCreatePlan" type="button" title="Crear una proyección en planta">+ Planta</button>
+        <button class="tool-btn" id="btnCreateElevation" type="button" title="Crear alzado">+ Alzado</button>
+        <button class="tool-btn" id="btnCreateSection" type="button" title="Crear sección por banda de corte">+ Sección</button>
+        <button class="tool-btn" id="btnCreate3DView" type="button" title="Capturar la vista 3D actual para colocarla en planos">+ Vista 3D</button>
+      </div>
+      <div class="context-tools hidden" id="drawingTools">
+        <button class="tool-btn active" data-draw-tool="select" type="button">Seleccionar</button>
+        <button class="tool-btn" data-draw-tool="dimension" type="button">Cota</button>
+        <button class="tool-btn" data-draw-tool="text" type="button">Texto</button>
+        <span class="mini-sep"></span>
+        <button class="tool-btn mode-toggle active" id="toggleSnapBtn" type="button" aria-pressed="true" title="Activar/desactivar referencias a objetos (extremo, punto medio y arista)">SNAP</button>
+        <button class="tool-btn mode-toggle active" id="toggleOrthoBtn" type="button" aria-pressed="true" title="ORTO: fuerza cotas horizontales/verticales · F8">ORTO <small>F8</small></button>
+        <span class="mini-sep"></span>
+        <label class="check-tool"><input id="toggleHidden" type="checkbox" checked> Ocultas</label>
+        <button class="tool-btn" id="btnExportSvg" type="button">SVG</button>
+        <button class="tool-btn" id="btnExportDxf" type="button">DXF 2D</button>
+      </div>
+      <div class="context-tools hidden" id="sheetTools">
+        <button class="tool-btn" id="btnNewSheet" type="button">+ Plano</button>
+        <button class="tool-btn" id="btnAddView" type="button">+ Vista</button>
+        <span class="mini-sep"></span>
+        <button class="tool-btn primary" id="btnExportPdf" type="button">Exportar PDF</button>
+      </div>
+      <div class="mode-spacer"></div>
+      <span class="privacy-pill" title="Los archivos IFC se procesan en el navegador; esta herramienta no los sube a HEFESTOLAB."><i></i> Procesamiento local</span>
+    </nav>
+
+    <main class="app-body">
+      <button class="panel-restore panel-restore-left" id="btnExpandLeft" type="button" title="Mostrar Navegador" aria-label="Mostrar Navegador">›</button>
+      <button class="panel-restore panel-restore-right" id="btnExpandRight" type="button" title="Mostrar Propiedades" aria-label="Mostrar Propiedades">‹</button>
+      <aside class="left-panel panel">
+        <div class="panel-head">
+          <div><span class="eyebrow">NAVEGADOR</span><b>Proyecto</b></div>
+          <button class="panel-icon" id="btnCollapseLeft" type="button" title="Contraer">‹</button>
+        </div>
+        <div class="panel-scroll">
+          <section class="tree-section open">
+            <button class="tree-title" type="button"><span>▾</span> MODELO</button>
+            <div class="tree-body" id="modelTree">
+              <div class="tree-empty">Carga un IFC o la demo.</div>
+            </div>
+          </section>
+          <section class="tree-section open">
+            <button class="tree-title" type="button"><span>▾</span> NIVELES <i class="tree-add" id="btnLevelTree" title="Crear nivel">+</i></button>
+            <div class="tree-body" id="levelsTree"><div class="tree-empty">Sin niveles.</div></div>
+          </section>
+          <section class="tree-section open">
+            <button class="tree-title" type="button"><span>▾</span> VISTAS</button>
+            <div class="tree-body" id="viewsTree">
+              <div class="tree-folder"><span>▤</span><b>Plantas</b></div>
+              <div id="plansTree"></div>
+              <div class="tree-folder"><span>▤</span><b>Alzados y secciones</b></div>
+              <div id="elevationsTree"></div>
+              <div class="tree-folder"><span>◈</span><b>Vistas 3D</b></div>
+              <div id="views3dTree"></div>
+            </div>
+          </section>
+          <section class="tree-section open">
+            <button class="tree-title" type="button"><span>▾</span> PLANOS</button>
+            <div class="tree-body" id="sheetsTree"><div class="tree-empty">Sin planos.</div></div>
+          </section>
+        </div>
+        <div class="left-actions">
+          <button class="panel-action primary" id="btnOpenIfcSide" type="button">Abrir IFC</button>
+          <button class="panel-action" id="btnDemoSide" type="button">Cargar demo</button>
+        </div>
+      </aside>
+
+      <section class="workspace" id="workspace">
+        <div class="start-screen" id="startScreen">
+          <div class="start-card">
+            <div class="start-mark"><img src="../../assets/brand/hefesto-symbol.svg" alt=""></div>
+            <span class="start-kicker">HEFESTOLAB TOOLS · EXPERIMENTAL</span>
+            <h1>IFC Drawing</h1>
+            <p>Abre un IFC en tu navegador, genera documentación 2D vectorial, añade cotas y compón hojas listas para PDF.</p>
+            <div class="start-actions">
+              <label class="big-btn primary" for="ifcInput">Abrir archivo IFC</label>
+              <button class="big-btn" id="btnDemoStart" type="button">Probar sin IFC</button>
+            </div>
+            <div class="start-notes">
+              <span><b>Local</b> · el IFC permanece en tu dispositivo</span>
+              <span><b>Vectorial</b> · vistas, cotas y PDF</span>
+              <span><b>Sin cuenta</b> · no requiere registro</span>
+            </div>
+            <p class="start-foot">La demo permite comprobar la interfaz y el compositor. Para un IFC real, abre esta copia mediante <b>INICIAR_HEFESTOLAB_LOCAL.bat</b>, no con doble clic sobre index.html.</p>
+          </div>
+        </div>
+
+        <div class="model-stage hidden" id="modelStage">
+          <div id="viewer3d" class="viewer3d"></div>
+          <div class="viewer-overlay top-left" id="modelBadge">MODELO 3D</div>
+          <div class="viewer-overlay bottom-right" id="engineHint">Motor IFC pendiente</div>
+        </div>
+
+        <div class="drawing-stage hidden" id="drawingStage">
+          <div class="drawing-toolbar-float">
+            <span id="drawingTitle">Sin vista activa</span>
+            <span class="zoom-readout" id="drawingInfo">—</span>
+          </div>
+          <svg id="drawingSvg" class="drawing-svg" xmlns="http://www.w3.org/2000/svg" aria-label="Vista técnica 2D"></svg>
+          <div class="drawing-empty" id="drawingEmpty">
+            <b>No hay una vista activa</b>
+            <span>Selecciona una vista en el navegador o genera una desde el modelo.</span>
+          </div>
+        </div>
+
+        <div class="sheet-stage hidden" id="sheetStage">
+          <div class="sheet-canvas" id="sheetCanvas">
+            <div class="sheet-empty" id="sheetEmpty">
+              <b>Crea tu primer plano</b>
+              <span>Elige formato y arrastra una vista generada desde el navegador al papel.</span>
+              <button class="big-btn primary small" id="btnNewSheetEmpty" type="button">+ Crear plano</button>
+            </div>
+            <div id="paperHost" class="paper-host hidden"></div>
+          </div>
+        </div>
+
+        <div class="progress-panel hidden" id="progressPanel" role="status" aria-live="polite">
+          <div class="spinner"></div>
+          <div><b id="progressTitle">Procesando…</b><span id="progressText">Preparando motor IFC</span><small id="progressMeta" class="progress-meta">—</small></div>
+          <div class="progress-track"><i id="progressBar"></i></div>
+        </div>
+      </section>
+
+      <aside class="right-panel panel">
+        <div class="panel-head">
+          <div><span class="eyebrow">PROPIEDADES</span><b id="inspectorTitle">Herramienta</b></div>
+          <button class="panel-icon" id="btnCollapseRight" type="button" title="Contraer">›</button>
+        </div>
+        <div class="panel-scroll inspector" id="inspector">
+          <div class="inspector-empty">
+            <div class="empty-icon">i</div>
+            <b>IFC Drawing</b>
+            <p>Selecciona un modelo, una vista, una cota o un viewport para editar sus propiedades.</p>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="statusbar">
+      <span class="status-dot" id="statusDot"></span><span id="statusText">Preparado</span>
+      <span class="status-spacer"></span>
+      <span id="statusSelection">Sin selección</span>
+      <span class="status-sep"></span>
+      <span id="statusSnap" class="status-mode on">SNAP</span>
+      <span id="statusOrtho" class="status-mode on">ORTO</span>
+      <span class="status-sep"></span>
+      <span id="statusCoords">X 0.000 · Y 0.000</span>
+      <span class="status-sep"></span>
+      <span id="statusVersion">IFC Drawing v0.4 · RC publicación</span>
+    </footer>
+  </div>
+
+  <div class="toast-host" id="toastHost" aria-live="polite"></div>
+
+  <div class="modal-backdrop hidden" id="modalBackdrop" role="presentation">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head"><div><span class="eyebrow">HEFESTOLAB</span><b id="modalTitle">Opciones</b></div><button class="panel-icon" id="modalClose" type="button">×</button></div>
+      <div class="modal-body" id="modalBody"></div>
+      <div class="modal-actions" id="modalActions"></div>
+    </div>
+  </div>
+
+  <script src="assets/js/vendor/jspdf.umd.min.js?v=2.5.2"></script>
+  <script src="assets/js/app.js?v=0.3.0"></script>
+</body>
+</html>

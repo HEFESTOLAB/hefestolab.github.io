@@ -1,0 +1,14 @@
+HEFESTOLAB IFC Drawing · Third-party notices
+=============================================
+
+This preview uses or loads the following third-party open-source software:
+
+- @thatopen/components 3.4.8 — MIT License
+  Copyright That Open Company / contributors.
+- web-ifc 0.0.77 — Mozilla Public License 2.0
+  Copyright That Open Company / contributors.
+- jsPDF — MIT License
+  Copyright jsPDF contributors.
+
+The HEFESTOLAB interface, integration code and project-specific functionality are separate from these dependencies.
+Before a public production release, keep the corresponding license texts/notices with the distributed application and re-check the exact dependency tree used by the final build.
