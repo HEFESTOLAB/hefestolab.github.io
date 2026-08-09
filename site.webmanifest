@@ -1,21 +1,25 @@
 {
-  "name": "HEFESTOLAB",
+  "name": "HEFESTOLAB · HEFESTO Pre-BIM Modeler",
   "short_name": "HEFESTOLAB",
   "description": "HEFESTO Pre-BIM Modeler y tecnología BIM, interoperabilidad, automatización e IA.",
+  "lang": "es-ES",
+  "dir": "ltr",
   "start_url": "/",
+  "scope": "/",
+  "id": "/",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#07111f",
   "theme_color": "#07111f",
+  "categories": ["productivity", "utilities", "business"],
   "icons": [
-    {
-      "src": "assets/brand/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "assets/brand/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
+    {"src": "assets/brand/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "assets/brand/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "assets/brand/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ],
+  "shortcuts": [
+    {"name": "IFC Drawing", "short_name": "IFC Drawing", "description": "Abrir un IFC y generar documentación técnica", "url": "/tools/ifc-drawing/"},
+    {"name": "Herramientas", "short_name": "Tools", "url": "/tools/"},
+    {"name": "Blog técnico", "short_name": "Blog", "url": "/blog/"}
   ]
 }

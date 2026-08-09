@@ -5,7 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
 <title>HEFESTOLAB | HEFESTO Pre-BIM Modeler</title>
-<meta content="HEFESTOLAB desarrolla HEFESTO Pre-BIM Modeler, un entorno en desarrollo para modelado 2D/3D, mediciones, presupuesto, Component Studio e interoperabilidad BIM mediante JSON, IFC, Revit y Dynamo." name="description"/>
+<meta content="HEFESTO Pre-BIM Modeler: arquitectura, estructura y MEP en una sola app. Modelado 3D, planos y detalles, nubes de puntos y presupuestos BC3 automáticos. Operativo en proyectos reales. Beta en septiembre de 2026." name="description"/>
 <meta content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" name="robots"/>
 <meta content="#07111f" name="theme-color"/>
 <link href="https://hefestolab.github.io/" rel="canonical"/>
@@ -16,18 +16,22 @@
 <link href="assets/brand/apple-touch-icon.png" rel="apple-touch-icon"/>
 <link href="site.webmanifest" rel="manifest"/>
 <link href="llms.txt" rel="alternate" title="HEFESTOLAB para modelos de lenguaje" type="text/plain"/>
+<link href="blog/feed.xml" rel="alternate" title="Blog tecnico HEFESTOLAB" type="application/rss+xml"/>
+<link as="font" crossorigin="" href="assets/fonts/inter-latin-800.woff2" rel="preload" type="font/woff2"/>
+<link as="font" crossorigin="" href="assets/fonts/inter-latin-400.woff2" rel="preload" type="font/woff2"/>
+<meta content="Luis Carlos de la Pena Arribas" name="author"/>
 <meta content="website" property="og:type"/>
 <meta content="es_ES" property="og:locale"/>
 <meta content="HEFESTOLAB" property="og:site_name"/>
 <meta content="HEFESTOLAB | BIM desde el primer trazo" property="og:title"/>
-<meta content="HEFESTO Pre-BIM Modeler: modelado, mediciones, presupuesto, Component Studio e interoperabilidad abierta para AEC e industria." property="og:description"/>
+<meta content="HEFESTO Pre-BIM Modeler: arquitectura, estructura y MEP en una sola app. Modelado 3D, planos y detalles, nubes de puntos y presupuestos BC3 automáticos. Operativo en proyectos reales. Beta en septiembre de 2026." property="og:description"/>
 <meta content="https://hefestolab.github.io/" property="og:url"/>
 <meta content="https://hefestolab.github.io/assets/images/og-hefestolab.jpg" property="og:image"/>
 <meta content="1200" property="og:image:width"/>
 <meta content="630" property="og:image:height"/>
 <meta content="summary_large_image" name="twitter:card"/>
 <meta content="HEFESTOLAB | BIM desde el primer trazo" name="twitter:title"/>
-<meta content="HEFESTO Pre-BIM Modeler: tecnología Pre-BIM, interoperabilidad, automatización e IA para AEC e industria." name="twitter:description"/>
+<meta content="HEFESTO Pre-BIM Modeler: arquitectura, estructura y MEP en una sola app. Modelado 3D, planos y detalles, nubes de puntos y presupuestos BC3 automáticos. Operativo en proyectos reales. Beta en septiembre de 2026." name="twitter:description"/>
 <meta content="https://hefestolab.github.io/assets/images/og-hefestolab.jpg" name="twitter:image"/>
 <script type="application/ld+json">
   {
@@ -40,7 +44,21 @@
         "url": "https://hefestolab.github.io/",
         "logo": "https://hefestolab.github.io/assets/brand/hefesto-symbol.svg",
         "description": "HEFESTOLAB desarrolla tecnología Pre-BIM, interoperabilidad, automatización e inteligencia artificial aplicada al sector AEC y a entornos industriales.",
-        "email": "info@solucionesbim.com"
+        "email": "info@solucionesbim.com",
+        "founder": {"@id": "https://hefestolab.github.io/#luis"},
+        "areaServed": "ES",
+        "sameAs": ["https://www.linkedin.com/in/luiscarlosrevitbimmanager/", "https://github.com/HEFESTOLAB", "https://solucionesbim.com/"]
+      },
+      {
+        "@type": "Person",
+        "@id": "https://hefestolab.github.io/#luis",
+        "name": "Luis Carlos de la Peña Arribas",
+        "jobTitle": "Arquitecto Técnico · BIM Director · Autodesk Certified Instructor",
+        "image": "https://hefestolab.github.io/assets/images/luis-de-la-pena-avatar.jpg",
+        "worksFor": {"@id": "https://hefestolab.github.io/#organization"},
+        "knowsAbout": ["BIM", "IFC", "openBIM", "ISO 19650", "Revit", "Dynamo", "FIEBDC-3", "Inteligencia artificial aplicada al AEC"],
+        "address": {"@type": "PostalAddress", "addressLocality": "Burgos", "addressCountry": "ES"},
+        "sameAs": ["https://www.linkedin.com/in/luiscarlosrevitbimmanager/"]
       },
       {
         "@type": "WebSite",
@@ -58,6 +76,24 @@
         "operatingSystem": "Windows",
         "url": "https://hefestolab.github.io/#producto",
         "description": "Aplicación Pre-BIM en desarrollo para modelado 2D/3D, mediciones, presupuesto, componentes e interoperabilidad BIM.",
+        "softwareVersion": "0.6.0",
+        "featureList": ["Modelado 3D de arquitectura, estructura y MEP","Compositor de planos con hojas A4-A0 y viewports a escala","Cotas automáticas y etiquetas de perfil","Componentes paramétricos con clase IFC","Importación y contraste de nubes de puntos","Mediciones y presupuesto automático enlazado a bases de precios BC3","Exportación a PDF, DXF, IFC4, BC3, Excel, Word y JSON"],
+        "releaseNotes": "Beta pública prevista para septiembre de 2026.",
+        "screenshot": ["https://hefestolab.github.io/assets/images/app/modelo-3d.jpg", "https://hefestolab.github.io/assets/images/app/component-studio.jpg", "https://hefestolab.github.io/assets/images/app/tablas-bim.jpg"],
+        "offers": {"@type": "Offer", "price": "499", "priceCurrency": "EUR", "availability": "https://schema.org/PreOrder", "availabilityStarts": "2026-09-01", "description": "Early Access anual durante la fase beta. IVA no incluido."},
+        "author": {"@id": "https://hefestolab.github.io/#luis"},
+        "publisher": {"@id": "https://hefestolab.github.io/#organization"}
+      },
+      {
+        "@type": "WebApplication",
+        "@id": "https://hefestolab.github.io/tools/ifc-drawing/#app",
+        "name": "IFC Drawing",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "Navegador web",
+        "browserRequirements": "Requiere un navegador moderno con WebGL",
+        "url": "https://hefestolab.github.io/tools/ifc-drawing/",
+        "description": "Herramienta gratuita para abrir un IFC en local, generar plantas, secciones, alzados y vistas 3D, acotar, componer hojas y exportar PDF o DXF 2D.",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
         "publisher": {"@id": "https://hefestolab.github.io/#organization"}
       }
     ]
@@ -81,40 +117,110 @@
     footer{border-top:1px solid var(--line);background:var(--soft);padding:38px 0;margin-top:40px}.foot{display:flex;justify-content:space-between;gap:30px;align-items:center}.footBrand{display:flex;align-items:center;gap:10px;font-weight:800}.footBrand img{width:28px;height:34px}.foot p{color:var(--muted);font-size:.82rem;margin:7px 0 0}.footlinks{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);font-size:.83rem}
     @media(max-width:980px){.links{display:none}.menu{display:inline-grid;place-items:center}.actions>.primary{display:none}.heroGrid{grid-template-columns:1fr}.heroCopy{text-align:center}.lead{margin-inline:auto}.heroBtns,.chips{justify-content:center}.visual{width:min(720px,100%);margin:auto}.grid{grid-template-columns:repeat(2,1fr)}.topics{grid-template-columns:1fr 1fr}.topicFeatured{grid-column:span 2}}
     @media(max-width:720px){.wrap{width:min(var(--max),calc(100% - 26px))}.nav{height:60px;gap:10px}.brand small{display:none}.hero{padding:48px 0 52px}h1{font-size:clamp(2.7rem,15vw,4.25rem)}.heroBtns{display:grid}.heroBtns .btn{width:100%}.visual{min-height:380px}.window{border-radius:18px}.workspace{grid-template-columns:48px 1fr 74px;min-height:295px}.tools{padding:8px 6px}.tool{height:35px}.props{padding:9px 6px}.f1{left:4px;bottom:-23px}.f2{right:4px;top:-19px}.section{padding:62px 0}.head{display:block}.head p{margin-top:14px}.grid,.coming,.topics{grid-template-columns:1fr}.topicFeatured{grid-column:auto}.flow{grid-template-columns:1fr 1fr}.step:nth-child(3){border-left:0;border-top:1px solid var(--line)}.step:nth-child(4){border-top:1px solid var(--line)}.contact{grid-template-columns:1fr;padding:26px 19px}.contactBtns{min-width:0}.foot{display:block}.footlinks{margin-top:20px}}
+
+    .proofGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+    .proofCard{padding:26px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);box-shadow:0 10px 34px rgba(10,45,85,.06)}
+    .proofTag{display:block;font-size:.7rem;font-weight:850;letter-spacing:.1em;text-transform:uppercase;color:var(--blue)}
+    .proofCard h3{font-size:1.09rem;margin-top:11px;letter-spacing:-.025em}
+    .proofCard>p{color:var(--muted);font-size:.88rem;margin:9px 0 0}
+    .metrics{display:grid;gap:10px;margin-top:19px;padding-top:16px;border-top:1px solid var(--line)}
+    .metric{display:flex;align-items:baseline;gap:9px}
+    .metric b{font-size:1.3rem;letter-spacing:-.04em;line-height:1}
+    .metric span{color:var(--muted);font-size:.78rem;font-weight:650}
+    .proofNote{margin-top:20px;color:var(--muted);font-size:.79rem;max-width:760px}
+    .about{display:grid;grid-template-columns:280px 1fr;gap:44px;align-items:start}
+    .aboutPhoto{border-radius:22px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:var(--soft)}
+    .aboutPhoto img{display:block;width:100%;height:auto}
+    .aboutBody h3{font-size:clamp(1.5rem,3vw,2.1rem)}
+    .aboutRole{display:block;color:var(--blue);font-weight:800;font-size:.82rem;letter-spacing:.04em;margin-top:9px}
+    .aboutBody p{color:var(--muted);margin:17px 0 0;max-width:660px}
+    .creds{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+    .cred{padding:7px 10px;border:1px solid var(--line);background:var(--surface);border-radius:10px;font-size:.75rem;font-weight:700;color:var(--muted)}
+    .aboutLinks{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+    @media(max-width:980px){.proofGrid{grid-template-columns:repeat(2,1fr)}.about{grid-template-columns:1fr;gap:28px}.aboutPhoto{width:min(260px,60%)}}
+    @media(max-width:720px){.proofGrid{grid-template-columns:1fr}.aboutPhoto{width:100%}.aboutLinks .btn{width:100%}}
+
+    .window .shotWrap{position:relative;display:block;line-height:0;background:var(--soft)}
+    .window .shotWrap img{display:block;width:100%;height:auto}
+    .shots{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+    .shot{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--surface);box-shadow:0 14px 40px rgba(10,45,85,.07)}
+    .shot figure{margin:0;line-height:0;border-bottom:1px solid var(--line);background:var(--soft)}
+    .shot img{display:block;width:100%;height:auto}
+    .shotBody{padding:22px 24px 24px}
+    .shotTag{display:block;font-size:.68rem;font-weight:850;letter-spacing:.11em;text-transform:uppercase;color:var(--blue)}
+    .shotBody h3{font-size:1.12rem;margin-top:10px;letter-spacing:-.025em}
+    .shotBody p{color:var(--muted);font-size:.88rem;margin:9px 0 0}
+    .shotMeta{display:flex;gap:7px;flex-wrap:wrap;margin-top:15px}
+    .shotMeta span{padding:5px 9px;border:1px solid var(--line);border-radius:9px;font-size:.71rem;font-weight:750;color:var(--muted);background:var(--soft)}
+    .betaGrid{display:grid;grid-template-columns:1.25fr 1fr;gap:22px;align-items:start}
+    .betaCard{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);padding:30px 32px;box-shadow:0 14px 40px rgba(10,45,85,.07)}
+    .betaCard.accent{border-color:color-mix(in srgb,var(--blue) 42%,var(--line));background:color-mix(in srgb,var(--blue) 6%,var(--surface))}
+    .betaWhen{display:inline-flex;align-items:center;gap:9px;padding:8px 13px;border:1px solid color-mix(in srgb,var(--blue) 38%,var(--line));border-radius:999px;background:var(--surface);font-size:.76rem;font-weight:800;letter-spacing:.05em;color:var(--blue);text-transform:uppercase}
+    .betaCard h3{font-size:1.42rem;letter-spacing:-.03em;margin:18px 0 0}
+    .betaCard>p{color:var(--muted);margin:12px 0 0;font-size:.93rem}
+    .price{display:flex;align-items:baseline;gap:10px;margin-top:22px;padding-top:20px;border-top:1px solid var(--line)}
+    .price b{font-size:2.5rem;letter-spacing:-.05em;line-height:1}
+    .price span{color:var(--muted);font-size:.85rem;font-weight:650}
+    .priceNote{color:var(--muted);font-size:.78rem;margin:9px 0 0}
+    .seats{display:flex;align-items:center;gap:11px;margin-top:18px;padding:12px 14px;border:1px dashed color-mix(in srgb,var(--blue) 40%,var(--line));border-radius:13px}
+    .seats b{font-size:1.25rem;letter-spacing:-.03em;line-height:1}
+    .seats span{color:var(--muted);font-size:.79rem;font-weight:650}
+    .betaList{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:11px}
+    .betaList li{position:relative;padding-left:24px;color:var(--muted);font-size:.88rem}
+    .betaList li::before{content:"";position:absolute;left:0;top:7px;width:9px;height:9px;border-radius:50%;background:var(--blue);opacity:.55}
+    .betaList li b{color:var(--text)}
+    .betaCta{margin-top:26px;display:flex;gap:11px;flex-wrap:wrap}
+    .roadmap{display:grid;gap:0;margin-top:6px}
+    .rmItem{display:grid;grid-template-columns:104px 1fr;gap:18px;padding:16px 0;border-top:1px solid var(--line)}
+    .rmItem:first-child{border-top:0}
+    .rmWhen{font-size:.76rem;font-weight:850;letter-spacing:.06em;text-transform:uppercase;color:var(--blue);padding-top:2px}
+    .rmItem b{display:block;font-size:.96rem;letter-spacing:-.02em}
+    .rmItem p{color:var(--muted);font-size:.85rem;margin:5px 0 0}
+    @media(max-width:980px){.shots{grid-template-columns:1fr}.betaGrid{grid-template-columns:1fr}}
+    @media(max-width:620px){.betaCard{padding:24px 22px}.price b{font-size:2.1rem}.rmItem{grid-template-columns:1fr;gap:5px}.betaCta .btn{width:100%}}
+
+    .discRow{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:8px}
+    .disc{padding:24px 26px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+    .disc b{display:block;font-size:1.02rem;letter-spacing:-.02em}
+    .disc span{display:block;color:var(--blue);font-size:.68rem;font-weight:850;letter-spacing:.11em;text-transform:uppercase;margin-bottom:9px}
+    .disc p{color:var(--muted);font-size:.85rem;margin:8px 0 0}
+    .fmtBar{margin-top:22px;padding:22px 26px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+    .fmtBar>b{display:block;font-size:.68rem;font-weight:850;letter-spacing:.11em;text-transform:uppercase;color:var(--blue)}
+    .fmtList{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+    .fmt{padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--soft);font-size:.79rem;font-weight:750}
+    .fmt i{font-style:normal;color:var(--muted);font-weight:650}
+    @media(max-width:980px){.discRow{grid-template-columns:1fr}}
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
   </style>
+<script>(function(){try{var s=localStorage.getItem("hefestolab-theme");document.documentElement.dataset.theme=s||((window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark")}catch(e){}})();</script>
 </head>
 <body>
 <a class="skip" href="#contenido">Saltar al contenido</a>
 <header>
 <div class="wrap nav">
 <a aria-label="HEFESTOLAB, inicio" class="brand" href="#inicio"><img alt="" src="assets/brand/hefesto-symbol.svg"/><span>HEFESTOLAB<small>PRE-BIM · AEC · IA</small></span></a>
-<nav aria-label="Navegación principal" class="links"><a href="#producto">HEFESTO</a><a href="#flujo">Flujo</a><a href="#componentes">Component Studio</a><a href="#herramientas">Herramientas</a><a href="#academia">Academia</a><a href="blog/index.html">Blog</a><a href="#contacto">Contacto</a></nav>
-<div class="actions"><button aria-label="Cambiar tema" class="iconbtn" id="theme" title="Cambiar tema">◐</button><div aria-label="Idioma" class="langswitch"><span class="active">ES</span><a href="en/index.html" hreflang="en" lang="en">EN</a></div><a class="btn primary" href="mailto:info@solucionesbim.com?subject=Información%20sobre%20HEFESTO">Contactar</a><button aria-label="Abrir menú" class="iconbtn menu" id="menu">☰</button></div>
+<nav aria-label="Navegación principal" class="links"><a href="#capturas">La app</a><a href="#beta">Beta</a><a href="#herramientas">Herramientas</a><a href="#casos">Casos</a><a href="blog/index.html">Blog</a><a href="#sobre">Sobre mí</a></nav>
+<div class="actions"><button aria-label="Cambiar tema" aria-pressed="true" class="iconbtn" id="theme" title="Cambiar tema">◐</button><div aria-label="Idioma" class="langswitch"><span aria-current="true" class="active">ES</span><a href="en/index.html" hreflang="en" lang="en">EN</a></div><a class="btn primary" href="mailto:info@solucionesbim.com?subject=Información%20sobre%20HEFESTO">Contactar</a><button aria-controls="mobile" aria-expanded="false" aria-label="Abrir menú" class="iconbtn menu" id="menu">☰</button></div>
 </div>
-<nav aria-label="Menú móvil" class="mobile" id="mobile"><a href="#producto">HEFESTO</a><a href="#flujo">Flujo</a><a href="#componentes">Component Studio</a><a href="#herramientas">Herramientas</a><a href="#academia">Academia</a><a href="blog/index.html">Blog</a><a href="#contacto">Contacto</a><a href="en/index.html" hreflang="en" lang="en">English version →</a></nav>
+<nav aria-label="Menú móvil" class="mobile" id="mobile"><a href="#producto">HEFESTO</a><a href="#flujo">Flujo</a><a href="#componentes">Component Studio</a><a href="#herramientas">Herramientas</a><a href="#capturas">La app</a><a href="#beta">Beta</a><a href="#casos">Casos</a><a href="#academia">Academia</a><a href="blog/index.html">Blog</a><a href="#sobre">Sobre mí</a><a href="#contacto">Contacto</a><a href="en/index.html" hreflang="en" lang="en">English version →</a></nav>
 </header>
 <main id="contenido">
 <section class="hero" id="inicio">
 <div class="wrap heroGrid">
 <div class="heroCopy">
-<span class="badge"><span class="dot"></span> HEFESTO Pre-BIM Modeler · En desarrollo</span>
+<span class="badge"><span class="dot"></span> HEFESTO Pre-BIM Modeler · Beta pública en septiembre de 2026</span>
 <h1>BIM desde el <span>primer trazo.</span></h1>
-<p class="lead">HEFESTO es un entorno Pre-BIM en desarrollo para modelar, medir y organizar información de proyecto desde las primeras fases. Su núcleo de datos facilita interoperabilidad, automatización y nuevos flujos con herramientas BIM y modelos de lenguaje.</p>
-<div class="heroBtns"><a class="btn primary" href="mailto:info@solucionesbim.com?subject=Información%20sobre%20HEFESTO">Quiero saber más</a><a class="btn secondary" href="#producto">Ver qué estamos construyendo</a></div>
-<div class="chips"><span class="chip">Modelado 2D / 3D</span><span class="chip">Mediciones y presupuesto</span><span class="chip">JSON · IFC · Revit · Dynamo</span><span class="chip">Component Studio</span></div>
+<p class="lead">HEFESTO cubre <b>arquitectura, estructura y MEP</b> en una sola aplicación de escritorio: modelado 3D, planos y detalles, nubes de puntos, mediciones y presupuestos automáticos enlazados a bases de precios. <b>La herramienta ya está operativa y se usa en proyectos reales; la beta pública abre en septiembre de 2026.</b></p>
+<div class="heroBtns"><a class="btn primary" href="tools/ifc-drawing/index.html">Probar IFC Drawing · gratis →</a><a class="btn secondary" href="#beta">Apuntarme a la beta de septiembre</a></div>
+<div class="chips"><span class="chip">Arquitectura · Estructura · MEP</span><span class="chip">Planos, detalles y cotas</span><span class="chip">Ingeniería industrial y de detalle</span><span class="chip">Presupuestos BC3 automáticos</span><span class="chip">PDF · DXF · IFC · BC3 · Excel · Word</span><span class="chip">Nubes de puntos</span></div>
 </div>
-<div aria-label="Representación conceptual de la interfaz de HEFESTO" class="visual">
+<div aria-label="Interfaz de HEFESTO Pre-BIM Modeler" class="visual">
 <div class="glow"></div>
 <div class="window">
 <div class="bar"><i></i><i></i><i></i><span>HEFESTO · Proyecto de demostración</span></div>
-<div class="workspace">
-<div aria-hidden="true" class="tools"><div class="tool on">▱</div><div class="tool">⌗</div><div class="tool">◫</div><div class="tool">○</div><div class="tool">↗</div></div>
-<div aria-hidden="true" class="canvas"><div class="model"><svg viewbox="0 0 500 330"><g fill="none" stroke="#2197f3" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="M70 250 250 155l177 76-180 95Z"></path><path d="M70 250V105L250 25l177 70v136"></path><path d="M250 155V25"></path><path d="M70 105l180 94 177-104"></path><path d="M135 283V139M355 270V136"></path><path d="M70 175h357" opacity=".55"></path></g></svg></div></div>
-<div aria-hidden="true" class="props"><b>Propiedades</b><div class="line"></div><div class="line"></div><div class="line"></div><b style="display:block;margin-top:14px">Medición</b><div class="line"></div><div class="line"></div></div>
+<div class="shotWrap"><img alt="HEFESTO Pre-BIM Modeler: modelo 3D de un rack industrial de tuberías y estructura metálica" fetchpriority="high" height="756" src="assets/images/app/hero-modelo.webp" width="1500"/></div>
 </div>
-</div>
-<div class="float f1"><b>JSON HEFESTO</b><small>Datos estructurados</small></div><div class="float f2"><b>Modelo + cantidades</b><small>Información vinculada</small></div>
+<div class="float f1"><b>Captura real</b><small>Rack industrial · 302 barras</small></div><div class="float f2"><b>Modelo + cantidades</b><small>Medición vinculada al elemento</small></div>
 </div>
 </div>
 </section>
@@ -127,14 +233,94 @@
 <article class="card"><div class="cardIcon">⌁</div><h3>Industrial y AEC</h3><p>El mismo enfoque de datos para edificios, estructuras, instalaciones, equipos y componentes industriales.</p><span class="status">Casos de uso diversos</span></article>
 </div></div></section>
 <section class="section" id="flujo"><div class="wrap"><div class="head"><div><div class="kicker">Flujo de trabajo</div><h2>De la información inicial a un modelo utilizable.</h2></div><p>HEFESTO busca que el dato nazca pronto y pueda seguir evolucionando sin depender de una única herramienta.</p></div><div class="flow"><div class="step"><span class="n">01 · ENTRADA</span><b>Planos y datos</b><span>Información gráfica, requisitos, fichas y datos de proyecto.</span></div><div class="step"><span class="n">02 · MODELO</span><b>Geometría y objetos</b><span>Elementos 2D/3D con propiedades y relaciones útiles.</span></div><div class="step"><span class="n">03 · INFORMACIÓN</span><b>Cantidades y coste</b><span>Mediciones y presupuesto vinculados al modelo.</span></div><div class="step"><span class="n">04 · CONTINUIDAD</span><b>Interoperabilidad</b><span>Datos preparados para otros formatos, herramientas y automatizaciones.</span></div></div></div></section>
+<section class="section soft" id="beta"><div class="wrap"><div class="head"><div><div class="kicker">Lanzamiento</div><h2>Beta pública en septiembre de 2026.</h2></div><p>No es una beta a medio hacer: la herramienta ya está operativa y produce proyectos reales de arquitectura, estructura, MEP e ingeniería de detalle. Lo que abre en septiembre es el acceso, con plazas limitadas y precio de lanzamiento.</p></div><div class="betaGrid">
+<div class="betaCard accent">
+<span class="betaWhen"><span class="dot" style="width:7px;height:7px;border-radius:50%;background:currentColor;display:inline-block"></span> Septiembre de 2026</span>
+<h3>Early Access · programa de beta testers</h3>
+<p>Acceso a la aplicación de escritorio para Windows durante la fase beta. <b>Beta significa que seguimos evolucionando, no que falte funcionalidad</b>: el modelado, los planos, las mediciones, el presupuesto y las exportaciones ya funcionan y se están usando en obra. Incluye canal directo de soporte y participación real en la hoja de ruta.</p>
+<div class="price"><b>499 €</b><span>/ año · IVA no incluido</span></div>
+<p class="priceNote">Precio de lanzamiento congelado para la primera renovación. No es una versión gratuita: la beta es de pago porque incluye soporte directo y compromiso de desarrollo.</p>
+<div class="seats"><b>25</b><span>plazas en la primera tanda de Early Access</span></div>
+<ul class="betaList">
+<li><b>Licencia completa</b> durante toda la fase beta, sin límite de proyectos</li>
+<li><b>Todas las disciplinas</b>: arquitectura, estructura y MEP, sin módulos que se compren aparte</li>
+<li><b>Actualizaciones incluidas</b> hasta la versión estable</li>
+<li><b>Soporte directo</b> por correo, sin sistema de tickets</li>
+<li><b>Influencia en la hoja de ruta</b>: tus casos de uso entran en el orden de trabajo</li>
+<li><b>Sesión de puesta en marcha</b> en remoto para arrancar con un proyecto real tuyo</li>
+</ul>
+<div class="betaCta"><a class="btn primary" href="mailto:info@solucionesbim.com?subject=Reserva%20de%20plaza%20Early%20Access%20HEFESTO%20(septiembre%202026)&amp;body=Hola%20Luis%2C%0A%0AQuiero%20reservar%20una%20plaza%20del%20programa%20Early%20Access%20de%20HEFESTO%20Pre-BIM%20Modeler.%0A%0ANombre%3A%20%0AEmpresa%3A%20%0ATel%C3%A9fono%3A%20%0ATipo%20de%20proyectos%20en%20los%20que%20lo%20usar%C3%ADa%3A%20%0A%0AGracias.">Reservar plaza · 499 €/año →</a><a class="btn secondary" href="mailto:info@solucionesbim.com?subject=Informaci%C3%B3n%20sobre%20la%20beta%20de%20HEFESTO&amp;body=Hola%20Luis%2C%0A%0AMe%20interesa%20la%20beta%20de%20HEFESTO%20Pre-BIM%20Modeler%20y%20me%20gustar%C3%ADa%20recibir%20informaci%C3%B3n%20antes%20de%20decidir.%0A%0ANombre%3A%20%0AEmpresa%3A%20%0A%0AGracias.">Quiero más información</a></div>
+<p class="priceNote">La reserva no supone ningún pago ahora. Se confirma por correo con las condiciones antes del lanzamiento.</p>
+</div>
+<div class="betaCard">
+<h3 style="margin-top:0">Cómo va a funcionar</h3>
+<div class="roadmap">
+<div class="rmItem"><div class="rmWhen">Ahora</div><div><b>Reserva de plaza</b><p>Escribes, te confirmo disponibilidad en la primera tanda y te envío las condiciones. Sin compromiso ni pago por adelantado.</p></div></div>
+<div class="rmItem"><div class="rmWhen">Septiembre</div><div><b>Entrega e instalación</b><p>Aplicación de escritorio para Windows, con la sesión de puesta en marcha sobre un proyecto real tuyo.</p></div></div>
+<div class="rmItem"><div class="rmWhen">Durante la beta</div><div><b>Iteración con los usuarios</b><p>Actualizaciones frecuentes. Los fallos y las peticiones de los beta testers marcan el orden de desarrollo.</p></div></div>
+<div class="rmItem"><div class="rmWhen">Después</div><div><b>Versión estable</b><p>Los Early Access mantienen su precio en la primera renovación y conservan el acceso a todo lo desarrollado.</p></div></div>
+</div>
+<div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--line)"><b style="display:block;font-size:.95rem">¿Y mientras tanto?</b><p style="color:var(--muted);font-size:.87rem;margin:8px 0 0">Las herramientas de <a href="tools/index.html">HEFESTOLAB Tools</a> son gratuitas y no requieren registro. <b>IFC Drawing</b> ya está disponible: abre un IFC en el navegador, genera plantas, secciones y alzados, acota, compón hojas y exporta a PDF o DXF.</p><div style="margin-top:16px"><a class="btn secondary" href="tools/ifc-drawing/index.html">Abrir IFC Drawing · gratis →</a></div></div>
+</div></div></div></section>
+<section class="section" id="capturas"><div class="wrap"><div class="head"><div><div class="kicker">La aplicación</div><h2>Todas las disciplinas, en una sola herramienta.</h2></div><p>Capturas reales de la versión de trabajo. No son maquetas ni renders de marketing: son proyectos en curso, con plazo y con cliente, dentro de la aplicación de escritorio.</p></div><div class="discRow">
+<div class="disc"><span>Arquitectura</span><b>Del croquis al plano</b><p>Muros, huecos, carpinterías, forjados y cubiertas con un gestor de cotas de proyecto: pavimento terminado, dintel, falso techo, alero y cumbrera.</p></div>
+<div class="disc"><span>Estructura</span><b>Perfiles reales, no cajas</b><p>Pilares, vigas y zapatas con biblioteca de perfiles metálicos SHS, RHS, IPE, UPN y L, con peso por metro, cálculo de acero y exportación al software de cálculo.</p></div>
+<div class="disc"><span>MEP e industrial</span><b>Tuberías, conductos y bandejas</b><p>Redes industriales sobre rack, empalmes, pendientes y accesorios paramétricos, contrastadas contra nube de puntos cuando existe escaneo previo.</p></div>
+</div>
+<div class="fmtBar"><b>Todo sale en formato abierto</b><div class="fmtList">
+<span class="fmt">PDF <i>· planos y hojas</i></span>
+<span class="fmt">DXF <i>· 2D y 3D</i></span>
+<span class="fmt">IFC4 <i>· físico y analítico</i></span>
+<span class="fmt">BC3 <i>· FIEBDC-3</i></span>
+<span class="fmt">Excel <i>· mediciones</i></span>
+<span class="fmt">Word <i>· presupuesto</i></span>
+<span class="fmt">JSON <i>· núcleo abierto</i></span>
+</div></div>
+<div class="shots">
+<article class="shot"><figure><img alt="Módulo de planos de HEFESTO: hoja A3 con dos secciones a escala 1:20 de un rack de tuberías, vista 3D, cajetín y exportación a PDF y DXF" height="787" loading="lazy" src="assets/images/app/planos-hoja.webp" width="1600"/></figure><div class="shotBody"><span class="shotTag">Planos</span><h3>Del modelo a la hoja lista para firmar</h3><p>Compositor de planos con hojas numeradas, formatos A4 a A0, orientación, cajetín con proyecto y autor, y viewports que se arrastran desde el navegador de vistas. Cada viewport mantiene su escala y se actualiza cuando cambia el modelo.</p><div class="shotMeta"><span>Hojas A4–A0</span><span>Viewports a escala</span><span>Secciones 1:20</span><span>Cajetín</span><span>PDF por hoja o todo</span><span>DXF</span></div></div></article>
+<article class="shot"><figure><img alt="Hoja de detalles constructivos en HEFESTO con secciones acotadas y etiquetas de perfil metálico: Viga SHS 80, Pilar SHS 40, Viga IPE 140, Viga L 60x60" height="794" loading="lazy" src="assets/images/app/planos-detalles.webp" width="1600"/></figure><div class="shotBody"><span class="shotTag">Ingeniería de detalle</span><h3>Detalles acotados y etiquetados</h3><p>Secciones de detalle con cotas reales tomadas del modelo y etiquetas que leen el perfil de cada elemento: SHS, IPE, UPN, L. Herramientas de anotación sobre la hoja —líneas, flechas, textos, marcos— para cerrar el plano sin salir a otro programa.</p><div class="shotMeta"><span>Cotas automáticas</span><span>Etiquetas de perfil</span><span>Anotación sobre hoja</span><span>Tipos de estructura</span><span>Detalles de soportes</span></div></div></article>
+<article class="shot"><figure><img alt="Modelo de edificación en HEFESTO: forjados, muros y estructura metálica de cubierta con cerchas y arriostramientos, resaltada en azul" height="792" loading="lazy" src="assets/images/app/estructura-edificacion.webp" width="1600"/></figure><div class="shotBody"><span class="shotTag">Edificación</span><h3>No solo industrial: también edificación</h3><p>Pilares, vigas, zapatas, forjados, muros y cubiertas conviven en el mismo modelo. Aquí, la estructura metálica de cubierta con cerchas y arriostramientos sobre una estructura de hormigón de varias plantas, con la vista de trabajo filtrada por nivel.</p><div class="shotMeta"><span>Pilares y vigas</span><span>Zapatas</span><span>Forjados y cubiertas</span><span>Muros</span><span>Cerchas y arriostramientos</span></div></div></article>
+<article class="shot"><figure><img alt="Modelo arquitectónico en HEFESTO con cubierta a dos aguas, carpinterías y el gestor de cotas con niveles de pavimento, dintel, falso techo, alero y cumbrera" height="787" loading="lazy" src="assets/images/app/edificacion-cotas.webp" width="1600"/></figure><div class="shotBody"><span class="shotTag">Arquitectura</span><h3>Cotas de proyecto, no plantas genéricas</h3><p>Gestor de cotas con los niveles que de verdad se manejan en obra: terreno exterior, pavimento terminado, dintel de huecos, cara superior de falso techo, coronación de muros y cumbrera geométrica. Cada elemento se ancla a una restricción base y otra superior.</p><div class="shotMeta"><span>Gestor de cotas</span><span>Restricción base y superior</span><span>Carpinterías</span><span>Cubierta inclinada</span><span>Vistas por nivel</span></div></div></article>
+<article class="shot"><figure><img alt="Component Studio: brida paramétrica modelada con operaciones booleanas, árbol de construcción, material Acero S275 y clase IfcPipeFitting" height="791" loading="lazy" src="assets/images/app/component-studio.webp" width="1600"/></figure><div class="shotBody"><span class="shotTag">Component Studio</span><h3>Componentes paramétricos con clase IFC</h3><p>Modelador de sólidos con árbol de construcción, operaciones booleanas, matrices y simetría. Cada componente lleva su categoría, su clase IFC, su material y sus parámetros, y puede convertirse en una familia de tipos.</p><div class="shotMeta"><span>Árbol de construcción</span><span>Booleanas</span><span>Parámetros y tipos</span><span>Volumen y masa</span><span>IfcPipeFitting</span></div></div></article>
+<article class="shot"><figure><img alt="HEFESTO Scan2JSON: nube de puntos de un rack industrial cargada por rebanadas, con controles de vóxel y reducción" height="788" loading="lazy" src="assets/images/app/scan2json-nube.webp" width="1600"/></figure><div class="shotBody"><span class="shotTag">Scan2JSON</span><h3>La nube de puntos, dentro del modelador</h3><p>Importación por rebanadas con reducción por vóxel, acumulación de nubes, filtrado de puntos satélite y detección asistida de elementos. El escaneo deja de ser una referencia externa y pasa a ser parte del entorno de trabajo.</p><div class="shotMeta"><span>Reducción por vóxel</span><span>Nubes acumuladas</span><span>Filtrado de ruido</span><span>Detección de elementos</span></div></div></article>
+<article class="shot"><figure><img alt="Modelo de tuberías y estructura metálica superpuesto sobre la nube de puntos original del rack industrial" height="783" loading="lazy" src="assets/images/app/scan2json-modelo.webp" width="1600"/></figure><div class="shotBody"><span class="shotTag">Modelo sobre escaneo</span><h3>Contraste directo contra la realidad</h3><p>El modelo generado convive con la nube en la misma vista, así que la desviación se ve en el momento en el que se produce. Es el flujo con el que se auditaron 134 tuberías de una instalación industrial y se corrigieron 44 errores de cota.</p><div class="shotMeta"><span>Modelo + nube</span><span>Verificación visual</span><span>Tuberías y estructura</span><span>Niveles por cota</span></div></div></article>
+<article class="shot"><figure><img alt="Tablas de planificación BIM de HEFESTO con recuento de perfiles metálicos por nivel y exportación a Excel y BC3" height="786" loading="lazy" src="assets/images/app/tablas-bim.webp" width="1600"/></figure><div class="shotBody"><span class="shotTag">Mediciones y presupuesto</span><h3>Del modelo al BC3, sin salir de la aplicación</h3><p>Tablas de planificación por nivel base, descripción y perfil, con recuento, longitud, área y volumen. La medición se enlaza a bases de precios en BC3, de modo que el presupuesto sale <b>automático y con precios reales</b>: exportación a Excel, a BC3 en FIEBDC-3 y a informes Word en formato resumen, unitario o descompuesto.</p><div class="shotMeta"><span>Tablas por nivel</span><span>Excel</span><span>BC3 · FIEBDC-3</span><span>Word</span><span>Perfiles metálicos</span></div></div></article>
+<article class="shot"><figure><img alt="Vista 3D del modelo de rack industrial en HEFESTO con el panel de propiedades de un pilar 2xUPN 150x200, niveles base y superior" height="820" loading="lazy" src="assets/images/app/modelo-3d.webp" width="1600"/></figure><div class="shotBody"><span class="shotTag">Modelado</span><h3>Elementos con tipo, nivel y parámetros</h3><p>Pilares, vigas, tuberías y cerramientos con perfil asignado por tipo, nivel base y superior, desfases y rotación. Cada elemento mantiene un identificador estable, que es lo que permite trazar la información hacia IFC y hacia el presupuesto.</p><div class="shotMeta"><span>Tipos y perfiles</span><span>Niveles y desfases</span><span>Snap y coordenadas</span><span>ID estable</span><span>Sección 3D</span></div></div></article>
+</div><p class="proofNote">La aplicación está operativa y en uso en proyectos reales. Sigue evolucionando: la interfaz mostrada corresponde a la versión de desarrollo v0.6 y puede cambiar antes del lanzamiento de la beta.</p></div></section>
+<section class="section soft" id="casos"><div class="wrap"><div class="head"><div><div class="kicker">Casos de aplicación</div><h2>HEFESTO ya se usa en proyectos reales.</h2></div><p>Los proyectos se presentan de forma anonimizada. Las cifras corresponden a trabajos ejecutados con HEFESTO y su ecosistema de herramientas.</p></div><div class="proofGrid">
+<article class="proofCard"><span class="proofTag">Instalación industrial</span><h3>Auditoría geométrica de nube de puntos</h3><p>Modelado de red de tuberías sobre rack industrial, contraste automatizado contra la nube de puntos y corrección de desviaciones de cota antes de pasar a cálculo.</p><div class="metrics"><div class="metric"><b>134</b><span>tuberías modeladas y validadas</span></div><div class="metric"><b>44</b><span>desviaciones de cota detectadas</span></div><div class="metric"><b>1,31 m</b><span>error máximo corregido</span></div></div></article>
+<article class="proofCard"><span class="proofTag">Ingeniería · Licencia</span><h3>Entrega de software bajo contrato</h3><p>Licencia de uso y entrega de código fuente de HEFESTO Pre-BIM Modeler a una ingeniería, con verificación criptográfica de la entrega y protecciones de propiedad intelectual.</p><div class="metrics"><div class="metric"><b>v0.6.0</b><span>versión entregada en producción</span></div><div class="metric"><b>SHA-256</b><span>prueba de integridad de la entrega</span></div></div></article>
+<article class="proofCard"><span class="proofTag">Estructura → cálculo</span><h3>Del modelo Pre-BIM a CYPE 3D</h3><p>Exportación del modelo a formatos estructurales compatibles con software de cálculo, manteniendo el criterio de barras y apoyos que el modelo analítico necesita.</p><div class="metrics"><div class="metric"><b>DXF-3D</b><span>geometría de barras</span></div><div class="metric"><b>IFC4</b><span>modelo analítico y físico</span></div></div></article>
+<article class="proofCard"><span class="proofTag">Edificación · CTE</span><h3>IFC hacia certificación energética</h3><p>Procesado de un IFC de autoría de gran tamaño y preparación del flujo hacia herramientas de verificación energética, sobre vivienda unifamiliar en zona climática E1.</p><div class="metrics"><div class="metric"><b>55 MB</b><span>IFC2X3 procesado</span></div><div class="metric"><b>E1</b><span>zona climática (Burgos)</span></div></div></article>
+<article class="proofCard"><span class="proofTag">Herramienta pública</span><h3>IFC Drawing, en el navegador</h3><p>Documentación técnica a partir de un IFC sin instalar nada y sin subir el modelo a ningún servidor: plantas, secciones, alzados, cotas, hojas y exportación.</p><div class="metrics"><div class="metric"><b>0 €</b><span>uso gratuito, sin cuenta</span></div><div class="metric"><b>100 %</b><span>procesado en cliente</span></div></div><div style="margin-top:18px"><a class="btn primary" href="tools/ifc-drawing/index.html">Abrir la herramienta →</a></div></article>
+<article class="proofCard"><span class="proofTag">Investigación aplicada</span><h3>Estudios HLF y divulgación</h3><p>HEFESTOLAB publica estudios técnicos versionados sobre interoperabilidad, extracción de datos desde IFC y flujos asistidos por modelos de lenguaje, además de formación en colegios profesionales.</p><div class="metrics"><div class="metric"><b>Serie HLF</b><span>estudios versionados</span></div><div class="metric"><b>ISO 19650</b><span>marco de referencia</span></div></div></article>
+</div><p class="proofNote">Los nombres de cliente y los datos identificativos de cada proyecto se omiten por confidencialidad contractual. Puedo facilitar más detalle bajo acuerdo de confidencialidad.</p></div></section>
 <section class="section soft" id="componentes"><div class="wrap"><div class="head"><div><div class="kicker">Component Studio</div><h2>Componentes técnicos sin convertir cada pieza en un proyecto aparte.</h2></div><p>Component Studio amplía HEFESTO con geometría paramétrica basada en primitivas y propiedades para piezas y equipos.</p></div><div class="coming"><article class="panel"><h3>Componentes industriales</h3><p>El objetivo es construir piezas ligeras a partir de dimensiones y documentación técnica, manteniendo geometría y datos conectados.</p><div class="miniList"><div class="mini"><i>1</i><span>Primitivas y operaciones geométricas.</span></div><div class="mini"><i>2</i><span>Parámetros, dimensiones y propiedades técnicas.</span></div><div class="mini"><i>3</i><span>Placas, depósitos, equipos y otros objetos reutilizables.</span></div></div></article><article class="panel"><h3>Del documento al objeto</h3><p>Una de las líneas de desarrollo es facilitar que planos y fichas técnicas puedan convertirse en información estructurada y componentes mediante IA y MCP.</p><div class="miniList"><div class="mini"><i>→</i><span>Documentación técnica como entrada.</span></div><div class="mini"><i>→</i><span>Datos interpretables por modelos de lenguaje.</span></div><div class="mini"><i>→</i><span>Revisión humana antes de incorporar el resultado.</span></div></div></article></div></div></section>
 <section class="section" id="herramientas"><div class="wrap"><div class="head"><div><div class="kicker">HEFESTOLAB Tools</div><h2>Herramientas BIM gratuitas, directamente en el navegador.</h2></div><p>Pequeñas utilidades técnicas para resolver tareas concretas sin instalar una aplicación completa. La primera preview está orientada a documentación IFC.</p></div><div class="coming"><article class="panel"><h3>IFC Drawing · Preview</h3><p>Abre un IFC localmente, genera proyecciones 2D vectoriales, captura vistas 3D, añade cotas y textos, compón hojas A4–A0 y exporta PDF o DXF 2D.</p><div class="miniList"><div class="mini"><i>1</i><span>El IFC se procesa en el navegador.</span></div><div class="mini"><i>2</i><span>Plantas, secciones, alzados, vistas 3D y líneas visibles/ocultas.</span></div><div class="mini"><i>3</i><span>Composición de planos y PDF vectorial.</span></div></div><div style="margin-top:18px"><a class="btn primary" href="tools/ifc-drawing/index.html">Abrir IFC Drawing →</a><a class="btn secondary" href="tools/index.html" style="margin-left:8px">Ver HEFESTOLAB Tools</a></div></article><article class="panel"><h3>Una herramienta, no otro visor</h3><p>La idea es que las utilidades de HEFESTOLAB puedan usarse online por cualquier técnico y, cuando tenga sentido, ofrecer también versiones descargables o código público.</p><div class="miniList"><div class="mini"><i>→</i><span>Sin cuenta para las herramientas gratuitas.</span></div><div class="mini"><i>→</i><span>Procesamiento local siempre que sea viable.</span></div><div class="mini"><i>→</i><span>Integración progresiva con JSON HEFESTO.</span></div></div></article></div></div></section>
 <section class="section" id="academia"><div class="wrap"><div class="head"><div><div class="kicker">HEFESTOLAB</div><h2>Academia y biblioteca: en preparación.</h2></div><p>La intención es reunir formación gratuita, documentación, proyectos de ejemplo y recursos técnicos alrededor de HEFESTO y sus flujos de interoperabilidad.</p></div><div class="coming"><article class="panel"><h3>Academia HEFESTOLAB</h3><p>Contenido visual y práctico sobre HEFESTO, Revit, Dynamo, IFC, JSON, Component Studio e inteligencia artificial aplicada al AEC.</p><span class="status">Próximamente</span></article><article class="panel"><h3>Biblioteca técnica</h3><p>Proyectos de ejemplo, componentes, familias, scripts y archivos de demostración organizados para que sea sencillo encontrarlos y reutilizarlos.</p><span class="status">Próximamente</span></article></div></div></section>
 <section class="section soft" id="contenido-tecnico"><div class="wrap"><div class="head"><div><div class="kicker">Blog técnico</div><h2>JSON HEFESTO: hacia un BIM nativo para inteligencia artificial.</h2></div><p>El primer artículo explica por qué un LLM necesita algo más directo que un archivo de autoría o un intercambio IFC para razonar sobre un proyecto, sin publicar el esquema interno de HEFESTO.</p></div><div class="topics"><a class="topic topicLink topicFeatured" href="blog/json-hefesto-ia-bim.html"><div class="topicMeta"><span>7 AGO 2026</span><span>JSON · BIM · IA</span></div><b>¿Qué es JSON HEFESTO y por qué puede cambiar la forma de interactuar con un modelo BIM?</b><span>Un formato operativo compacto, estructurado y pensado para que aplicaciones, automatizaciones y agentes de IA puedan trabajar sobre la información del proyecto de forma mucho más directa.</span><em>Leer el primer artículo →</em></a><article class="topic"><b>IFC e interoperabilidad</b><span>Próximos análisis sobre intercambio, pérdida de información y continuidad entre plataformas.</span></article><article class="topic"><b>IA · MCP · AEC</b><span>Arquitecturas para conectar asistentes con modelos, documentación y componentes técnicos.</span></article></div></div></section>
+<section class="section soft" id="sobre"><div class="wrap"><div class="head"><div><div class="kicker">Quién está detrás</div><h2>Un laboratorio con proyectos reales detrás.</h2></div><p>HEFESTOLAB no es una startup con ronda de financiación: es I+D aplicada que nace de proyectos con plazo, con cliente y con responsabilidad técnica detrás.</p></div><div class="about">
+<figure class="aboutPhoto" style="margin:0"><img alt="Luis Carlos de la Peña Arribas" height="900" loading="lazy" src="assets/images/luis-de-la-pena.webp" width="720"/></figure>
+<div class="aboutBody">
+<h3>Luis Carlos de la Peña Arribas</h3><span class="aboutRole">AI-DRIVEN BIM DIRECTOR · AUTOMATIZACIÓN DE FLUJOS AEC · REVIT · DYNAMO · IA</span>
+<p>Trabajo desde Burgos como consultor BIM, desarrollador y formador para el sector AECO español. Mi día a día está en obra, en el modelo y en el presupuesto, y de ahí nace HEFESTO: de la fricción real entre el primer croquis, el modelo, las mediciones y la información que después tiene que seguir viva en otras herramientas.</p>
+<p>HEFESTOLAB es el espacio donde publico ese trabajo: la aplicación, las herramientas gratuitas, los estudios técnicos y los artículos. Todo lo que aparece aquí lo he usado antes en un proyecto con plazo y con cliente.</p>
+<div class="creds"><span class="cred">Arquitecto Técnico (Aparejador)</span><span class="cred">BIM Director</span><span class="cred">Autodesk Certified Instructor</span><span class="cred">Revit · Dynamo</span><span class="cred">Automatización e IA aplicada</span><span class="cred">ISO 19650</span><span class="cred">CTE · FIEBDC-3</span><span class="cred">Digital Construction Europe</span><span class="cred">SB Soluciones BIM</span></div>
+<div class="aboutLinks"><a class="btn primary" href="mailto:info@solucionesbim.com?subject=Información%20sobre%20HEFESTO">Escríbeme</a><a class="btn secondary" href="https://www.linkedin.com/in/luiscarlosrevitbimmanager/" rel="noopener" target="_blank">LinkedIn</a><a class="btn secondary" href="https://solucionesbim.com/" rel="noopener" target="_blank">SB Soluciones BIM</a></div>
+</div></div></div></section>
 <section class="section" id="contacto"><div class="wrap"><div class="contact"><div><div class="kicker" style="color:#7bcaff">Contacto</div><h2>¿Quieres hablar de HEFESTO o de un flujo concreto?</h2><p>Si quieres conocer el estado del proyecto, comentar un caso de uso, participar en pruebas o plantear una integración, escríbeme directamente.</p></div><div class="contactBtns"><a class="btn secondary" href="mailto:info@solucionesbim.com?subject=Información%20sobre%20HEFESTO">Enviar correo</a><a class="btn outline" href="https://github.com/HEFESTOLAB" rel="noopener" target="_blank">Ver HEFESTOLAB en GitHub</a></div></div></div></section>
 </main>
-<footer><div class="wrap foot"><div><div class="footBrand"><img alt="" src="assets/brand/hefesto-symbol.svg"/> HEFESTOLAB</div><p>HEFESTO Pre-BIM Modeler · Proyecto en desarrollo.</p></div><div class="footlinks"><a href="tools/index.html">Herramientas</a><a href="blog/index.html">Blog</a><a href="mailto:info@solucionesbim.com">Contacto</a><a href="https://github.com/HEFESTOLAB" rel="noopener" target="_blank">GitHub</a><a href="https://solucionesbim.com/" rel="noopener" target="_blank">SB Soluciones BIM</a><a href="llms.txt">llms.txt</a></div></div></footer>
+<footer><div class="wrap foot"><div><div class="footBrand"><img alt="" src="assets/brand/hefesto-symbol.svg"/> HEFESTOLAB</div><p>HEFESTO Pre-BIM Modeler · Proyecto en desarrollo.<br/>© 2026 Luis Carlos de la Peña Arribas · Burgos, España</p></div><div class="footlinks"><a href="tools/index.html">Herramientas</a><a href="blog/index.html">Blog</a><a href="blog/feed.xml">RSS</a><a href="mailto:info@solucionesbim.com">Contacto</a><a href="https://www.linkedin.com/in/luiscarlosrevitbimmanager/" rel="noopener" target="_blank">LinkedIn</a><a href="https://github.com/HEFESTOLAB" rel="noopener" target="_blank">GitHub</a><a href="https://solucionesbim.com/" rel="noopener" target="_blank">SB Soluciones BIM</a><a href="legal/aviso-legal.html">Aviso legal</a><a href="legal/privacidad.html">Privacidad</a><a href="llms.txt">llms.txt</a></div></div></footer>
 <script>
-(()=>{const root=document.documentElement,t=document.getElementById('theme'),m=document.getElementById('menu'),mob=document.getElementById('mobile');const saved=localStorage.getItem('hefestolab-theme');root.dataset.theme=saved||'dark';t.addEventListener('click',()=>{const next=root.dataset.theme==='dark'?'light':'dark';root.dataset.theme=next;localStorage.setItem('hefestolab-theme',next)});m.addEventListener('click',()=>mob.classList.toggle('open'));mob.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mob.classList.remove('open')));})();
+(()=>{const root=document.documentElement,t=document.getElementById('theme'),m=document.getElementById('menu'),mob=document.getElementById('mobile');
+const sys=()=>(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';
+let saved=null;try{saved=localStorage.getItem('hefestolab-theme')}catch(e){}
+const apply=v=>{root.dataset.theme=v;t.setAttribute('aria-pressed',String(v==='dark'));t.title=v==='dark'?'Cambiar a tema claro':'Cambiar a tema oscuro'};
+apply(saved||sys());
+t.addEventListener('click',()=>{const next=root.dataset.theme==='dark'?'light':'dark';apply(next);try{localStorage.setItem('hefestolab-theme',next)}catch(e){}});
+const setMenu=o=>{mob.classList.toggle('open',o);m.setAttribute('aria-expanded',String(o));m.setAttribute('aria-label',o?'Cerrar menú':'Abrir menú')};
+m.addEventListener('click',()=>setMenu(!mob.classList.contains('open')));
+mob.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&mob.classList.contains('open')){setMenu(false);m.focus()}});})();
 </script>
 </body></html>

@@ -22,10 +22,30 @@ JSON HEFESTO is HEFESTO's information core. It is designed as a compact, structu
 
 HEFESTO and several HEFESTOLAB resources are currently in development. Published pages distinguish current functionality from research and future development targets.
 
+## Scope / Alcance
+
+HEFESTO Pre-BIM Modeler cubre arquitectura, estructura y MEP en una sola aplicacion de escritorio Windows. Incluye modelado 3D por niveles con gestor de cotas de proyecto, biblioteca de perfiles metalicos (SHS, RHS, IPE, UPN, L), redes industriales de tuberia y bandeja, componentes parametricos con clase IFC (Component Studio), importacion y contraste de nubes de puntos (Scan2JSON), compositor de planos con hojas A4-A0, viewports a escala, cotas automaticas, etiquetas de perfil y cajetin, y mediciones enlazadas a bases de precios BC3 que generan el presupuesto de forma automatica. Enfasis particular en ingenieria industrial y de detalle. Exportacion a PDF, DXF 2D y 3D, IFC4 fisico y analitico, BC3 (FIEBDC-3), Excel, Word y JSON. La herramienta esta operativa y en uso en proyectos reales; sigue evolucionando durante la fase beta.
+
+## Launch / Lanzamiento
+
+HEFESTO Pre-BIM Modeler: beta publica en septiembre de 2026. Programa Early Access limitado a 25 plazas, 499 EUR/ano (IVA no incluido), con licencia completa durante la beta, actualizaciones, soporte directo y sesion de puesta en marcha. Reserva por correo en info@solucionesbim.com. Las herramientas de HEFESTOLAB Tools (IFC Drawing) siguen siendo gratuitas y sin registro.
+
+## Author / Autor
+
+Luis Carlos de la Peña Arribas — AI-Driven BIM Director, Arquitecto Técnico y Autodesk Certified Instructor, con base en Burgos (España). Automatizacion de flujos AEC con Revit, Dynamo e IA. HEFESTOLAB es su laboratorio de I+D aplicada; SB Soluciones BIM es la marca de consultoría, formación y licenciamiento.
+
+## Case studies / Casos
+
+Los proyectos se publican anonimizados. Ejemplos: auditoría geométrica de 134 tuberías contra nube de puntos en instalación industrial; entrega de HEFESTO Pre-BIM Modeler v0.6.0 bajo contrato de licencia con verificación SHA-256; exportación de modelo Pre-BIM a DXF-3D e IFC4 analítico para cálculo estructural; preparación de IFC para certificación energética CTE.
+
 ## Links
 
 - GitHub: https://github.com/HEFESTOLAB
 - Contact: info@solucionesbim.com
+- RSS (ES): https://hefestolab.github.io/blog/feed.xml
+- RSS (EN): https://hefestolab.github.io/en/blog/feed.xml
+- Aviso legal: https://hefestolab.github.io/legal/aviso-legal.html
+- Privacidad / Privacy: https://hefestolab.github.io/legal/privacidad.html
 
 
 ## HEFESTOLAB Tools

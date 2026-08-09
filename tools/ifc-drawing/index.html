@@ -116,7 +116,7 @@
             <div class="start-mark"><img src="../../assets/brand/hefesto-symbol.svg" alt=""></div>
             <span class="start-kicker">HEFESTOLAB TOOLS · EXPERIMENTAL</span>
             <h1>IFC Drawing</h1>
-            <p>Abre un IFC en tu navegador, genera documentación 2D vectorial, añade cotas y compón hojas listas para PDF.</p>
+            <p>Abre un IFC en tu navegador, genera plantas, secciones y alzados vectoriales, acota, compón hojas y exporta a PDF o DXF.</p>
             <div class="start-actions">
               <label class="big-btn primary" for="ifcInput">Abrir archivo IFC</label>
               <button class="big-btn" id="btnDemoStart" type="button">Probar sin IFC</button>
@@ -126,14 +126,14 @@
               <span><b>Vectorial</b> · vistas, cotas y PDF</span>
               <span><b>Sin cuenta</b> · no requiere registro</span>
             </div>
-            <p class="start-foot">La demo permite comprobar la interfaz y el compositor. Para un IFC real, abre esta copia mediante <b>INICIAR_HEFESTOLAB_LOCAL.bat</b>, no con doble clic sobre index.html.</p>
+            <p class="start-foot" id="startFoot">La demo permite recorrer la interfaz, las cotas y el compositor de planos sin necesidad de un modelo. Para trabajar con un IFC real, ábrelo con el botón de arriba: el archivo se procesa en tu propio equipo y no se sube a ningún servidor.</p>
           </div>
         </div>
 
         <div class="model-stage hidden" id="modelStage">
           <div id="viewer3d" class="viewer3d"></div>
           <div class="viewer-overlay top-left" id="modelBadge">MODELO 3D</div>
-          <div class="viewer-overlay bottom-right" id="engineHint">Motor IFC pendiente</div>
+          <div class="viewer-overlay bottom-right" id="engineHint">Sin modelo cargado</div>
         </div>
 
         <div class="drawing-stage hidden" id="drawingStage">
@@ -191,7 +191,7 @@
       <span class="status-sep"></span>
       <span id="statusCoords">X 0.000 · Y 0.000</span>
       <span class="status-sep"></span>
-      <span id="statusVersion">IFC Drawing v0.4 · RC publicación</span>
+      <span id="statusVersion">IFC Drawing v0.4 · Preview</span>
     </footer>
   </div>
 
@@ -207,5 +207,15 @@
 
   <script src="assets/js/vendor/jspdf.umd.min.js?v=2.5.2"></script>
   <script src="assets/js/app.js?v=0.3.0"></script>
+<script>
+  // Ajuste de contexto: el aviso de servidor local solo tiene sentido al abrir con doble clic (file://).
+  (function(){
+    if(location.protocol!=='file:')return;
+    var f=document.getElementById('startFoot');
+    if(f)f.innerHTML='Estás abriendo la herramienta con doble clic (<code>file://</code>). '+
+      'La demo funciona, pero para cargar un IFC real hace falta servirla por <b>http://127.0.0.1</b>: '+
+      'ejecuta <b>INICIAR_HEFESTOLAB_LOCAL.bat</b> en la raíz de esta copia. El IFC seguirá siendo local.';
+  })();
+</script>
 </body>
 </html>

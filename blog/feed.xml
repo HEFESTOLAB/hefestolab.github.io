@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>HEFESTOLAB · Blog técnico</title>
+    <link>https://hefestolab.github.io/blog/</link>
+    <atom:link href="https://hefestolab.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
+    <description>Desarrollo BIM explicado desde dentro: interoperabilidad, JSON, IFC, automatización e inteligencia artificial aplicada al sector AEC.</description>
+    <language>es-ES</language>
+    <copyright>© 2026 Luis Carlos de la Peña Arribas</copyright>
+    <managingEditor>info@solucionesbim.com (Luis Carlos de la Peña Arribas)</managingEditor>
+    <webMaster>info@solucionesbim.com (Luis Carlos de la Peña Arribas)</webMaster>
+    <lastBuildDate>Sun, 09 Aug 2026 09:00:00 +0200</lastBuildDate>
+    <image>
+      <url>https://hefestolab.github.io/assets/images/og-hefestolab.jpg</url>
+      <title>HEFESTOLAB · Blog técnico</title>
+      <link>https://hefestolab.github.io/blog/</link>
+    </image>
+    <item>
+      <title>JSON HEFESTO: hacia un BIM nativo para inteligencia artificial</title>
+      <link>https://hefestolab.github.io/blog/json-hefesto-ia-bim.html</link>
+      <guid isPermaLink="true">https://hefestolab.github.io/blog/json-hefesto-ia-bim.html</guid>
+      <dc:creator>Luis Carlos de la Peña Arribas</dc:creator>
+      <pubDate>Fri, 07 Aug 2026 09:00:00 +0200</pubDate>
+      <category>JSON</category>
+      <category>BIM</category>
+      <category>Inteligencia artificial</category>
+      <description>Por qué un proyecto BIM necesita una representación operativa que un modelo de lenguaje pueda inspeccionar y sobre la que pueda razonar y proponer cambios, sin depender de un archivo binario de autoría ni utilizar IFC como si fuera un prompt.</description>
+    </item>
+  </channel>
+</rss>

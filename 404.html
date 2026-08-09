@@ -1,2 +1,45 @@
 <!DOCTYPE html>
-<html data-theme="dark" lang="es"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><meta content="#07111f" name="theme-color"/><title>404 | HEFESTOLAB</title><link href="assets/brand/favicon.svg" rel="icon"/><style>body{margin:0;background:#07111f;color:#f1f7ff;font-family:system-ui,-apple-system,Segoe UI,sans-serif;display:grid;place-items:center;min-height:100vh;text-align:center;padding:24px}main{max-width:620px}h1{font-size:clamp(5rem,18vw,10rem);margin:0;color:#0879e8}p{color:#a9b9cb;font-size:1.05rem}a{display:inline-block;margin:8px;padding:11px 16px;border-radius:11px;background:#0879e8;color:#fff;text-decoration:none;font-weight:700}.alt{background:#0d1d31;border:1px solid #20364f}</style></head><body><main><h1>404</h1><h2>Página no encontrada / Page not found</h2><p>La dirección no existe o el contenido se ha movido. The address does not exist or the content has moved.</p><a href="index.html">Inicio</a><a class="alt" href="en/index.html">English</a></main></body></html>
+<html data-theme="dark" lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <meta content="#07111f" name="theme-color"/>
+  <meta name="robots" content="noindex,follow"/>
+  <title>404 | HEFESTOLAB</title>
+  <link href="/assets/brand/favicon.svg" rel="icon" type="image/svg+xml"/>
+  <style>
+    body{margin:0;background:#07111f;color:#f1f7ff;font-family:system-ui,-apple-system,Segoe UI,sans-serif;display:grid;place-items:center;min-height:100vh;text-align:center;padding:24px;box-sizing:border-box}
+    main{max-width:660px}h1{font-size:clamp(5rem,18vw,10rem);margin:0;color:#0879e8;line-height:.95}h2{margin:18px 0 0;font-size:clamp(1.35rem,4vw,2rem)}
+    p{color:#a9b9cb;font-size:1.05rem;line-height:1.6;margin:14px auto 24px;max-width:580px}
+    .actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+    a{display:inline-block;padding:11px 16px;border-radius:11px;background:#0879e8;color:#fff;text-decoration:none;font-weight:700}.alt{background:#0d1d31;border:1px solid #20364f}
+  </style>
+</head>
+<body>
+<main>
+  <h1>404</h1>
+  <h2 id="title404">Página no encontrada</h2>
+  <p id="text404">La dirección no existe o el contenido se ha movido.</p>
+  <div class="actions">
+    <a id="home404" href="/">Inicio</a>
+    <a class="alt" id="lang404" href="/en/">English</a>
+    <a class="alt" id="tools404" href="/tools/">Herramientas</a>
+  </div>
+</main>
+<script>
+(function(){
+  var isEnglish = location.pathname === '/en' || location.pathname.startsWith('/en/');
+  if(!isEnglish) return;
+  document.documentElement.lang='en';
+  document.getElementById('title404').textContent='Page not found';
+  document.getElementById('text404').textContent='The address does not exist or the content has moved.';
+  document.getElementById('home404').textContent='Home';
+  document.getElementById('home404').href='/en/';
+  document.getElementById('lang404').textContent='Español';
+  document.getElementById('lang404').href='/';
+  document.getElementById('tools404').textContent='Tools';
+  document.getElementById('tools404').href='/en/tools/';
+})();
+</script>
+</body>
+</html>
