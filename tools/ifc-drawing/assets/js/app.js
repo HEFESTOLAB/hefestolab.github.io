@@ -1,5 +1,5 @@
 /*
- * HEFESTOLAB IFC Drawing · Revisión v0.4
+ * HEFESTOLAB IFC Drawing · Revisión v0.5
  * ------------------------------------------------------------
  * Cliente puro: el IFC se lee con File API y se procesa en el navegador.
  * El motor IFC se carga bajo demanda desde versiones fijadas de That Open
@@ -31,6 +31,7 @@
     activeSheetId: null,
     selectedViewportId: null,
     selectedAnnotationId: null,
+    selectedIfc: null,
     pendingDimension: null,
     engine: null,
     enginePromise: null,
@@ -39,6 +40,10 @@
     activeModelId: null,
     modelLoaded: false,
     ifcModels: 0,
+    geometryMap: {},
+    ifcCategories: [],
+    categoryItems: new Map(),
+    itemCategories: new Map(),
     busy: false,
     paperPPM: 1.7,
     demo: false,
@@ -255,11 +260,32 @@
   function drawingLabelKind(kind){ return ({plan:'PLANTA',elevation:'ALZADO',section:'SECCIÓN',demo:'VISTA',threeD:'VISTA 3D'})[kind] || 'VISTA'; }
   function addDrawing(d){
     d.id ||= uid('view'); d.visible ||= []; d.hidden ||= []; d.annotations ||= []; d.pending = !!d.pending; d.snapIndex=null;
+    ensureDrawingDisplay(d);
     if(d.kind==='threeD'){
       const aspect=Math.max(.1,Number(d.imageAspect)||((d.imageWidth||16)/Math.max(1,d.imageHeight||9)));
       d.imageAspect=aspect;d.bounds={minX:0,minY:0,maxX:aspect,maxY:1,width:aspect,height:1,cx:aspect/2,cy:.5};d.pending=false;
     }else if(!d.pending) ensureDrawingBounds(d);
     state.drawings.push(d); return d;
+  }
+
+  function ensureDrawingDisplay(d){
+    if(!d.display)d.display={hiddenCategories:new Set(),hiddenItems:new Set(),categoryColors:new Map(),itemColors:new Map()};
+    d.display.hiddenCategories ||= new Set();d.display.hiddenItems ||= new Set();d.display.categoryColors ||= new Map();d.display.itemColors ||= new Map();
+    d.segmentStyles ||= {visible:[],hidden:[]};
+    return d.display;
+  }
+  const itemKey=(modelId,localId)=>`${String(modelId)}:${String(localId)}`;
+  function mapCount(map){let n=0;for(const ids of Object.values(map||{}))n+=ids?.size||0;return n;}
+  function copyMap(map){const out={};for(const [modelId,ids] of Object.entries(map||{}))out[modelId]=new Set(ids||[]);return out;}
+  function intersectMap(source,allowed){
+    const out={};for(const [modelId,ids] of Object.entries(source||{})){const ok=allowed?.[modelId];if(!ok)continue;const keep=new Set();for(const id of ids||[])if(ok.has(id))keep.add(id);if(keep.size)out[modelId]=keep;}return out;
+  }
+  function categoryDefaultColor(name){
+    const n=String(name||'').toUpperCase();
+    if(n.includes('WALL'))return '#d97706';if(n.includes('WINDOW'))return '#0284c7';if(n.includes('DOOR'))return '#a16207';
+    if(n.includes('ROOF'))return '#7c3aed';if(n.includes('SLAB'))return '#64748b';if(n.includes('SPACE'))return '#06b6d4';
+    if(n.includes('COLUMN')||n.includes('BEAM')||n.includes('MEMBER'))return '#475569';if(n.includes('FURNISH'))return '#a855f7';
+    return '#2563eb';
   }
   async function activateDrawing(id){
     let d=state.drawings.find(x=>x.id===id); if(!d)return;
@@ -302,29 +328,81 @@
     left:{dir:[-1,0,0],axis:[1,0,0]}, right:{dir:[1,0,0],axis:[-1,0,0]}
   };
 
+  function configureProjector(d){
+    const {edgeProjector}=state.engine,def=orientationDef[d.projection.orientation]||orientationDef.top,ext=extentAlong(state.modelBox,def.axis);
+    edgeProjector.projectionDirection.set(...def.dir);
+    let near=Number.isFinite(d.projection.near)?d.projection.near:ext.min,far=Number.isFinite(d.projection.far)?d.projection.far:ext.max;
+    if(near>far)[near,far]=[far,near];edgeProjector.nearPlane=clamp(near,ext.min,ext.max);edgeProjector.farPlane=clamp(far,ext.min,ext.max);
+    edgeProjector.generator.angleThreshold=d.projection.angleThreshold||50;
+  }
+  function drawingProjectionMap(d){
+    const display=ensureDrawingDisplay(d),out=copyMap(state.geometryMap);
+    for(const category of display.hiddenCategories){
+      const group=state.categoryItems.get(category);if(!group)continue;
+      for(const [modelId,ids] of Object.entries(group.map||{})){const target=out[modelId];if(!target)continue;for(const id of ids)target.delete(id);}
+    }
+    for(const [modelId,ids] of Object.entries(out))for(const id of [...ids])if(display.hiddenItems.has(itemKey(modelId,id)))ids.delete(id);
+    for(const modelId of Object.keys(out))if(!out[modelId].size)delete out[modelId];
+    return out;
+  }
+  async function projectMap(map,d,onProgress){
+    configureProjector(d);const {edgeProjector,world}=state.engine;
+    const result=await edgeProjector.get(map,world,{onProgress:(message,p)=>onProgress?.(message,p)});
+    const visible=geometrySegments(result.visible,d.projection.orientation),hidden=geometrySegments(result.hidden,d.projection.orientation);
+    try{result.visible.dispose?.();result.hidden.dispose?.();}catch(_){ }
+    return {visible,hidden};
+  }
+  function segmentCandidateIndex(segments,bounds){
+    const maxDim=Math.max(bounds?.width||1,bounds?.height||1,.1),cell=Math.max(maxDim/100,.04),cells=new Map();
+    const add=(key,i)=>{let a=cells.get(key);if(!a)cells.set(key,a=[]);a.push(i);};
+    segments.forEach((s,i)=>{const minX=Math.min(s[0],s[2]),maxX=Math.max(s[0],s[2]),minY=Math.min(s[1],s[3]),maxY=Math.max(s[1],s[3]);const x0=Math.floor(minX/cell),x1=Math.floor(maxX/cell),y0=Math.floor(minY/cell),y1=Math.floor(maxY/cell);for(let x=x0;x<=x1;x++)for(let y=y0;y<=y1;y++)add(`${x},${y}`,i);});
+    return {segments,cells,cell,tol:Math.max(maxDim*1e-5,.0002)};
+  }
+  function segmentHasSource(s,index){
+    const mx=(s[0]+s[2])/2,my=(s[1]+s[3])/2,ix=Math.floor(mx/index.cell),iy=Math.floor(my/index.cell),ids=new Set();
+    for(let x=ix-1;x<=ix+1;x++)for(let y=iy-1;y<=iy+1;y++)for(const id of index.cells.get(`${x},${y}`)||[])ids.add(id);
+    const ax=s[2]-s[0],ay=s[3]-s[1],al=Math.hypot(ax,ay);if(al<1e-8)return false;
+    for(const id of ids){const q=index.segments[id],bx=q[2]-q[0],by=q[3]-q[1],bl=Math.hypot(bx,by);if(bl<1e-8)continue;if(Math.abs(ax*by-ay*bx)/(al*bl)>.003)continue;const near=nearestPointOnSegment([mx,my],q);if(Math.hypot(near[0]-mx,near[1]-my)<=index.tol)return true;}
+    return false;
+  }
+  function paintMasterSegments(master,source,styles,style,bounds){
+    const candidates=[...(source.visible||[]),...(source.hidden||[])];if(!candidates.length)return;
+    const index=segmentCandidateIndex(candidates,bounds);for(let i=0;i<master.length;i++)if(segmentHasSource(master[i],index))styles[i]=style;
+  }
+  async function rebuildDrawingStyles(d,allowed){
+    const display=ensureDrawingDisplay(d);d.segmentStyles={visible:new Array(d.visible.length).fill(null),hidden:new Array(d.hidden.length).fill(null)};
+    const sources=[];
+    for(const [category,color] of display.categoryColors){
+      if(display.hiddenCategories.has(category))continue;const group=state.categoryItems.get(category);if(!group)continue;
+      const map=intersectMap(group.map,allowed);if(mapCount(map))sources.push({map,style:{color,layer:`CAT_${String(category).replace(/[^A-Za-z0-9_]/g,'_').slice(0,28)}`}});
+    }
+    for(const [key,color] of display.itemColors){
+      if(display.hiddenItems.has(key))continue;const cut=key.lastIndexOf(':'),modelId=key.slice(0,cut),rawId=key.slice(cut+1),allowedIds=allowed[modelId];if(!allowedIds)continue;
+      let localId=[...allowedIds].find(id=>String(id)===rawId);if(localId===undefined)continue;
+      sources.push({map:{[modelId]:new Set([localId])},style:{color,layer:`EL_${rawId.replace(/[^A-Za-z0-9_]/g,'_').slice(0,24)}`}});
+    }
+    let i=0;for(const source of sources){updateProgress(`Aplicando colores documentales · ${++i}/${sources.length}`,.80+(i/Math.max(1,sources.length))*.15);const projected=await projectMap(source.map,d);paintMasterSegments(d.visible,projected,d.segmentStyles.visible,source.style,d.bounds);paintMasterSegments(d.hidden,projected,d.segmentStyles.hidden,source.style,d.bounds);}
+  }
+
   async function projectPendingDrawing(d){
     if(!state.engine || !state.modelLoaded) throw new Error('Primero debes cargar un IFC.');
-    const { OBC, components, world, fragments, edgeProjector }=state.engine;
-    const def=orientationDef[d.projection.orientation] || orientationDef.top;
-    edgeProjector.projectionDirection.set(...def.dir);
-    const ext=extentAlong(state.modelBox, def.axis);
-    let near = Number.isFinite(d.projection.near) ? d.projection.near : ext.min;
-    let far = Number.isFinite(d.projection.far) ? d.projection.far : ext.max;
-    if(near>far)[near,far]=[far,near];
-    edgeProjector.nearPlane=clamp(near,ext.min,ext.max); edgeProjector.farPlane=clamp(far,ext.min,ext.max);
-    edgeProjector.generator.angleThreshold = d.projection.angleThreshold || 50;
+    if(d._projecting)return d._projecting;
+    d._projecting=(async()=>{
+    const oldView=state.viewBoxes.get(d.id),wasPending=d.pending;
     showProgress('Generando vista 2D', `${d.name} · preparando geometría`, .05);
-    const map={}; let total=0;
-    for(const [modelId,model] of fragments.list){
-      const ids=await model.getItemsIdsWithGeometry(); map[modelId]=new Set(ids); total+=ids.length;
-    }
+    const map=drawingProjectionMap(d),total=mapCount(map);if(!total)throw new Error('Los filtros de la vista ocultan todos los elementos. Restablece la visibilidad.');
     updateProgress(`${total.toLocaleString('es-ES')} elementos con geometría`, .16);
-    const {visible,hidden}=await edgeProjector.get(map,world,{onProgress:(message,p)=>{ if(Number.isFinite(p))updateProgress(message,p*.78+.16); else updateProgress(message); }});
-    d.visible=geometrySegments(visible,d.projection.orientation); d.hidden=geometrySegments(hidden,d.projection.orientation); d.pending=false; d.snapIndex=null;
-    d.stats={elements:total}; ensureDrawingBounds(d); fitViewBox(d);
-    try{visible.dispose?.(); hidden.dispose?.();}catch(_){ }
+    const projected=await projectMap(map,d,(message,p)=>{if(Number.isFinite(p))updateProgress(message,p*.62+.16);else updateProgress(message);});
+    d.visible=projected.visible;d.hidden=projected.hidden;d.pending=false;d.snapIndex=null;d.stats={elements:total};ensureDrawingBounds(d);
+    await rebuildDrawingStyles(d,map);
+    if(wasPending||!oldView)fitViewBox(d);else state.viewBoxes.set(d.id,oldView);
     hideProgress(`Vista generada · ${d.visible.length.toLocaleString('es-ES')} líneas`);
     toast('Vista generada', `${d.name}: ${d.visible.length.toLocaleString('es-ES')} visibles · ${d.hidden.length.toLocaleString('es-ES')} ocultas`,'good');
+    if(state.activeDrawingId===d.id){renderDrawing();renderInspector();}renderTrees();renderSheet();
+    })().catch(err=>{
+      clearInterval(state.progressState.timer);state.progressState.timer=null;el.progress.classList.add('hidden');state.busy=false;
+      throw err;
+    }).finally(()=>{d._projecting=null;});return d._projecting;
   }
 
   function updateDrawingToolAvailability(d=activeDrawing()){
@@ -332,6 +410,15 @@
     $$('[data-draw-tool]').forEach(b=>{b.disabled=!!raster;});
     ['toggleSnapBtn','toggleOrthoBtn','btnExportSvg','btnExportDxf'].forEach(id=>{const b=$(`#${id}`);if(b)b.disabled=!!raster;});
     if(raster&&state.drawTool!=='select'){state.drawTool='select';$$('[data-draw-tool]').forEach(b=>b.classList.toggle('active',b.dataset.drawTool==='select'));}
+  }
+
+  function drawingLayers(d,hidden=false){
+    const segments=hidden?(d.hidden||[]):(d.visible||[]),styles=(d.segmentStyles?.[hidden?'hidden':'visible'])||[],groups=new Map();
+    for(let i=0;i<segments.length;i++){const style=styles[i]||null,key=style?`${style.color}|${style.layer}`:'default';let g=groups.get(key);if(!g){g={style,segments:[]};groups.set(key,g);}g.segments.push(segments[i]);}
+    return [...groups.values()];
+  }
+  function styledSvgLines(d,hidden=false,cls='visible-line'){
+    return drawingLayers(d,hidden).map(g=>g.segments.map(s=>`<line class="${cls}"${g.style?` style="stroke:${esc(g.style.color)}"`:''} x1="${s[0]}" y1="${s[1]}" x2="${s[2]}" y2="${s[3]}"/>`).join('')).join('');
   }
 
   function renderDrawing(){
@@ -346,8 +433,8 @@
     svg.classList.remove('raster-preview');updateDrawingToolAvailability(d);
     let vb=state.viewBoxes.get(d.id)||fitViewBox(d); svg.setAttribute('viewBox',`${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
     el.drawingTitle.textContent=d.name; el.drawingInfo.textContent=`${drawingLabelKind(d.kind)} · ${d.visible.length.toLocaleString('es-ES')} líneas`;
-    const visible=d.visible.map(s=>`<line class="visible-line" x1="${s[0]}" y1="${s[1]}" x2="${s[2]}" y2="${s[3]}"/>`).join('');
-    const hidden=el.toggleHidden.checked?d.hidden.map(s=>`<line class="hidden-line" x1="${s[0]}" y1="${s[1]}" x2="${s[2]}" y2="${s[3]}"/>`).join(''):'';
+    const visible=styledSvgLines(d,false,'visible-line');
+    const hidden=el.toggleHidden.checked?styledSvgLines(d,true,'hidden-line'):'';
     const ann=(d.annotations||[]).map(a=>annotationSvg(a,d)).join('');
     let preview='';
     if(state.pendingDimension?.a){ const p=state.pendingDimension; if(p.b) preview=annotationSvg({id:'preview',type:'dimension',a:p.a,b:p.b,offset:p.offset||0},d,true); else preview=`<circle cx="${p.a[0]}" cy="${p.a[1]}" r="${Math.max(vb.w/500,.01)}" fill="#2563eb"/>`; }
@@ -356,23 +443,20 @@
   }
 
   function formatLength(m){ if(Math.abs(m)>=100) return `${m.toFixed(1)} m`; if(Math.abs(m)>=10) return `${m.toFixed(2)} m`; return `${m.toFixed(3)} m`; }
-  function dimensionGeom(a){
-    const [x1,y1]=a.a,[x2,y2]=a.b; const dx=x2-x1,dy=y2-y1,L=Math.max(1e-9,Math.hypot(dx,dy)); const nx=-dy/L,ny=dx/L,off=Number(a.offset)||0;
-    const q1=[x1+nx*off,y1+ny*off],q2=[x2+nx*off,y2+ny*off],mid=[(q1[0]+q2[0])/2,(q1[1]+q2[1])/2];
-    return {L,nx,ny,q1,q2,mid,ux:dx/L,uy:dy/L};
-  }
+  const dimensionTools=globalThis.HEFESTO_IFC_DIMENSIONS;
+  function dimensionGeom(a){return dimensionTools.geometry(a);}
   function annotationSvg(a,d,preview=false){
     const sel=!preview&&a.id===state.selectedAnnotationId?' annotation-selected':'';
     if(a.type==='dimension'){
       const g=dimensionGeom(a), b=d.bounds||ensureDrawingBounds(d), fs=Math.max(.16,Math.max(b.width,b.height)/100), tick=fs*.52;
-      const label=esc(a.textOverride||formatLength(g.L));
+      const label=esc(a.textOverride||formatLength(g.L)),text=dimensionTools.textLayout(g,fs*.4);
       const tx=-g.uy*tick,ty=g.ux*tick;
       return `<g class="${sel.trim()}" data-ann="${a.id}">
         <line class="dim-ext" x1="${a.a[0]}" y1="${a.a[1]}" x2="${g.q1[0]}" y2="${g.q1[1]}"/><line class="dim-ext" x1="${a.b[0]}" y1="${a.b[1]}" x2="${g.q2[0]}" y2="${g.q2[1]}"/>
         <line class="dim-line" x1="${g.q1[0]}" y1="${g.q1[1]}" x2="${g.q2[0]}" y2="${g.q2[1]}"/>
         <line class="dim-line" x1="${g.q1[0]-tx}" y1="${g.q1[1]-ty}" x2="${g.q1[0]+tx}" y2="${g.q1[1]+ty}"/><line class="dim-line" x1="${g.q2[0]-tx}" y1="${g.q2[1]-ty}" x2="${g.q2[0]+tx}" y2="${g.q2[1]+ty}"/>
         <line class="dim-hit" data-ann="${a.id}" x1="${g.q1[0]}" y1="${g.q1[1]}" x2="${g.q2[0]}" y2="${g.q2[1]}"/>
-        <text class="dim-text" data-ann="${a.id}" x="${g.mid[0]}" y="${g.mid[1]-fs*.4}" font-size="${fs}" text-anchor="middle">${label}</text></g>`;
+        <text class="dim-text" data-ann="${a.id}" x="${text.x}" y="${text.y}" font-size="${fs}" text-anchor="middle" transform="rotate(${text.angle} ${text.x} ${text.y})">${label}</text></g>`;
     }
     if(a.type==='text'){
       const b=d.bounds||ensureDrawingBounds(d),fs=a.size||Math.max(.18,Math.max(b.width,b.height)/90);
@@ -523,7 +607,7 @@
     if(d.kind==='threeD'){
       div.classList.add('sheet-vp-3d');div.innerHTML=`<div class="vp-image-wrap"><img src="${d.imageData}" alt=""></div><div class="vp-label">${esc(d.name)} <span>NTS</span></div><i class="vp-resize"></i>`;
     }else{
-      const win=viewportWindow(vp,d); const vis=d.visible.map(s=>`<line class="vp-visible" x1="${s[0]}" y1="${s[1]}" x2="${s[2]}" y2="${s[3]}"/>`).join(''); const hid=el.toggleHidden.checked?d.hidden.map(s=>`<line class="vp-hidden" x1="${s[0]}" y1="${s[1]}" x2="${s[2]}" y2="${s[3]}"/>`).join(''):'';
+      const win=viewportWindow(vp,d); const vis=styledSvgLines(d,false,'vp-visible'); const hid=el.toggleHidden.checked?styledSvgLines(d,true,'vp-hidden'):'';
       const ann=(d.annotations||[]).map(a=>sheetAnnotationSvg(a,d)).join('');
       div.innerHTML=`<svg viewBox="${win.x} ${win.y} ${win.w} ${win.h}" preserveAspectRatio="none">${hid}${vis}${ann}</svg><div class="vp-label">${esc(d.name)} <span>1:${vp.scale}</span></div><i class="vp-resize"></i>`;
     }
@@ -538,8 +622,8 @@
   function renderViewportLive(div,vp,d,ppm){ div.style.left=`${vp.x*ppm}px`;div.style.top=`${vp.y*ppm}px`;div.style.width=`${vp.w*ppm}px`;div.style.height=`${vp.h*ppm}px`;if(d.kind!=='threeD'){const win=viewportWindow(vp,d);div.querySelector('svg')?.setAttribute('viewBox',`${win.x} ${win.y} ${win.w} ${win.h}`);} }
   function sheetAnnotationSvg(a,d){
     if(a.type==='dimension'){
-      const g=dimensionGeom(a),b=d.bounds||ensureDrawingBounds(d),fs=Math.max(.16,Math.max(b.width,b.height)/100),tick=fs*.52;
-      return `<g><line class="vp-visible" x1="${a.a[0]}" y1="${a.a[1]}" x2="${g.q1[0]}" y2="${g.q1[1]}"/><line class="vp-visible" x1="${a.b[0]}" y1="${a.b[1]}" x2="${g.q2[0]}" y2="${g.q2[1]}"/><line class="vp-visible" x1="${g.q1[0]}" y1="${g.q1[1]}" x2="${g.q2[0]}" y2="${g.q2[1]}"/><text x="${g.mid[0]}" y="${g.mid[1]-fs*.35}" font-size="${fs}" text-anchor="middle" fill="#1e3a8a">${esc(a.textOverride||formatLength(g.L))}</text></g>`;
+      const g=dimensionGeom(a),b=d.bounds||ensureDrawingBounds(d),fs=Math.max(.16,Math.max(b.width,b.height)/100),tick=fs*.52,text=dimensionTools.textLayout(g,fs*.35);
+      return `<g><line class="vp-visible" x1="${a.a[0]}" y1="${a.a[1]}" x2="${g.q1[0]}" y2="${g.q1[1]}"/><line class="vp-visible" x1="${a.b[0]}" y1="${a.b[1]}" x2="${g.q2[0]}" y2="${g.q2[1]}"/><line class="vp-visible" x1="${g.q1[0]}" y1="${g.q1[1]}" x2="${g.q2[0]}" y2="${g.q2[1]}"/><text x="${text.x}" y="${text.y}" font-size="${fs}" text-anchor="middle" fill="#1e3a8a" transform="rotate(${text.angle} ${text.x} ${text.y})">${esc(a.textOverride||formatLength(g.L))}</text></g>`;
     }
     if(a.type==='text'){const b=d.bounds||ensureDrawingBounds(d),fs=a.size||Math.max(.18,Math.max(b.width,b.height)/90);return `<text x="${a.p[0]}" y="${a.p[1]}" font-size="${fs}" fill="#1e3a8a">${esc(a.text)}</text>`;} return '';
   }
@@ -551,17 +635,18 @@
     return [x0+t0*dx,y0+t0*dy,x0+t1*dx,y0+t1*dy];
   }
   function pdfMap(vp,d,x,y){ const win=viewportWindow(vp,d); return [vp.x+(x-win.x)*win.mmPerUnit,vp.y+(y-win.y)*win.mmPerUnit]; }
-  function pdfDrawSegments(doc,segments,vp,d,hidden=false){
-    const win=viewportWindow(vp,d);doc.setLineWidth(hidden?.10:.16);doc.setDrawColor(hidden?145:20,hidden?155:25,hidden?166:32);doc.setLineDashPattern(hidden?[1.2,1.0]:[],0);
-    for(const s of segments){const a=pdfMap(vp,d,s[0],s[1]),b=pdfMap(vp,d,s[2],s[3]);const c=clipLine(a[0],a[1],b[0],b[1],vp.x,vp.y,vp.x+vp.w,vp.y+vp.h);if(c)doc.line(c[0],c[1],c[2],c[3]);}
-    doc.setLineDashPattern([],0);
+  function hexRgb(hex){const n=parseInt(String(hex||'').replace('#',''),16);return Number.isFinite(n)?[(n>>16)&255,(n>>8)&255,n&255]:null;}
+  function pdfDrawDrawing(doc,d,vp,hidden=false){
+    doc.setLineWidth(hidden?.10:.16);doc.setLineDashPattern(hidden?[1.2,1.0]:[],0);
+    for(const group of drawingLayers(d,hidden)){const rgb=group.style&&hexRgb(group.style.color);doc.setDrawColor(...(rgb||(hidden?[145,155,166]:[20,25,32])));for(const s of group.segments){const a=pdfMap(vp,d,s[0],s[1]),b=pdfMap(vp,d,s[2],s[3]);const c=clipLine(a[0],a[1],b[0],b[1],vp.x,vp.y,vp.x+vp.w,vp.y+vp.h);if(c)doc.line(c[0],c[1],c[2],c[3]);}}
+    doc.setLineDashPattern([],0);doc.setDrawColor(20,25,32);
   }
   function pdfDrawAnnotations(doc,d,vp){
     doc.setDrawColor(37,99,235);doc.setTextColor(30,58,138);doc.setLineWidth(.13);doc.setFontSize(7);
     for(const a of d.annotations||[]){
       if(a.type==='dimension'){
-        const g=dimensionGeom(a);const p1=pdfMap(vp,d,a.a[0],a.a[1]),p2=pdfMap(vp,d,a.b[0],a.b[1]),q1=pdfMap(vp,d,g.q1[0],g.q1[1]),q2=pdfMap(vp,d,g.q2[0],g.q2[1]),m=pdfMap(vp,d,g.mid[0],g.mid[1]);
-        if(clipLine(q1[0],q1[1],q2[0],q2[1],vp.x,vp.y,vp.x+vp.w,vp.y+vp.h)){doc.line(p1[0],p1[1],q1[0],q1[1]);doc.line(p2[0],p2[1],q2[0],q2[1]);doc.line(q1[0],q1[1],q2[0],q2[1]);doc.text(a.textOverride||formatLength(g.L),m[0],m[1]-1,{align:'center'});}
+        const g=dimensionGeom(a),layout=dimensionTools.textLayout(g,1/(viewportWindow(vp,d).mmPerUnit||1));const p1=pdfMap(vp,d,a.a[0],a.a[1]),p2=pdfMap(vp,d,a.b[0],a.b[1]),q1=pdfMap(vp,d,g.q1[0],g.q1[1]),q2=pdfMap(vp,d,g.q2[0],g.q2[1]),text=pdfMap(vp,d,layout.x,layout.y);
+        if(clipLine(q1[0],q1[1],q2[0],q2[1],vp.x,vp.y,vp.x+vp.w,vp.y+vp.h)){doc.line(p1[0],p1[1],q1[0],q1[1]);doc.line(p2[0],p2[1],q2[0],q2[1]);doc.line(q1[0],q1[1],q2[0],q2[1]);doc.text(a.textOverride||formatLength(g.L),text[0],text[1],{align:'center',angle:-layout.angle});}
       }else if(a.type==='text'){const p=pdfMap(vp,d,a.p[0],a.p[1]);if(p[0]>=vp.x&&p[0]<=vp.x+vp.w&&p[1]>=vp.y&&p[1]<=vp.y+vp.h)doc.text(a.text,p[0],p[1]);}
     }
     doc.setTextColor(0,0,0);doc.setDrawColor(20,25,32);
@@ -578,20 +663,21 @@
     showProgress('Exportando PDF','Dibujando geometría vectorial',.05);await new Promise(r=>setTimeout(r,30));
     try{
       const [pw,ph]=sheetSize(sh);const doc=new jspdf.jsPDF({unit:'mm',format:[pw,ph],orientation:pw>ph?'landscape':'portrait',compress:true});doc.setLineJoin('miter');doc.setLineCap('butt');doc.setDrawColor(15,23,42);doc.setLineWidth(.18);doc.rect(10,10,pw-20,ph-20);
-      let i=0;for(const vp of sh.viewports){const d=state.drawings.find(x=>x.id===vp.drawingId);if(!d||d.pending)continue;updateProgress(`${d.name} · ${d.kind==='threeD'?'imagen 3D':'líneas visibles'}`,.1+(i/Math.max(1,sh.viewports.length))*.72);if(d.kind==='threeD')pdfDraw3DView(doc,d,vp);else{pdfDrawSegments(doc,d.visible,vp,d,false);if(el.toggleHidden.checked)pdfDrawSegments(doc,d.hidden,vp,d,true);pdfDrawAnnotations(doc,d,vp);}doc.setFontSize(6);doc.setFont('helvetica','bold');doc.text(d.name,vp.x+vp.w/2,vp.y+vp.h+3.2,{align:'center'});doc.setFont('helvetica','normal');doc.text(d.kind==='threeD'?'NTS':`1:${vp.scale}`,vp.x+vp.w/2,vp.y+vp.h+6.1,{align:'center'});i++;}
+      let i=0;for(const vp of sh.viewports){const d=state.drawings.find(x=>x.id===vp.drawingId);if(!d||d.pending)continue;updateProgress(`${d.name} · ${d.kind==='threeD'?'imagen 3D':'líneas visibles'}`,.1+(i/Math.max(1,sh.viewports.length))*.72);if(d.kind==='threeD')pdfDraw3DView(doc,d,vp);else{pdfDrawDrawing(doc,d,vp,false);if(el.toggleHidden.checked)pdfDrawDrawing(doc,d,vp,true);pdfDrawAnnotations(doc,d,vp);}doc.setFontSize(6);doc.setFont('helvetica','bold');doc.text(d.name,vp.x+vp.w/2,vp.y+vp.h+3.2,{align:'center'});doc.setFont('helvetica','normal');doc.text(d.kind==='threeD'?'NTS':`1:${vp.scale}`,vp.x+vp.w/2,vp.y+vp.h+6.1,{align:'center'});i++;}
       pdfTitleBlock(doc,sh,pw,ph);updateProgress('Generando archivo',.93);doc.setProperties({title:`${sh.number} · ${sh.name}`,subject:'HEFESTOLAB IFC Drawing',creator:'HEFESTOLAB IFC Drawing'});doc.save(`${safeName(sh.number+'_'+sh.name)}.pdf`);hideProgress('PDF exportado');toast('PDF generado','Documento vectorial descargado.','good');
     }catch(err){console.error(err);el.progress.classList.add('hidden');setStatus('Error al exportar PDF','error');toast('Error PDF',err.message||String(err),'bad');}
   }
   function standaloneSvg(d){
     const b=d.bounds||ensureDrawingBounds(d),pad=Math.max(b.width,b.height)*.03+.1,vb={x:b.minX-pad,y:b.minY-pad,w:b.width+2*pad,h:b.height+2*pad};
-    const vis=d.visible.map(s=>`<line x1="${s[0]}" y1="${s[1]}" x2="${s[2]}" y2="${s[3]}"/>`).join('');const hid=el.toggleHidden.checked?d.hidden.map(s=>`<line x1="${s[0]}" y1="${s[1]}" x2="${s[2]}" y2="${s[3]}"/>`).join(''):'';const ann=(d.annotations||[]).map(a=>annotationSvg(a,d)).join('');
-    return `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb.x} ${vb.y} ${vb.w} ${vb.h}"><rect x="${vb.x}" y="${vb.y}" width="${vb.w}" height="${vb.h}" fill="white"/><g fill="none" stroke="#111827" stroke-width="0.02" vector-effect="non-scaling-stroke">${vis}</g><g fill="none" stroke="#94a3b8" stroke-width="0.013" stroke-dasharray=".18 .14" vector-effect="non-scaling-stroke">${hid}</g><style>.dim-line,.dim-ext{stroke:#2563eb;stroke-width:.018;fill:none}.dim-text,.note-text{fill:#1e3a8a;font-family:Arial,sans-serif}</style>${ann}</svg>`;
+    const layerSvg=(hidden)=>drawingLayers(d,hidden).map(g=>`<g fill="none" stroke="${g.style?esc(g.style.color):(hidden?'#94a3b8':'#111827')}" stroke-width="${hidden?'.013':'.02'}"${hidden?' stroke-dasharray=".18 .14"':''} vector-effect="non-scaling-stroke">${g.segments.map(s=>`<line x1="${s[0]}" y1="${s[1]}" x2="${s[2]}" y2="${s[3]}"/>`).join('')}</g>`).join('');
+    const vis=layerSvg(false),hid=el.toggleHidden.checked?layerSvg(true):'',ann=(d.annotations||[]).map(a=>annotationSvg(a,d)).join('');
+    return `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb.x} ${vb.y} ${vb.w} ${vb.h}"><rect x="${vb.x}" y="${vb.y}" width="${vb.w}" height="${vb.h}" fill="white"/>${hid}${vis}<style>.dim-line,.dim-ext{stroke:#2563eb;stroke-width:.018;fill:none}.dim-text,.note-text{fill:#1e3a8a;font-family:Arial,sans-serif}</style>${ann}</svg>`;
   }
   function exportSvg(){const d=activeDrawing();if(!d||d.pending||d.kind==='threeD'){toast('SVG no disponible','Selecciona una vista 2D vectorial. Las vistas 3D se exportan dentro del PDF.','warn');return;}downloadBlob(standaloneSvg(d),`${safeName(d.name)}.svg`,'image/svg+xml');toast('SVG exportado',d.name,'good');}
-  function dxfLine(layer,s){return `0\nLINE\n8\n${layer}\n10\n${s[0]}\n20\n${-s[1]}\n30\n0\n11\n${s[2]}\n21\n${-s[3]}\n31\n0\n`;}
+  function dxfLine(layer,s,color=null){const trueColor=color?parseInt(String(color).replace('#',''),16):null;return `0\nLINE\n8\n${layer}\n${Number.isFinite(trueColor)?`420\n${trueColor}\n`:''}10\n${s[0]}\n20\n${-s[1]}\n30\n0\n11\n${s[2]}\n21\n${-s[3]}\n31\n0\n`;}
   function exportDxf(){
     const d=activeDrawing();if(!d||d.pending||d.kind==='threeD'){toast('DXF no disponible','Selecciona una vista 2D vectorial.','warn');return;}
-    let e='';for(const s of d.visible)e+=dxfLine('VISIBLE',s);if(el.toggleHidden.checked)for(const s of d.hidden)e+=dxfLine('HIDDEN',s);
+    let e='';for(const group of drawingLayers(d,false))for(const s of group.segments)e+=dxfLine(group.style?.layer||'VISIBLE',s,group.style?.color);if(el.toggleHidden.checked)for(const group of drawingLayers(d,true))for(const s of group.segments)e+=dxfLine(group.style?.layer?`${group.style.layer}_HIDDEN`:'HIDDEN',s,group.style?.color);
     for(const a of d.annotations||[]){if(a.type==='dimension'){const g=dimensionGeom(a);e+=dxfLine('DIMENSIONS',[a.a[0],a.a[1],g.q1[0],g.q1[1]])+dxfLine('DIMENSIONS',[a.b[0],a.b[1],g.q2[0],g.q2[1]])+dxfLine('DIMENSIONS',[g.q1[0],g.q1[1],g.q2[0],g.q2[1]]);e+=`0\nTEXT\n8\nDIMENSIONS\n10\n${g.mid[0]}\n20\n${-g.mid[1]}\n30\n0\n40\n0.2\n1\n${a.textOverride||formatLength(g.L)}\n`;}else if(a.type==='text'){e+=`0\nTEXT\n8\nANNOTATION\n10\n${a.p[0]}\n20\n${-a.p[1]}\n30\n0\n40\n0.22\n1\n${a.text.replace(/[\r\n]+/g,' ')}\n`;}}
     const dxf=`0\nSECTION\n2\nHEADER\n9\n$INSUNITS\n70\n6\n0\nENDSEC\n0\nSECTION\n2\nENTITIES\n${e}0\nENDSEC\n0\nEOF\n`;downloadBlob(dxf,`${safeName(d.name)}.dxf`,'application/dxf');toast('DXF 2D exportado','Unidades de modelo: metros.','good');
   }
@@ -703,6 +789,39 @@
     if(info.class!=null)detail+=` · clase ${info.class}`;if(info.entitiesProcessed!=null)detail+=` · ${Number(info.entitiesProcessed).toLocaleString('es-ES')} entidades`;
     return `${phase[0].toUpperCase()+phase.slice(1)} · ${pct}%${detail}`;
   }
+  function modelById(modelId){
+    const list=state.engine?.fragments?.list;if(!list)return null;let model=list.get?.(modelId);if(model)return model;
+    for(const [key,value] of list)if(String(key)===String(modelId)||String(value?.modelId)===String(modelId))return value;return null;
+  }
+  async function clearIfcSelection(){
+    const prev=state.selectedIfc;if(prev){const model=modelById(prev.modelId);try{await model?.resetHighlight?.([prev.localId]);}catch(_){ }}
+    state.selectedIfc=null;if(el.statusSelection)el.statusSelection.textContent='Sin selección';
+  }
+  async function selectIfcHit(hit){
+    if(!hit||hit.localId===undefined||hit.localId===null){await clearIfcSelection();renderInspector();return;}
+    await clearIfcSelection();const model=hit.fragments||modelById(state.activeModelId);let modelId=model?.modelId||state.activeModelId;
+    for(const [key,value] of state.engine?.fragments?.list||[])if(value===model||String(value?.modelId)===String(model?.modelId)){modelId=key;break;}let guid=null;
+    try{guid=(await model?.getGuidsByLocalIds?.([hit.localId]))?.[0]||null;}catch(_){ }
+    const key=itemKey(modelId,hit.localId),category=state.itemCategories.get(key)||'Sin categoría';state.selectedIfc={modelId,localId:hit.localId,guid,category,key};
+    try{await model?.highlight?.([hit.localId],{color:{isColor:true,r:1,g:.72,b:.10},renderedFaces:1,opacity:1,transparent:false});}catch(_){ }
+    if(el.statusSelection)el.statusSelection.textContent=`${String(category).replace(/^IFC/,'')} · #${hit.localId}`;state.selectedLevelId=null;renderTrees();renderInspector();refreshFragmentsAfterCamera();
+  }
+  function bindModelPicking(engine){
+    if(engine.pickBound)return;engine.pickBound=true;const dom=engine.world.renderer.three.domElement;let down=null;
+    dom.addEventListener('pointerdown',ev=>{down={x:ev.clientX,y:ev.clientY};});
+    dom.addEventListener('pointerup',async ev=>{if(state.mode!=='model'||!state.modelLoaded||!down)return;const moved=Math.hypot(ev.clientX-down.x,ev.clientY-down.y);down=null;if(moved>4)return;let hit=null;try{hit=engine.raycaster?await engine.raycaster.castRay():await engine.fragments.raycast({camera:engine.world.camera.three,mouse:engine.mouse.position,dom});}catch(err){console.warn('Selección IFC:',err);}await selectIfcHit(hit);});
+  }
+  async function buildIfcSemanticIndex(){
+    const engine=state.engine;state.geometryMap={};state.ifcCategories=[];state.categoryItems=new Map();state.itemCategories=new Map();if(!engine)return;
+    for(const [modelId,model] of engine.fragments.list){const ids=await model.getItemsIdsWithGeometry();state.geometryMap[String(modelId)]=new Set(ids||[]);}
+    const classifier=engine.components.get(engine.OBC.Classifier),classificationName='IFC Drawing · Categorías';
+    try{classifier.list.delete?.(classificationName);}catch(_){ }
+    try{
+      await classifier.byCategory({classificationName});const classification=classifier.list.get(classificationName);
+      if(classification)for(const [name,data] of classification){let raw=null;try{raw=data?.get?await data.get():data?.map;}catch(_){raw=data?.map;}const map=intersectMap(raw,state.geometryMap),count=mapCount(map);if(!count)continue;const category=String(name);state.categoryItems.set(category,{name:category,map,count});for(const [modelId,ids] of Object.entries(map))for(const id of ids)state.itemCategories.set(itemKey(modelId,id),category);}
+    }catch(err){console.warn('Clasificación IFC:',err);toast('Categorías no disponibles','El modelo se ha cargado, pero este IFC no expone clasificación por entidad.','warn');}
+    state.ifcCategories=[...state.categoryItems.values()].sort((a,b)=>a.name.localeCompare(b.name,'es'));
+  }
   async function loadEngine(){
     if(state.engine)return state.engine;if(state.enginePromise)return state.enginePromise;
     state.enginePromise=(async()=>{
@@ -710,6 +829,9 @@
       const OBC=await import('https://cdn.jsdelivr.net/npm/@thatopen/components@3.4.8/+esm');
       updateProgress('Inicializando escena BIM',.10,'escena');
       const components=new OBC.Components();const worlds=components.get(OBC.Worlds);const world=worlds.create();world.scene=new OBC.SimpleScene(components);world.scene.setup();world.scene.three.background=null;world.renderer=new OBC.SimpleRenderer(components,el.viewer,{preserveDrawingBuffer:true,antialias:true});world.renderer.showLogo=false;world.camera=new OBC.OrthoPerspectiveCamera(components);components.init();
+      // El raycaster del mundo es obligatorio en Fragments 3.x para que la
+      // selección GPU devuelva IDs en vez de un resultado vacío.
+      let raycaster=null;try{raycaster=components.get(OBC.Raycasters).get(world);}catch(_){ }
       // Mantener el canvas sincronizado con el workspace (paneles, pestañas y resize de ventana).
       try{world.renderer.resize();}catch(_){ }
       const resizeObserver=typeof ResizeObserver!=='undefined'?new ResizeObserver(()=>{try{world.renderer.resize();}catch(_){ }}):null;
@@ -720,9 +842,9 @@
       fragments.list.onItemSet.add(({key,value:model})=>{model.useCamera(world.camera.three);world.scene.three.add(model.object);state.ifcModels++;state.activeModelId=key||model.modelId||state.activeModelId;if(validModelBox(model.box)){state.modelBox=model.box;state.modelBoxSource='Fragments model.box';}Promise.resolve(fragments.core.update(true)).catch(()=>{});});
       fragments.core.models.materials.list.onItemSet.add(({value:material})=>{if(!('isLodMaterial' in material&&material.isLodMaterial)){material.polygonOffset=true;material.polygonOffsetUnits=1;material.polygonOffsetFactor=Math.random();}});
       updateProgress('Configurando web-ifc 0.0.77',.31,'web-ifc');const ifcLoader=components.get(OBC.IfcLoader);await ifcLoader.setup({autoSetWasm:false,wasm:{path:'https://cdn.jsdelivr.net/npm/web-ifc@0.0.77/',absolute:true}});
-      const edgeProjector=components.get(OBC.EdgeProjector);edgeProjector.generator.angleThreshold=50;edgeProjector.cullerPixelsPerMeter=.05;
+      const edgeProjector=components.get(OBC.EdgeProjector);edgeProjector.generator.angleThreshold=50;edgeProjector.cullerPixelsPerMeter=.05;const mouse=new OBC.Mouse(world.renderer.three.domElement);
       const boxer=components.get(OBC.BoundingBoxer);
-      state.engine={OBC,components,world,fragments,ifcLoader,edgeProjector,boxer,grid,resizeObserver};updateProgress('Motor preparado',.39,'motor listo');return state.engine;
+      state.engine={OBC,components,world,fragments,ifcLoader,edgeProjector,boxer,grid,resizeObserver,mouse,raycaster};bindModelPicking(state.engine);updateProgress('Motor preparado',.39,'motor listo');return state.engine;
     })().catch(err=>{state.enginePromise=null;throw err;});return state.enginePromise;
   }
 
@@ -733,7 +855,7 @@
       showModal({title:'IFC real: abrir mediante servidor local',html:`<div class="modal-note"><b>No voy a intentar cargar el IFC desde file://.</b> Chrome/Edge pueden bloquear módulos ES y WebAssembly cuando una aplicación se abre con doble clic; eso produce cargas incompletas o estados engañosos.</div><div class="prop-section"><div class="prop-head">PRUEBA LOCAL CORRECTA</div><div class="prop-body"><p style="font-size:10px;line-height:1.55;margin:0">Sirve esta carpeta por HTTP y vuelve a abrir la herramienta. Si usas la copia de prueba de HEFESTOLAB, ejecuta <code>INICIAR_HEFESTOLAB_LOCAL.bat</code> en la raíz; en cualquier otro caso vale con <code>python -m http.server</code> en esa misma carpeta. Se abrirá en <b>http://127.0.0.1</b>. El IFC seguirá procesándose en tu equipo y no se subirá a HEFESTOLAB.</p></div></div>`,actions:[{label:'Entendido',primary:true,onClick:closeModal}]});return;
     }
     try{
-      state.demo=false;state.modelLoaded=false;state.modelBox=null;state.modelBoxSource=null;state.activeModelId=null;state.ifcModels=0;state.loadStats={conversionSeconds:0,totalSeconds:0,modelBoxSource:null,modelId:null};showProgress('Abriendo IFC',`${file.name} · leyendo cabecera`,.01,'metadatos');
+      state.demo=false;state.modelLoaded=false;state.modelBox=null;state.modelBoxSource=null;state.activeModelId=null;state.ifcModels=0;await clearIfcSelection();state.geometryMap={};state.ifcCategories=[];state.categoryItems=new Map();state.itemCategories=new Map();state.loadStats={conversionSeconds:0,totalSeconds:0,modelBoxSource:null,modelId:null};showProgress('Abriendo IFC',`${file.name} · leyendo cabecera`,.01,'metadatos');
       const headText=await file.slice(0,Math.min(file.size,40*1024*1024)).text();const meta=parseIfcMeta(headText);state.sourceMeta={...meta,size:file.size};syncLevelsFromMeta(meta.storeys);state.projectName=safeName(file.name);state.source=file.name;
       el.projectName.textContent=state.projectName;el.fileMeta.textContent=`${meta.schema} · ${bytesText(file.size)} · ${meta.storeys.length?meta.storeys.length+' niveles':'niveles no detectados'}`;renderTrees();
       // Mostrar el viewport ANTES de construir WebGL. Crear el renderer dentro de un
@@ -771,7 +893,7 @@
       }
       if(!validModelBox(state.modelBox))throw new Error('IFC convertido, pero Fragments no devolvió una extensión 3D válida.');
       state.loadStats.modelBoxSource=state.modelBoxSource;state.loadStats.modelId=state.activeModelId||safeName(file.name);state.loadStats.totalSeconds=progressElapsed();
-      state.modelLoaded=true;
+      state.modelLoaded=true;updateProgress('Clasificando elementos IFC',.982,'propiedades');await buildIfcSemanticIndex();
       buildIfcViewPresets();renderTrees();el.modelBadge.textContent=`${meta.schema} · ${safeName(file.name)}`;el.engineHint.textContent=`Motor IFC · That Open / web-ifc · ${modelBoxText()}`;
       updateProgress('Modelo listo',1,'finalizado');hideProgress('IFC cargado');setMode('model');renderInspector();
       // La carga ya está oficialmente terminada. Resize + actualización + encuadre se
@@ -854,6 +976,7 @@
     if(state.mode==='sheet'&&sh){renderSheetInspector(sh);return;}
     if(state.mode==='drawing'&&ann){renderAnnotationInspector(ann,d);return;}
     if(state.mode==='drawing'&&d){renderDrawingInspector(d);return;}
+    if(state.mode==='model'&&state.selectedIfc){renderIfcSelectionInspector(state.selectedIfc,d);return;}
     if(state.mode==='model'&&level){renderLevelInspector(level);return;}
     if(state.mode==='model'&&state.source){renderModelInspector();return;}
     el.inspectorTitle.textContent='Herramienta';el.inspector.innerHTML='<div class="inspector-empty"><div class="empty-icon">i</div><b>IFC Drawing</b><p>Selecciona un modelo, un nivel, una vista, una cota o un viewport para editar sus propiedades.</p></div>';
@@ -865,6 +988,27 @@
     $('#inspFit')?.addEventListener('click',()=>fitModelImmediate(true));$('#inspRefresh3d')?.addEventListener('click',()=>{try{state.engine?.world?.renderer?.resize?.();}catch(_){ }refreshFragmentsAfterCamera();toast('Visor 3D actualizado','Se ha recalculado el tamaño del canvas y actualizado Fragments.','good');});
     $('#inspLevel')?.addEventListener('click',addLevelDialog);$('#inspPlan')?.addEventListener('click',()=>projectionDialog('plan'));$('#inspElev')?.addEventListener('click',()=>projectionDialog('elevation'));$('#inspSection')?.addEventListener('click',()=>projectionDialog('section'));$('#insp3D')?.addEventListener('click',capture3DViewDialog);
   }
+  async function updateDrawingDisplay(d,change,undo,label){
+    if(!d||d.pending||d.kind==='threeD'){toast('Vista 2D no disponible','Genera o selecciona primero una planta, sección o alzado.','warn');return false;}
+    change();try{await projectPendingDrawing(d);toast(label,d.name,'good');return true;}catch(err){undo?.();clearInterval(state.progressState.timer);state.progressState.timer=null;el.progress.classList.add('hidden');state.busy=false;setStatus('No se pudo actualizar la vista','error');toast('No se pudo actualizar la vista',err.message||String(err),'bad');return false;}
+  }
+  function bindSelectedIfcActions(d,selection){
+    if(!d||!selection)return;const display=ensureDrawingDisplay(d),key=selection.key;
+    $('#ifcHideInView')?.addEventListener('click',()=>{const had=display.hiddenItems.has(key);updateDrawingDisplay(d,()=>display.hiddenItems.add(key),()=>{if(!had)display.hiddenItems.delete(key);},'Elemento ocultado en la vista');});
+    $('#ifcShowInView')?.addEventListener('click',()=>{const had=display.hiddenItems.has(key);updateDrawingDisplay(d,()=>display.hiddenItems.delete(key),()=>{if(had)display.hiddenItems.add(key);},'Elemento mostrado en la vista');});
+    $('#ifcApplyColor')?.addEventListener('click',()=>{const old=display.itemColors.get(key),color=$('#ifcElementColor')?.value||'#ef4444';updateDrawingDisplay(d,()=>display.itemColors.set(key,color),()=>{if(old)display.itemColors.set(key,old);else display.itemColors.delete(key);},'Color de elemento aplicado');});
+    $('#ifcClearColor')?.addEventListener('click',()=>{const old=display.itemColors.get(key);updateDrawingDisplay(d,()=>display.itemColors.delete(key),()=>{if(old)display.itemColors.set(key,old);},'Color de elemento restablecido');});
+  }
+  function selectedIfcBlock(d){
+    const s=state.selectedIfc;if(!s||!d)return `<div class="note-mini">Para ocultar o colorear un elemento concreto, pulsa <b>Seleccionar en 3D</b> y haz clic sobre él. Las categorías se controlan aquí debajo.</div>`;
+    const display=ensureDrawingDisplay(d),hidden=display.hiddenItems.has(s.key),color=display.itemColors.get(s.key)||'#ef4444';
+    return `<div class="prop-section"><div class="prop-head">ELEMENTO IFC SELECCIONADO</div><div class="prop-body"><p class="ifc-selection-name"><b>${esc(String(s.category).replace(/^IFC/,''))}</b><br><small>${esc(s.guid||('#'+s.localId))}</small></p><div class="field"><label>Color en esta vista</label><input id="ifcElementColor" type="color" value="${esc(color)}"></div><div class="prop-buttons"><button class="prop-btn ${hidden?'':'danger'}" id="ifcHideInView" ${hidden?'disabled':''}>Ocultar elemento</button><button class="prop-btn" id="ifcShowInView" ${hidden?'':'disabled'}>Mostrar elemento</button><button class="prop-btn primary" id="ifcApplyColor">Aplicar color</button><button class="prop-btn" id="ifcClearColor">Color original</button></div></div></div>`;
+  }
+  function renderIfcSelectionInspector(selection,d){
+    const target=d&&!d.pending&&d.kind!=='threeD'?d:null;el.inspectorTitle.textContent='Elemento IFC';
+    el.inspector.innerHTML=`<div class="prop-section"><div class="prop-head">SELECCIÓN 3D EXACTA</div><div class="prop-body"><div class="field"><label>Categoría</label><input value="${esc(String(selection.category).replace(/^IFC/,''))}" readonly></div><div class="field"><label>GlobalId</label><input value="${esc(selection.guid||'No disponible')}" readonly></div><div class="field"><label>ID local</label><input value="${esc(selection.localId)}" readonly></div><div class="field"><label>Vista documental activa</label><input value="${esc(target?.name||'Ninguna vista 2D generada')}" readonly></div>${target?selectedIfcBlock(target):'<p class="drag-hint">Abre o genera una vista 2D para aplicar visibilidad o color a este elemento.</p>'}<div class="prop-buttons"><button class="prop-btn" id="ifcClearSelection">Cerrar selección</button>${target?'<button class="prop-btn primary" id="ifcOpenDrawing">Volver a la vista 2D</button>':''}</div></div></div>`;
+    bindSelectedIfcActions(target,selection);$('#ifcClearSelection')?.addEventListener('click',async()=>{await clearIfcSelection();renderInspector();refreshFragmentsAfterCamera();});$('#ifcOpenDrawing')?.addEventListener('click',()=>activateDrawing(target.id));
+  }
   function renderLevelInspector(level){
     const local=level.source==='LOCAL';el.inspectorTitle.textContent='Nivel';el.inspector.innerHTML=`<div class="prop-section"><div class="prop-head">NIVEL DE DOCUMENTACIÓN</div><div class="prop-body"><div class="field"><label>Nombre</label><input id="levelEditName" value="${esc(level.name)}"></div><div class="field"><label>Cota (m)</label><input id="levelEditElev" type="number" step="0.01" value="${fmt(level.elevation,3)}"></div><div class="field"><label>Origen</label><input value="${esc(level.source)}" readonly></div><div class="prop-buttons"><button class="prop-btn primary" id="levelMakePlan" ${state.modelLoaded?'':'disabled'}>Crear planta</button><button class="prop-btn" id="levelClose">Cerrar</button>${local?'<button class="prop-btn danger" id="levelDelete">Eliminar</button>':''}</div><p class="drag-hint">Los cambios de nivel son locales a IFC Drawing y no alteran el archivo IFC original.</p></div></div>`;
     $('#levelEditName')?.addEventListener('change',e=>{level.name=e.target.value.trim()||level.name;renderTrees();});$('#levelEditElev')?.addEventListener('change',e=>{const v=parseFloat(e.target.value);if(Number.isFinite(v)){level.elevation=v;state.levels.sort((a,b)=>a.elevation-b.elevation);renderTrees();}});$('#levelMakePlan')?.addEventListener('click',()=>createPlanForLevel(level,true));$('#levelClose')?.addEventListener('click',()=>{state.selectedLevelId=null;renderTrees();renderInspector();});$('#levelDelete')?.addEventListener('click',()=>{state.levels=state.levels.filter(l=>l.id!==level.id);state.drawings=state.drawings.filter(d=>d.levelId!==level.id);state.selectedLevelId=null;renderTrees();renderInspector();toast('Nivel eliminado','Solo de esta sesión local.');});
@@ -874,8 +1018,13 @@
       el.inspectorTitle.textContent='Vista 3D';el.inspector.innerHTML=`<div class="prop-thumb"><img src="${d.imageData}" alt=""></div><div class="prop-section"><div class="prop-head">IDENTIDAD</div><div class="prop-body"><div class="field"><label>Nombre</label><input id="viewName3d" value="${esc(d.name)}"></div><div class="field"><label>Tipo</label><input value="VISTA 3D" readonly></div><div class="field"><label>Escala</label><input value="NTS · Sin escala" readonly></div><div class="field"><label>Resolución</label><input value="${d.imageWidth||0} × ${d.imageHeight||0} px" readonly></div></div></div><div class="prop-section"><div class="prop-head">ACCIONES</div><div class="prop-body"><div class="prop-buttons"><button class="prop-btn primary" id="addSheetView3d">Añadir a plano</button><button class="prop-btn danger" id="deleteView3d">Eliminar vista</button></div><p class="drag-hint">También puedes arrastrar esta vista desde el Navegador directamente sobre un plano.</p></div></div>`;
       $('#viewName3d')?.addEventListener('change',e=>{d.name=e.target.value.trim()||d.name;renderTrees();renderDrawing();});$('#addSheetView3d')?.addEventListener('click',()=>addViewToSheet(d.id));$('#deleteView3d')?.addEventListener('click',()=>{for(const sh of state.sheets)sh.viewports=sh.viewports.filter(v=>v.drawingId!==d.id);state.drawings=state.drawings.filter(x=>x.id!==d.id);state.activeDrawingId=null;renderTrees();renderDrawing();renderInspector();toast('Vista 3D eliminada');});return;
     }
-    el.inspectorTitle.textContent='Vista 2D';const b=d.pending?null:(d.bounds||ensureDrawingBounds(d));el.inspector.innerHTML=`<div class="prop-section"><div class="prop-head">IDENTIDAD</div><div class="prop-body"><div class="field"><label>Nombre</label><input id="viewName" value="${esc(d.name)}"></div><div class="field"><label>Tipo</label><input value="${drawingLabelKind(d.kind)}" readonly></div><div class="field"><label>Estado</label><input value="${d.pending?'Pendiente de generar':'Vectorial'}" readonly></div></div></div>${b?`<div class="prop-section"><div class="prop-head">GEOMETRÍA</div><div class="prop-body"><div class="stat-grid"><div class="stat"><b>${d.visible.length.toLocaleString('es-ES')}</b><span>Líneas visibles</span></div><div class="stat"><b>${d.hidden.length.toLocaleString('es-ES')}</b><span>Líneas ocultas</span></div><div class="stat"><b>${fmt(b.width,2)} m</b><span>Ancho</span></div><div class="stat"><b>${fmt(b.height,2)} m</b><span>Alto</span></div></div></div></div>`:''}<div class="prop-section"><div class="prop-head">ACCIONES</div><div class="prop-body"><div class="prop-buttons"><button class="prop-btn" id="fit2d">Encuadrar</button><button class="prop-btn primary" id="addSheetView">${d.pending?'Generar y añadir':'Añadir a plano'}</button><button class="prop-btn" id="svg2">Exportar SVG</button><button class="prop-btn" id="dxf2">Exportar DXF</button></div></div></div>`;
-    $('#viewName')?.addEventListener('change',e=>{d.name=e.target.value.trim()||d.name;renderTrees();renderDrawing();});$('#fit2d')?.addEventListener('click',()=>{fitViewBox(d);renderDrawing();});$('#addSheetView')?.addEventListener('click',()=>addViewToSheet(d.id));$('#svg2')?.addEventListener('click',exportSvg);$('#dxf2')?.addEventListener('click',exportDxf);
+    const display=ensureDrawingDisplay(d),categories=state.ifcCategories.map((c,i)=>{const hidden=display.hiddenCategories.has(c.name),active=display.categoryColors.has(c.name),color=display.categoryColors.get(c.name)||categoryDefaultColor(c.name);return `<div class="ifc-category-row"><button class="cat-eye ${hidden?'off':''}" data-cat-vis="${i}" title="${hidden?'Mostrar':'Ocultar'} categoría">${hidden?'○':'●'}</button><span title="${esc(c.name)}">${esc(c.name.replace(/^IFC/,''))}<small>${c.count.toLocaleString('es-ES')}</small></span><label title="Activar color de categoría"><input type="checkbox" data-cat-color-on="${i}" ${active?'checked':''}></label><input type="color" data-cat-color="${i}" value="${esc(color)}" title="Color de categoría"></div>`;}).join('');
+    el.inspectorTitle.textContent='Vista 2D';const b=d.pending?null:(d.bounds||ensureDrawingBounds(d));el.inspector.innerHTML=`<div class="prop-section"><div class="prop-head">IDENTIDAD</div><div class="prop-body"><div class="field"><label>Nombre</label><input id="viewName" value="${esc(d.name)}"></div><div class="field"><label>Tipo</label><input value="${drawingLabelKind(d.kind)}" readonly></div><div class="field"><label>Estado</label><input value="${d.pending?'Pendiente de generar':'Vectorial'}" readonly></div></div></div>${b?`<div class="prop-section"><div class="prop-head">GEOMETRÍA</div><div class="prop-body"><div class="stat-grid"><div class="stat"><b>${d.visible.length.toLocaleString('es-ES')}</b><span>Líneas visibles</span></div><div class="stat"><b>${d.hidden.length.toLocaleString('es-ES')}</b><span>Líneas ocultas</span></div><div class="stat"><b>${fmt(b.width,2)} m</b><span>Ancho</span></div><div class="stat"><b>${fmt(b.height,2)} m</b><span>Alto</span></div></div></div></div>`:''}<div class="prop-section"><div class="prop-head">VISIBILIDAD Y COLOR IFC</div><div class="prop-body"><button class="prop-btn primary wide" id="selectIfc3d">Seleccionar elemento en 3D</button>${selectedIfcBlock(d)}${categories?`<div class="ifc-category-head"><b>Categorías</b><small>ojo · color</small></div><div class="ifc-category-list">${categories}</div><div class="prop-buttons"><button class="prop-btn" id="resetIfcDisplay">Restablecer vista</button></div>`:'<p class="drag-hint">Este IFC no expone categorías con geometría.</p>'}</div></div><div class="prop-section"><div class="prop-head">ACCIONES</div><div class="prop-body"><div class="prop-buttons"><button class="prop-btn" id="fit2d">Encuadrar</button><button class="prop-btn primary" id="addSheetView">${d.pending?'Generar y añadir':'Añadir a plano'}</button><button class="prop-btn" id="svg2">Exportar SVG</button><button class="prop-btn" id="dxf2">Exportar DXF</button></div></div></div>`;
+    $('#viewName')?.addEventListener('change',e=>{d.name=e.target.value.trim()||d.name;renderTrees();renderDrawing();});$('#fit2d')?.addEventListener('click',()=>{fitViewBox(d);renderDrawing();});$('#addSheetView')?.addEventListener('click',()=>addViewToSheet(d.id));$('#svg2')?.addEventListener('click',exportSvg);$('#dxf2')?.addEventListener('click',exportDxf);$('#selectIfc3d')?.addEventListener('click',()=>{setMode('model');toast('Selecciona un elemento','Haz clic sobre el modelo 3D. Después podrás ocultarlo o colorearlo en «'+d.name+'».');});bindSelectedIfcActions(d,state.selectedIfc);
+    $$('[data-cat-vis]',el.inspector).forEach(btn=>btn.addEventListener('click',()=>{const c=state.ifcCategories[+btn.dataset.catVis];if(!c)return;const had=display.hiddenCategories.has(c.name);updateDrawingDisplay(d,()=>had?display.hiddenCategories.delete(c.name):display.hiddenCategories.add(c.name),()=>had?display.hiddenCategories.add(c.name):display.hiddenCategories.delete(c.name),had?'Categoría mostrada':'Categoría ocultada');}));
+    $$('[data-cat-color-on]',el.inspector).forEach(input=>input.addEventListener('change',()=>{const c=state.ifcCategories[+input.dataset.catColorOn];if(!c)return;const old=display.categoryColors.get(c.name),color=$(`[data-cat-color="${input.dataset.catColorOn}"]`,el.inspector)?.value||categoryDefaultColor(c.name);updateDrawingDisplay(d,()=>input.checked?display.categoryColors.set(c.name,color):display.categoryColors.delete(c.name),()=>{if(old)display.categoryColors.set(c.name,old);else display.categoryColors.delete(c.name);},input.checked?'Color de categoría aplicado':'Color de categoría restablecido');}));
+    $$('[data-cat-color]',el.inspector).forEach(input=>input.addEventListener('change',()=>{const c=state.ifcCategories[+input.dataset.catColor];if(!c)return;const old=display.categoryColors.get(c.name),box=$(`[data-cat-color-on="${input.dataset.catColor}"]`,el.inspector);updateDrawingDisplay(d,()=>{display.categoryColors.set(c.name,input.value);if(box)box.checked=true;},()=>{if(old)display.categoryColors.set(c.name,old);else display.categoryColors.delete(c.name);},'Color de categoría aplicado');}));
+    $('#resetIfcDisplay')?.addEventListener('click',()=>{const old={hiddenCategories:new Set(display.hiddenCategories),hiddenItems:new Set(display.hiddenItems),categoryColors:new Map(display.categoryColors),itemColors:new Map(display.itemColors)};updateDrawingDisplay(d,()=>{display.hiddenCategories.clear();display.hiddenItems.clear();display.categoryColors.clear();display.itemColors.clear();},()=>{d.display=old;},'Visibilidad y colores restablecidos');});
   }
   function renderAnnotationInspector(a,d){
     el.inspectorTitle.textContent=a.type==='dimension'?'Cota':'Texto';

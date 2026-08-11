@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#1f2937">
+  <title>IFC Energy Model · HEFESTOLAB Tools</title>
+  <meta name="description" content="Herramienta gratuita de HEFESTOLAB que audita, corrige y aligera un IFC para que Open BIM Analytical Model y CYPETHERM HE Plus (CTE 2019) lo lean sin errores. Todo el proceso ocurre en el navegador.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="https://hefestolab.github.io/tools/ifc-energy-model/">
+  <link rel="alternate" hreflang="es" href="https://hefestolab.github.io/tools/ifc-energy-model/">
+  <link rel="alternate" hreflang="x-default" href="https://hefestolab.github.io/tools/ifc-energy-model/">
+  <link rel="icon" href="../../assets/brand/favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="HEFESTOLAB">
+  <meta property="og:title" content="IFC Energy Model · Prepara tu IFC para CYPETHERM HE Plus">
+  <meta property="og:description" content="Audita, corrige y aligera un IFC para el modelo analítico de CYPE. El archivo no sale de tu equipo.">
+  <meta property="og:url" content="https://hefestolab.github.io/tools/ifc-energy-model/">
+  <meta property="og:image" content="https://hefestolab.github.io/assets/images/og-hefestolab.jpg">
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"SoftwareApplication",
+    "name":"IFC Energy Model",
+    "applicationCategory":"DesignApplication",
+    "operatingSystem":"Navegador web",
+    "url":"https://hefestolab.github.io/tools/ifc-energy-model/",
+    "description":"Herramienta web gratuita que audita un archivo IFC frente a los requisitos de Open BIM Analytical Model de CYPE, corrige IsExternal, tipos predefinidos y cantidades de espacio, y aligera el modelo para la certificación energética con CYPETHERM HE Plus (CTE 2019).",
+    "offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},
+    "publisher":{"@type":"Organization","name":"HEFESTOLAB","url":"https://hefestolab.github.io/"}
+  }
+  </script>
+  <link rel="stylesheet" href="assets/css/ifc-energy-model.css?v=1.9.0">
+  <script>(function(){try{var s=localStorage.getItem("hefestolab-theme");document.documentElement.dataset.theme=s||((window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light")}catch(e){}})();</script>
+</head>
+<body>
+<div class="app-shell">
+
+  <header class="app-topbar">
+    <a class="app-brand" href="../../index.html" title="Volver a HEFESTOLAB">
+      <img src="../../assets/brand/hefesto-symbol.svg" alt="">
+      <span><b>HEFESTOLAB</b><small>IFC ENERGY MODEL · TOOLS</small></span>
+    </a>
+    <span class="top-sep"></span>
+    <div class="file-meta">
+      <span id="fileName">Ningún modelo cargado</span>
+      <small id="fileInfo">Abre un IFC para empezar</small>
+    </div>
+    <div class="top-spacer"></div>
+    <label class="top-btn primary" for="ifcInput" title="Abrir un archivo IFC de este equipo">Abrir IFC</label>
+    <input id="ifcInput" type="file" accept=".ifc,.IFC,.ifcxml" hidden>
+    <button class="top-btn" id="btnReset" type="button" disabled>Cerrar modelo</button>
+    <button class="icon-btn" id="btnTheme" type="button" title="Cambiar tema" aria-label="Cambiar tema">◐</button>
+    <a class="icon-btn" href="../index.html" title="Volver a las herramientas" aria-label="Salir">×</a>
+  </header>
+
+  <nav class="modebar" aria-label="Fases del trabajo">
+    <button class="mode-tab active" data-tab="start" type="button">Inicio</button>
+    <button class="mode-tab" data-tab="audit" type="button" disabled>Auditoría <span class="badge" id="badgeAudit">0</span></button>
+    <button class="mode-tab" data-tab="spaces" type="button" disabled>Espacios <span class="badge" id="badgeSpaces">0</span></button>
+    <button class="mode-tab" data-tab="elements" type="button" disabled>Cerramientos <span class="badge" id="badgeElems">0</span></button>
+    <button class="mode-tab" data-tab="purge" type="button" disabled>Aligerado <span class="badge" id="badgePurge">0</span></button>
+    <button class="mode-tab" data-tab="export" type="button" disabled>Exportar</button>
+    <span class="spacer"></span>
+    <span class="chip" id="schemaChip">—</span>
+    <span class="chip" id="scoreChip">—</span>
+  </nav>
+
+  <div class="workspace">
+    <aside class="panel-left" id="panelLeft">
+      <div id="sidePanel">
+        <div class="block">
+          <h3>Cómo funciona</h3>
+          <p>El IFC se procesa íntegramente en tu navegador con un motor propio de HEFESTOLAB. No se sube a ningún servidor y tu archivo original no se modifica.</p>
+        </div>
+        <div class="block">
+          <h3>Destino</h3>
+          <p>El IFC corregido está pensado para subirlo a un proyecto de BIMserver.center, generar el modelo analítico con <b>Open BIM Analytical Model</b> e importarlo después en <b>CYPETHERM HE Plus (CTE 2019)</b>.</p>
+        </div>
+      </div>
+    </aside>
+
+    <main class="stage" id="stage"></main>
+  </div>
+
+  <footer class="statusbar">
+    <span class="status-dot" id="statusDot"></span>
+    <span id="statusText">Preparado</span>
+    <span class="spacer"></span>
+    <span id="statusMeta"></span>
+    <span>IFC Energy Model v1.9 · Preview</span>
+  </footer>
+</div>
+
+<div class="progress hidden" id="progress">
+  <div class="card">
+    <b id="progTitle">Procesando</b>
+    <p id="progText">…</p>
+    <div class="bar"><i id="progBar"></i></div>
+    <small id="progMeta"></small>
+  </div>
+</div>
+<div class="toasts" id="toasts"></div>
+
+<script src="assets/js/step.js?v=1.9.0"></script>
+<script src="assets/js/geometry.js?v=1.9.0"></script>
+<script src="assets/js/cype.js?v=1.9.0"></script>
+<script src="assets/js/rooms.js?v=1.9.0"></script>
+<script src="assets/js/fix.js?v=1.9.0"></script>
+<script src="assets/js/viewer.js?v=1.9.0"></script>
+<script src="assets/js/app.js?v=1.9.0"></script>
+</body>
+</html>

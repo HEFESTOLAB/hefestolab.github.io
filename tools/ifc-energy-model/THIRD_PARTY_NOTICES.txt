@@ -1,0 +1,56 @@
+HEFESTOLAB · IFC Energy Model
+Avisos sobre componentes de terceros
+====================================
+
+DEPENDENCIAS DE TERCEROS: NINGUNA
+---------------------------------
+Esta aplicación no carga bibliotecas externas, ni desde CDN ni empaquetadas.
+El lector, el editor y el escritor de IFC, la geometría y la interfaz son
+código propio de HEFESTOLAB.
+
+Consecuencias prácticas:
+
+  - Funciona sin conexión a internet una vez cargada la página.
+  - Funciona abierta con doble clic (protocolo file://), a diferencia de las
+    herramientas que dependen de módulos ES o de WebAssembly.
+  - No hay peticiones de red durante el procesado, de modo que el modelo no
+    puede salir del equipo ni siquiera de forma accidental.
+
+La única fuente externa es la tipografía Inter, servida desde la propia web
+en /assets/fonts/. Si no está disponible, el navegador recurre a una
+tipografía del sistema y la herramienta sigue funcionando igual.
+
+Inter · SIL Open Font License 1.1 · https://rsms.me/inter/
+
+
+CRITERIOS TÉCNICOS DE AUDITORÍA
+-------------------------------
+Las comprobaciones reproducen los requisitos publicados por CYPE para el
+generador del modelo analítico. HEFESTOLAB no está asociada a CYPE
+Ingenieros, S.A.; las referencias a sus productos se hacen únicamente para
+identificar el flujo de trabajo de destino.
+
+  · «Requisitos del IFC para el generador del modelo analítico»
+    https://learning.cype.com/es/faq/requisitos-del-ifc-para-el-generador-del-modelo-analitico/
+
+  · «Recomendaciones para el modelado en Revit y configuración de la
+    exportación a IFC»
+    https://learning.cype.com/es/faq/recomendaciones-para-el-modelado-en-revit-y-configuracion-de-la-exportacion-a-ifc/
+
+  · Open BIM Analytical Model
+    https://info.cype.com/es/software/open-bim-analytical-model/
+
+  · CYPETHERM HE Plus (CTE 2019)
+    https://info.cype.com/es/producto/cypetherm-he-plus-inicio/
+
+El esquema IFC es una norma abierta de buildingSMART International
+(ISO 16739). Este software no está certificado por buildingSMART.
+
+
+LICENCIA
+--------
+© 2026 HEFESTOLAB · Luis Carlos de la Peña Arribas
+Uso gratuito. La herramienta se ofrece tal cual, en fase de preview, sin
+garantía de idoneidad para un fin concreto. El resultado debe revisarlo
+siempre un técnico competente antes de emplearlo en un proyecto: la
+deducción automática de adyacencias es una ayuda, no una certificación.

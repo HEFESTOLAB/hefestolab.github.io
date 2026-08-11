@@ -28,7 +28,7 @@ HEFESTO Pre-BIM Modeler cubre arquitectura, estructura y MEP en una sola aplicac
 
 ## Launch / Lanzamiento
 
-HEFESTO Pre-BIM Modeler: beta publica en septiembre de 2026. Programa Early Access limitado a 25 plazas, 499 EUR/ano (IVA no incluido), con licencia completa durante la beta, actualizaciones, soporte directo y sesion de puesta en marcha. Reserva por correo en info@solucionesbim.com. Las herramientas de HEFESTOLAB Tools (IFC Drawing) siguen siendo gratuitas y sin registro.
+HEFESTO Pre-BIM Modeler: beta publica en septiembre de 2026. Programa Early Access limitado a 25 plazas, 499 EUR/ano (IVA no incluido), con licencia completa durante la beta, actualizaciones, soporte directo y sesion de puesta en marcha. Reserva por correo en info@solucionesbim.com. Las herramientas de HEFESTOLAB Tools (IFC Drawing e IFC Energy Model) siguen siendo gratuitas y sin registro.
 
 ## Author / Autor
 
@@ -48,7 +48,12 @@ Los proyectos se publican anonimizados. Ejemplos: auditoría geométrica de 134 
 - Privacidad / Privacy: https://hefestolab.github.io/legal/privacidad.html
 
 
+## Case study / Caso · Certificación energética CTE (2026)
+
+Vivienda unifamiliar, zona climática E1 (Burgos). IFC2X3 de autoría exportado desde Revit 2026 con 1.076.965 entidades y 55 MB: cada teja como IfcBeam independiente, dos áreas de Revit exportadas como IfcSpace solapando todas las estancias, espacios extruidos hasta la cumbrera atravesando la cubierta, solera sin clasificar y un hueco sin carpintería. Preparado con IFC Energy Model: 978 KB y 17.900 entidades, 0 referencias colgantes, 154,8 m² acondicionados con 0,1% de desvío frente a la memoria de proyecto, y volumen real bajo cubierta inclinada de 723,8 m³ frente a los 493,8 que daba el aplanado a altura de planta. Certificación completada con CYPETHERM HE Plus (CTE 2019).
+
 ## HEFESTOLAB Tools
 - Español / Spanish landing: https://hefestolab.github.io/tools/
 - English landing: https://hefestolab.github.io/en/tools/
+- IFC Energy Model app: https://hefestolab.github.io/tools/ifc-energy-model/ — free browser tool that audits an IFC against the published CYPE requirements for Open BIM Analytical Model, writes IsExternal on walls, slabs, doors and windows, assigns USERDEFINED BASESLAB / BASEMENTWALL / PARTYWALL predefined types, generates Qto_SpaceBaseQuantities from the space geometry, clamps space heights to the storey above, removes duplicated or exterior spaces, and strips furniture, MEP, topography and repetitive part series together with their element types and representation maps. Includes an integrated 3D viewer built on That Open Components and web-ifc: audit findings and table rows isolate, highlight and frame the affected elements in the model, elements are coloured by the diagnosis itself (orange for external, blue for internal, brown for ground contact, purple for roofs, grey for what will be removed), and clicking an element in 3D selects its row. The viewer loads the already-cleaned model, so it opens in seconds and shows exactly the file CYPE will read. Typical result on a Revit export: 55 MB and 1.07 million entities down to under 1 MB and around 17,000 entities. Target workflow: IFC to BIMserver.center to Open BIM Analytical Model to CYPETHERM HE Plus (CTE 2019). Everything is processed client-side; no upload. The application UI is in Spanish.
 - IFC Drawing app: https://hefestolab.github.io/tools/ifc-drawing/ — local IFC processing, vector plans/sections/elevations, 3D views, dimensions, sheets, PDF/DXF. The current application UI is in Spanish.
