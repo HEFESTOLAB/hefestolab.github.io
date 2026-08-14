@@ -9,11 +9,25 @@
   <link rel="canonical" href="https://hefestolab.github.io/tools/ifc-drawing/">
   <link rel="alternate" hreflang="es" href="https://hefestolab.github.io/tools/ifc-drawing/">
   <link rel="alternate" hreflang="x-default" href="https://hefestolab.github.io/tools/ifc-drawing/">
+  <link rel="help" href="../../agents/ifc-drawing/" title="HEFESTO IFC Drawing Agent Operating Guide">
+  <meta name="hefesto-agent-ready" content="true">
+  <meta name="hefesto-agent-guide" content="https://hefestolab.github.io/agents/ifc-drawing/">
+  <meta name="hefesto-agent-skill" content="https://hefestolab.github.io/agents/ifc-drawing/SKILL.md">
   <link rel="icon" href="../../assets/brand/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/ifc-drawing.css?v=0.5.0">
+  <script type="application/json" id="hefesto-agent-manifest">
+  {
+    "application": "HEFESTO IFC Drawing",
+    "agentReady": true,
+    "version": "0.1",
+    "guide": "https://hefestolab.github.io/agents/ifc-drawing/",
+    "skill": "https://hefestolab.github.io/agents/ifc-drawing/SKILL.md",
+    "manifest": "https://hefestolab.github.io/tools/ifc-drawing/agent.json"
+  }
+  </script>
 </head>
 <body>
-  <div id="app" class="app-shell">
+  <div id="app" class="app-shell" data-hefesto-agent-ready="true" data-hefesto-mode="model" data-hefesto-draw-tool="select" data-hefesto-model-loaded="false" data-hefesto-busy="false" data-hefesto-snap="true" data-hefesto-ortho="true">
     <header class="app-topbar">
       <a class="app-brand" href="../../index.html" title="Volver a HEFESTOLAB">
         <img src="../../assets/brand/hefesto-symbol.svg" alt="">
@@ -25,45 +39,45 @@
         <small id="fileMeta">Ningún IFC cargado</small>
       </div>
       <div class="top-spacer"></div>
-      <button class="top-btn" id="btnDemo" type="button" title="Cargar proyecto de demostración">Demo</button>
-      <label class="top-btn primary" for="ifcInput" title="Abrir un archivo IFC desde este dispositivo">Abrir IFC</label>
-      <input id="ifcInput" type="file" accept=".ifc,.IFC" hidden>
+      <button class="top-btn" id="btnDemo" type="button" title="Cargar proyecto de demostración" data-hefesto-tool="load-demo" data-hefesto-purpose="Load the local vector demonstration project">Demo</button>
+      <label class="top-btn primary" for="ifcInput" title="Abrir un archivo IFC desde este dispositivo" data-hefesto-tool="open-ifc" data-hefesto-purpose="Choose an IFC file for local browser processing">Abrir IFC</label>
+      <input id="ifcInput" type="file" accept=".ifc,.IFC" aria-label="Seleccionar archivo IFC local" data-hefesto-tool="ifc-file-input" hidden>
       <button class="icon-btn top-icon" id="btnTheme" type="button" title="Cambiar tema" aria-label="Cambiar tema">◐</button>
       <a class="icon-btn top-icon" href="../../index.html" title="Cerrar herramienta y volver a HEFESTOLAB" aria-label="Cerrar">×</a>
     </header>
 
     <nav class="modebar" aria-label="Modo de trabajo">
       <div class="mode-tabs">
-        <button class="mode-tab active" data-mode="model" type="button"><span class="mode-ico">◇</span> Modelo</button>
-        <button class="mode-tab" data-mode="drawing" type="button"><span class="mode-ico">▤</span> Documentación</button>
-        <button class="mode-tab" data-mode="sheet" type="button"><span class="mode-ico">▱</span> Planos</button>
+        <button class="mode-tab active" data-mode="model" data-hefesto-tool="switch-model-mode" data-hefesto-purpose="Show the 3D model workspace" type="button"><span class="mode-ico">◇</span> Modelo</button>
+        <button class="mode-tab" data-mode="drawing" data-hefesto-tool="switch-drawing-mode" data-hefesto-purpose="Show the active 2D technical view" type="button"><span class="mode-ico">▤</span> Documentación</button>
+        <button class="mode-tab" data-mode="sheet" data-hefesto-tool="switch-sheet-mode" data-hefesto-purpose="Show the drawing sheet composer" type="button"><span class="mode-ico">▱</span> Planos</button>
       </div>
       <span class="mode-sep"></span>
       <div class="context-tools" id="modelTools">
-        <button class="tool-btn" id="btnFit" type="button" title="Encuadrar modelo">Encuadrar</button>
-        <button class="tool-btn" id="btnCreateLevel" type="button" title="Crear un nivel de documentación local">+ Nivel</button>
-        <button class="tool-btn" id="btnCreatePlan" type="button" title="Crear una proyección en planta">+ Planta</button>
-        <button class="tool-btn" id="btnCreateElevation" type="button" title="Crear alzado">+ Alzado</button>
-        <button class="tool-btn" id="btnCreateSection" type="button" title="Crear sección por banda de corte">+ Sección</button>
-        <button class="tool-btn" id="btnCreate3DView" type="button" title="Capturar la vista 3D actual para colocarla en planos">+ Vista 3D</button>
+        <button class="tool-btn" id="btnFit" type="button" title="Encuadrar modelo" data-hefesto-tool="fit-model" data-hefesto-purpose="Fit the loaded IFC model in the 3D viewport">Encuadrar</button>
+        <button class="tool-btn" id="btnCreateLevel" type="button" title="Crear un nivel de documentación local" data-hefesto-tool="create-level" data-hefesto-purpose="Create a local documentation level without modifying the IFC">+ Nivel</button>
+        <button class="tool-btn" id="btnCreatePlan" type="button" title="Crear una proyección en planta" data-hefesto-tool="create-plan" data-hefesto-purpose="Create a 2D plan projection from the loaded IFC">+ Planta</button>
+        <button class="tool-btn" id="btnCreateElevation" type="button" title="Crear alzado" data-hefesto-tool="create-elevation" data-hefesto-purpose="Create a 2D elevation projection from the loaded IFC">+ Alzado</button>
+        <button class="tool-btn" id="btnCreateSection" type="button" title="Crear sección por banda de corte" data-hefesto-tool="create-section" data-hefesto-purpose="Create a 2D section projection from the loaded IFC">+ Sección</button>
+        <button class="tool-btn" id="btnCreate3DView" type="button" title="Capturar la vista 3D actual para colocarla en planos" data-hefesto-tool="capture-3d-view" data-hefesto-purpose="Capture the current 3D camera as an unscaled sheet view">+ Vista 3D</button>
       </div>
       <div class="context-tools hidden" id="drawingTools">
-        <button class="tool-btn active" data-draw-tool="select" type="button">Seleccionar</button>
-        <button class="tool-btn" data-draw-tool="dimension" type="button">Cota</button>
-        <button class="tool-btn" data-draw-tool="text" type="button">Texto</button>
+        <button class="tool-btn active" data-draw-tool="select" data-hefesto-tool="select-annotation" data-hefesto-purpose="Select, inspect, move or delete 2D annotations" type="button">Seleccionar</button>
+        <button class="tool-btn" data-draw-tool="dimension" data-hefesto-tool="dimension" data-hefesto-purpose="Create a manual aligned dimension with three clicks" type="button">Cota</button>
+        <button class="tool-btn" data-draw-tool="text" data-hefesto-tool="text" data-hefesto-purpose="Place a text annotation in the active 2D view" type="button">Texto</button>
         <span class="mini-sep"></span>
-        <button class="tool-btn mode-toggle active" id="toggleSnapBtn" type="button" aria-pressed="true" title="Activar/desactivar referencias a objetos (extremo, punto medio y arista)">SNAP</button>
-        <button class="tool-btn mode-toggle active" id="toggleOrthoBtn" type="button" aria-pressed="true" title="ORTO: fuerza cotas horizontales/verticales · F8">ORTO <small>F8</small></button>
+        <button class="tool-btn mode-toggle active" id="toggleSnapBtn" type="button" aria-pressed="true" aria-label="Activar o desactivar SNAP" title="Activar/desactivar referencias a objetos (extremo, punto medio y arista)" data-hefesto-tool="toggle-snap" data-hefesto-purpose="Toggle endpoint, midpoint and edge snapping in 2D">SNAP</button>
+        <button class="tool-btn mode-toggle active" id="toggleOrthoBtn" type="button" aria-pressed="true" aria-label="Activar o desactivar ORTO" title="ORTO: fuerza cotas horizontales/verticales · F8" data-hefesto-tool="toggle-ortho" data-hefesto-purpose="Toggle horizontal or vertical constraint for dimensions">ORTO <small>F8</small></button>
         <span class="mini-sep"></span>
-        <label class="check-tool"><input id="toggleHidden" type="checkbox" checked> Ocultas</label>
-        <button class="tool-btn" id="btnExportSvg" type="button">SVG</button>
-        <button class="tool-btn" id="btnExportDxf" type="button">DXF 2D</button>
+        <label class="check-tool" data-hefesto-tool="toggle-hidden-lines" data-hefesto-purpose="Show or hide projected hidden lines"><input id="toggleHidden" type="checkbox" aria-label="Mostrar líneas ocultas" checked> Ocultas</label>
+        <button class="tool-btn" id="btnExportSvg" type="button" data-hefesto-tool="export-svg" data-hefesto-purpose="Export the active vector 2D view as SVG">SVG</button>
+        <button class="tool-btn" id="btnExportDxf" type="button" data-hefesto-tool="export-dxf" data-hefesto-purpose="Export the active vector 2D view as DXF">DXF 2D</button>
       </div>
       <div class="context-tools hidden" id="sheetTools">
-        <button class="tool-btn" id="btnNewSheet" type="button">+ Plano</button>
-        <button class="tool-btn" id="btnAddView" type="button">+ Vista</button>
+        <button class="tool-btn" id="btnNewSheet" type="button" data-hefesto-tool="create-sheet" data-hefesto-purpose="Create a new drawing sheet">+ Plano</button>
+        <button class="tool-btn" id="btnAddView" type="button" data-hefesto-tool="add-view-to-sheet" data-hefesto-purpose="Add an existing view to the active sheet">+ Vista</button>
         <span class="mini-sep"></span>
-        <button class="tool-btn primary" id="btnExportPdf" type="button">Exportar PDF</button>
+        <button class="tool-btn primary" id="btnExportPdf" type="button" data-hefesto-tool="export-pdf" data-hefesto-purpose="Export the active drawing sheet as PDF">Exportar PDF</button>
       </div>
       <div class="mode-spacer"></div>
       <span class="privacy-pill" title="Los archivos IFC se procesan en el navegador; esta herramienta no los sube a HEFESTOLAB."><i></i> Procesamiento local</span>
@@ -105,8 +119,8 @@
           </section>
         </div>
         <div class="left-actions">
-          <button class="panel-action primary" id="btnOpenIfcSide" type="button">Abrir IFC</button>
-          <button class="panel-action" id="btnDemoSide" type="button">Cargar demo</button>
+          <button class="panel-action primary" id="btnOpenIfcSide" type="button" data-hefesto-tool="open-ifc" data-hefesto-purpose="Open the local IFC file selector">Abrir IFC</button>
+          <button class="panel-action" id="btnDemoSide" type="button" data-hefesto-tool="load-demo" data-hefesto-purpose="Load the local vector demonstration project">Cargar demo</button>
         </div>
       </aside>
 
@@ -118,8 +132,8 @@
             <h1>IFC Drawing</h1>
             <p>Abre un IFC en tu navegador, genera plantas, secciones y alzados vectoriales, acota, compón hojas y exporta a PDF o DXF.</p>
             <div class="start-actions">
-              <label class="big-btn primary" for="ifcInput">Abrir archivo IFC</label>
-              <button class="big-btn" id="btnDemoStart" type="button">Probar sin IFC</button>
+              <label class="big-btn primary" for="ifcInput" data-hefesto-tool="open-ifc" data-hefesto-purpose="Choose an IFC file for local browser processing">Abrir archivo IFC</label>
+              <button class="big-btn" id="btnDemoStart" type="button" data-hefesto-tool="load-demo" data-hefesto-purpose="Load the local vector demonstration project">Probar sin IFC</button>
             </div>
             <div class="start-notes">
               <span><b>Local</b> · el IFC permanece en tu dispositivo</span>
@@ -153,7 +167,7 @@
             <div class="sheet-empty" id="sheetEmpty">
               <b>Crea tu primer plano</b>
               <span>Elige formato y arrastra una vista generada desde el navegador al papel.</span>
-              <button class="big-btn primary small" id="btnNewSheetEmpty" type="button">+ Crear plano</button>
+            <button class="big-btn primary small" id="btnNewSheetEmpty" type="button" data-hefesto-tool="create-sheet" data-hefesto-purpose="Create the first drawing sheet">+ Crear plano</button>
             </div>
             <div id="paperHost" class="paper-host hidden"></div>
           </div>
@@ -207,7 +221,7 @@
 
   <script src="assets/js/vendor/jspdf.umd.min.js?v=2.5.2"></script>
   <script src="assets/js/dimension-utils.js?v=0.3.1"></script>
-  <script src="assets/js/app.js?v=0.5.0"></script>
+  <script src="assets/js/app.js?v=0.5.1"></script>
 <script>
   // Ajuste de contexto: el aviso de servidor local solo tiene sentido al abrir con doble clic (file://).
   (function(){

@@ -1,0 +1,17 @@
+{
+  "schema": "hefesto-agent-ready/0.1",
+  "application": "HEFESTO IFC Drawing",
+  "agentReady": true,
+  "uiLanguage": "es",
+  "applicationUrl": "https://hefestolab.github.io/tools/ifc-drawing/",
+  "guideUrl": "https://hefestolab.github.io/agents/ifc-drawing/",
+  "skillUrl": "https://hefestolab.github.io/agents/ifc-drawing/SKILL.md",
+  "documentation": {
+    "tools": "https://hefestolab.github.io/agents/ifc-drawing/TOOLS.md",
+    "workflows": "https://hefestolab.github.io/agents/ifc-drawing/WORKFLOWS.md",
+    "dimensioning": "https://hefestolab.github.io/agents/ifc-drawing/DIMENSIONING.md",
+    "sheetComposition": "https://hefestolab.github.io/agents/ifc-drawing/SHEET-COMPOSITION.md",
+    "qa": "https://hefestolab.github.io/agents/ifc-drawing/QA-CHECKLIST.md",
+    "limitations": "https://hefestolab.github.io/agents/ifc-drawing/LIMITATIONS.md"
+  }
+}

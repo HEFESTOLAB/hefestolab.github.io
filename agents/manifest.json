@@ -1,0 +1,16 @@
+{
+  "schema": "hefesto-agent-ready/0.1",
+  "version": "0.1",
+  "applications": [
+    {
+      "id": "ifc-drawing",
+      "name": "HEFESTO IFC Drawing",
+      "agentReady": true,
+      "uiLanguage": "es",
+      "applicationUrl": "https://hefestolab.github.io/tools/ifc-drawing/",
+      "guideUrl": "https://hefestolab.github.io/agents/ifc-drawing/",
+      "skillUrl": "https://hefestolab.github.io/agents/ifc-drawing/SKILL.md",
+      "manifestUrl": "https://hefestolab.github.io/tools/ifc-drawing/agent.json"
+    }
+  ]
+}

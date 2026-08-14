@@ -59,7 +59,7 @@
   };
 
   const el = {
-    ifcInput: $('#ifcInput'), projectName: $('#projectName'), fileMeta: $('#fileMeta'),
+    app: $('#app'), ifcInput: $('#ifcInput'), projectName: $('#projectName'), fileMeta: $('#fileMeta'),
     start: $('#startScreen'), modelStage: $('#modelStage'), drawingStage: $('#drawingStage'), sheetStage: $('#sheetStage'),
     viewer: $('#viewer3d'), drawingSvg: $('#drawingSvg'), drawingEmpty: $('#drawingEmpty'), drawingTitle: $('#drawingTitle'), drawingInfo: $('#drawingInfo'),
     modelTree: $('#modelTree'), levelsTree: $('#levelsTree'), plansTree: $('#plansTree'), elevationsTree: $('#elevationsTree'), views3dTree: $('#views3dTree'), sheetsTree: $('#sheetsTree'),
@@ -71,9 +71,29 @@
     toastHost: $('#toastHost')
   };
 
+  function syncAgentState(){
+    if(!el.app)return;
+    const values={
+      'data-hefesto-agent-ready':'true',
+      'data-hefesto-mode':state.mode,
+      'data-hefesto-draw-tool':state.drawTool,
+      'data-hefesto-model-loaded':String(state.modelLoaded),
+      'data-hefesto-busy':String(state.busy),
+      'data-hefesto-snap':String(state.snapEnabled),
+      'data-hefesto-ortho':String(state.orthoEnabled),
+      'data-hefesto-active-drawing-id':state.activeDrawingId,
+      'data-hefesto-active-sheet-id':state.activeSheetId
+    };
+    for(const [name,value] of Object.entries(values)){
+      if(value===null||value===undefined||value==='')el.app.removeAttribute(name);
+      else el.app.setAttribute(name,String(value));
+    }
+  }
+
   function setStatus(text, kind = 'ok') {
     el.statusText.textContent = text;
     el.statusDot.className = `status-dot ${kind}`;
+    syncAgentState();
   }
   function toast(title, text = '', kind = '') {
     const t = document.createElement('div');
@@ -150,6 +170,7 @@
     if (mode === 'drawing') renderDrawing();
     if (mode === 'sheet') renderSheet();
     renderInspector();
+    syncAgentState();
   }
 
   function setDrawTool(tool) {
@@ -158,6 +179,7 @@
     $$('[data-draw-tool]').forEach(b => b.classList.toggle('active', b.dataset.drawTool === tool));
     el.drawingSvg.classList.toggle('crosshair', tool !== 'select');
     if (tool === 'dimension') toast('Cota activa', 'Haz clic en dos puntos y un tercer clic para fijar el desplazamiento.');
+    syncAgentState();
   }
 
   function updateModeIndicators(){
@@ -166,6 +188,7 @@
     ob?.classList.toggle('active',state.orthoEnabled);ob?.setAttribute('aria-pressed',String(state.orthoEnabled));
     if(el.statusSnap){el.statusSnap.textContent=`SNAP ${state.snapEnabled?'ON':'OFF'}`;el.statusSnap.className=`status-mode ${state.snapEnabled?'on':'off'}`;}
     if(el.statusOrtho){el.statusOrtho.textContent=`ORTO ${state.orthoEnabled?'ON':'OFF'}`;el.statusOrtho.className=`status-mode ${state.orthoEnabled?'on':'off'}`;}
+    syncAgentState();
   }
   function setSnapEnabled(value){state.snapEnabled=!!value;state.snapHover=null;updateModeIndicators();renderDrawing();toast('SNAP',state.snapEnabled?'Extremo, punto medio y arista activos.':'Referencias desactivadas.');}
   function setOrthoEnabled(value){state.orthoEnabled=!!value;updateModeIndicators();renderDrawing();toast('ORTO',state.orthoEnabled?'Cotas restringidas a horizontal/vertical.':'Restricción permanente desactivada. Mantén Shift para ORTO temporal.');}
@@ -189,9 +212,34 @@
     }
     if(cur.trim()) out.push(cur.trim()); return out;
   }
+  function decodeIfcStringEscapes(value){
+    const source=String(value??'');
+    const decodeBlock=(hex,width,useCodePoints)=>{
+      if(!hex||hex.length%width!==0||!/^[0-9A-F]+$/i.test(hex))return null;
+      const values=[];
+      for(let i=0;i<hex.length;i+=width){
+        const n=Number.parseInt(hex.slice(i,i+width),16);
+        if(!Number.isFinite(n))return null;
+        values.push(n);
+      }
+      if(useCodePoints){
+        if(values.some(n=>n>0x10FFFF||(n>=0xD800&&n<=0xDFFF)))return null;
+        try{return values.map(n=>String.fromCodePoint(n)).join('');}catch(_){return null;}
+      }
+      for(let i=0;i<values.length;i++){
+        const n=values[i];
+        if(n>=0xD800&&n<=0xDBFF){if(i+1>=values.length||values[i+1]<0xDC00||values[i+1]>0xDFFF)return null;i++;}
+        else if(n>=0xDC00&&n<=0xDFFF)return null;
+      }
+      return values.map(n=>String.fromCharCode(n)).join('');
+    };
+    const replace=(input,kind,width,useCodePoints)=>input.replace(new RegExp(`\\\\${kind}\\\\([0-9A-F]*?)\\\\X0\\\\`,'gi'),(match,hex)=>decodeBlock(hex,width,useCodePoints)??match);
+    return replace(replace(source,'X2',4,false),'X4',8,true);
+  }
   function ifcString(token){
     if(!token || token === '$' || token === '*') return '';
-    const m = token.match(/^'(.*)'$/s); return m ? m[1].replace(/''/g,"'") : token;
+    const m = token.match(/^'(.*)'$/s); const value=m ? m[1].replace(/''/g,"'") : token;
+    return decodeIfcStringEscapes(value);
   }
   function parseIfcMeta(text){
     const schema = text.match(/FILE_SCHEMA\s*\(\s*\(\s*'([^']+)'/i)?.[1] || 'IFC';
@@ -967,6 +1015,7 @@
     });
     el.sheetsTree.innerHTML=state.sheets.length?state.sheets.map(s=>`<div class="tree-item ${s.id===state.activeSheetId&&state.mode==='sheet'?'active':''}" data-sheet="${s.id}"><span class="tree-ico">▱</span><span class="tree-label">${esc(s.number)} · ${esc(s.name)}</span><small>${s.format}</small></div>`).join(''):'<div class="tree-empty">Sin planos.</div>';
     $$('[data-sheet]',el.sheetsTree).forEach(n=>n.addEventListener('click',()=>{state.activeSheetId=n.dataset.sheet;state.selectedViewportId=null;setMode('sheet');renderTrees();}));
+    syncAgentState();
   }
   function treeViewHtml(d){const ready=!d.pending,is3d=d.kind==='threeD';return `<div class="tree-item ${d.id===state.activeDrawingId&&state.mode==='drawing'?'active':''}" data-view="${d.id}" draggable="true" title="${ready?'Arrastra esta vista a un plano o haz clic para abrirla':'Arrástrala al plano para generarla automáticamente, o haz clic para abrirla'}"><span class="tree-ico">${is3d?'◈':d.pending?'○':'▤'}</span><span class="tree-label">${esc(d.name)}</span><small class="${is3d?'view3d-size':''}">${is3d?'NTS':d.pending?'generar':(d.visible.length.toLocaleString('es-ES'))}</small></div>`;}
 
@@ -1092,7 +1141,7 @@
   window.addEventListener('resize',()=>{if(state.mode==='sheet')renderSheet();state.engine?.world?.renderer?.resize?.();});
 
   if(location.protocol==='file:'||location.hostname==='localhost'||location.hostname==='127.0.0.1'||new URLSearchParams(location.search).has('qa')){
-    window.__HEFESTO_IFC_DRAWING_QA__={state,loadDemo,activeDrawing,activeSheet,selectedLevel,getSnap,resolveDrawingPoint,addDrawing,renderTrees,renderSheet,addViewToSheet,createSheet,fitModelImmediate,validModelBox,modelBoxText,capture3DView,addLevel:(name,elevation)=>{const l={id:uid('level'),name,elevation:+elevation,source:'LOCAL'};state.levels.push(l);renderTrees();return l;}};
+    window.__HEFESTO_IFC_DRAWING_QA__={state,loadDemo,activeDrawing,activeSheet,selectedLevel,getSnap,resolveDrawingPoint,addDrawing,renderTrees,renderSheet,addViewToSheet,createSheet,fitModelImmediate,validModelBox,modelBoxText,capture3DView,decodeIfcStringEscapes,ifcString,addLevel:(name,elevation)=>{const l={id:uid('level'),name,elevation:+elevation,source:'LOCAL'};state.levels.push(l);renderTrees();return l;}};
   }
 
   // Theme follows site preference when available.
