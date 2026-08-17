@@ -4,15 +4,18 @@ These limitations are separated by source. Do not describe browser or IFC-source
 
 ## Application limitations
 
-- There is no automatic dimensioning tool. Dimensions are created manually with three clicks.
+- There is no automatic whole-model dimensioning tool. Single dimensions use three clicks; manual chained dimensions use consecutive reference clicks and a blank placement click.
 - There is no automatic sheet-layout tool.
-- No verified 2D pan interaction exists in this version. Use wheel zoom and double-click or the view-property `Encuadrar` action.
+- 2D and sheet pan are local navigation gestures; they do not change view geometry, viewport crop or PDF content.
 - The Demo contains prepared vector views but no 3D IFC geometry. It cannot generate new plans, elevations, sections or 3D captures.
 - New projections, IFC category/element controls and 3D capture require a successfully loaded real IFC.
 - SVG and DXF export require an active generated vector 2D view. Captured 3D raster views are not exported as standalone SVG or DXF.
 - PDF exports the active sheet, not every sheet as a multi-page set.
 - Captured 3D views are raster images and NTS (not to scale).
-- Session edits are local to the current browser session. Local documentation levels do not modify the source IFC.
+- Project files are saved and reopened locally. They preserve projected vector views, annotations, chained dimensions, areas, schedules, display overrides and sheets, but do not embed the source IFC geometry; use `Reconectar IFC` to reattach it without clearing documentation before new projections, 3D picking or a fresh 3D capture. Local documentation levels never modify the source IFC.
+- Area schedules are linked to one plan and do not provide multi-plan totals or subtotals.
+- A sheet view title and its scale/NTS/TABLA indicator form one movable label; they move together rather than as two independent text objects.
+- Hiding an area label affects its room text only. The room polygon and area-schedule row intentionally remain available.
 - The scale list is finite; when the fitting denominator exceeds the predefined list, `chooseScale()` rounds upward to the next hundred.
 
 ## Browser-agent limitations
@@ -33,6 +36,7 @@ These limitations are separated by source. Do not describe browser or IFC-source
 - View quality depends on valid IFC geometry and the edge projection produced from it.
 - Level discovery depends on `IFCBUILDINGSTOREY` metadata found in the first 40 MB read for lightweight metadata parsing. A model with missing, unusual or late metadata may show no detected levels.
 - Category and exact element controls depend on classification and geometry IDs exposed by the loaded IFC and engine. Some IFCs may not provide usable categories.
+- Automatic room areas require classified `IFCSPACE` geometry. Their outline and calculated surface follow the projection exposed by the engine, so malformed, overlapping or semantically incorrect source spaces require manual review or replacement.
 - Ambiguous, missing, duplicated or incorrectly classified source geometry can make technical dimensioning uncertain. Do not invent references that cannot be identified.
 - Very large or complex IFC files can take substantial local memory and processing time; performance depends on the browser and device.
 

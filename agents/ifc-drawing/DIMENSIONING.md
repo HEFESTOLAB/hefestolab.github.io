@@ -1,6 +1,6 @@
 # Dimensioning criteria
 
-This file teaches what to dimension, not only how to press `Cota`. Read the dimension, SNAP and ORTO entries in [TOOLS.md](TOOLS.md) first. Dimensions are manual; there is no auto-dimension tool.
+This file teaches what to dimension, not only how to press `Cota` or `Cota cadena`. Read the single-dimension, chain, SNAP and ORTO entries in [TOOLS.md](TOOLS.md) first. Dimensions are manual; there is no auto-dimension tool.
 
 ## General method
 
@@ -9,6 +9,18 @@ This file teaches what to dimension, not only how to press `Cota`. Read the dime
 3. Place dimensions with SNAP on valid endpoints, midpoints or edges. Use ORTO for genuinely horizontal or vertical measurements.
 4. Work in passes. Do not stop after a few obvious dimensions.
 5. Reinspect the entire view, correct overlaps and remove duplication without technical value.
+
+## Chained dimensions
+
+Use `Cota cadena` when several consecutive references form one ordered horizontal, vertical or aligned system.
+
+1. Activate `Cota cadena` and acquire references in their physical order.
+2. Click true blank space only after the last reference; that blank point sets the common dimension-line offset and completes the command.
+3. Switch to `Seleccionar`. Selecting any segment highlights the complete chain.
+4. Drag any segment perpendicular to the measured direction, or edit `Desfase`, to move every segment together.
+5. Use `Eliminar cadena` only when the whole system is wrong. For a different reference sequence, recreate the chain deliberately.
+
+Do not mix unrelated directions in one chain. Prefer several coherent chains to one visually tangled system.
 
 The target is technical completeness plus legibility, not the maximum possible dimension count.
 
@@ -107,7 +119,10 @@ Keep vertical dimension systems ordered. Distinguish level-to-level, clear heigh
 - Prefer a valid SNAP reference over a free click.
 - Use ORTO only when the intended measurement is horizontal or vertical.
 - Zoom around the target before placing points; double-click to fit again when context is lost.
-- If the interface shows an implausible value, cancel or delete the dimension and inspect the references again.
+- Reposition a completed dimension by selecting it and dragging the line or text perpendicular to its witness points; the measured references remain fixed.
+- Reposition a completed dimension chain by dragging any linked segment; every segment must retain the same resulting offset.
+- Dimension text in PDF output has a nominal printed height of `2.1 mm`, independent of the viewport scale. Still verify that dense chains do not overlap.
+- If the interface shows an implausible value, correct its offset/text or delete it and inspect the references again.
 
 ## Completion test
 

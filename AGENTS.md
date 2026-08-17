@@ -14,6 +14,6 @@ This repository is a static GitHub Pages site. Its publishable root contains `.n
 
 ## Agent Ready layer
 
-The public, non-promoted Agent Ready documentation lives at `agents/`. IFC Drawing is the only Agent Ready application in version 0.1. IFC Energy Model is out of scope.
+The public, non-promoted Agent Ready documentation lives at `agents/`. IFC Drawing is the only Agent Ready application in version 0.4. IFC Energy Model is out of scope.
 
 Start with `agents/ifc-drawing/SKILL.md`. Its references are intentionally split for progressive disclosure. `tools/ifc-drawing/agent.json` and `agents/manifest.json` are machine-readable discovery manifests.

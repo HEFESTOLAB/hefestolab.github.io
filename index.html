@@ -5,7 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
 <title>HEFESTOLAB | HEFESTO Pre-BIM Modeler</title>
-<meta content="HEFESTO Pre-BIM Modeler: arquitectura, estructura y MEP en una sola app. Modelado 3D, planos y detalles, nubes de puntos y presupuestos BC3 automáticos. Operativo en proyectos reales. Beta en septiembre de 2026." name="description"/>
+<meta content="HEFESTO Pre-BIM Modeler: BIM desde el primer trazo o desde donde estés. Empieza desde una idea, convierte un proyecto tradicional o digitaliza un activo existente en una base BIM ligera, trazable y ampliable." name="description"/>
 <meta content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" name="robots"/>
 <meta content="#07111f" name="theme-color"/>
 <link href="https://hefestolab.github.io/" rel="canonical"/>
@@ -23,15 +23,15 @@
 <meta content="website" property="og:type"/>
 <meta content="es_ES" property="og:locale"/>
 <meta content="HEFESTOLAB" property="og:site_name"/>
-<meta content="HEFESTOLAB | BIM desde el primer trazo" property="og:title"/>
-<meta content="HEFESTO Pre-BIM Modeler: arquitectura, estructura y MEP en una sola app. Modelado 3D, planos y detalles, nubes de puntos y presupuestos BC3 automáticos. Operativo en proyectos reales. Beta en septiembre de 2026." property="og:description"/>
+<meta content="HEFESTOLAB | BIM desde el primer trazo o desde donde estés" property="og:title"/>
+<meta content="HEFESTO Pre-BIM Modeler: BIM desde el primer trazo o desde donde estés. Empieza desde una idea, convierte un proyecto tradicional o digitaliza un activo existente en una base BIM ligera, trazable y ampliable." property="og:description"/>
 <meta content="https://hefestolab.github.io/" property="og:url"/>
 <meta content="https://hefestolab.github.io/assets/images/og-hefestolab.jpg" property="og:image"/>
 <meta content="1200" property="og:image:width"/>
 <meta content="630" property="og:image:height"/>
 <meta content="summary_large_image" name="twitter:card"/>
-<meta content="HEFESTOLAB | BIM desde el primer trazo" name="twitter:title"/>
-<meta content="HEFESTO Pre-BIM Modeler: arquitectura, estructura y MEP en una sola app. Modelado 3D, planos y detalles, nubes de puntos y presupuestos BC3 automáticos. Operativo en proyectos reales. Beta en septiembre de 2026." name="twitter:description"/>
+<meta content="HEFESTOLAB | BIM desde el primer trazo o desde donde estés" name="twitter:title"/>
+<meta content="HEFESTO Pre-BIM Modeler: BIM desde el primer trazo o desde donde estés. Empieza desde una idea, convierte un proyecto tradicional o digitaliza un activo existente en una base BIM ligera, trazable y ampliable." name="twitter:description"/>
 <meta content="https://hefestolab.github.io/assets/images/og-hefestolab.jpg" name="twitter:image"/>
 <script type="application/ld+json">
   {
@@ -190,6 +190,49 @@
     .fmt{padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--soft);font-size:.79rem;font-weight:750}
     .fmt i{font-style:normal;color:var(--muted);font-weight:650}
     @media(max-width:980px){.discRow{grid-template-columns:1fr}}
+
+    .heroSubclaim{margin:10px 0 0;font-size:clamp(1.18rem,2.25vw,2rem);font-weight:800;letter-spacing:-.04em;color:var(--text)}
+    .heroSubclaim span{color:var(--blue)}
+    .hero .lead{margin-top:22px}
+    .heroMini{display:block;margin-top:14px;color:var(--muted);font-size:.94rem;max-width:680px}
+    .heroMini b{color:var(--text)}
+    .flowStory{display:grid;gap:0}
+    .flowInputs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .flowInput{padding:22px 23px 20px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);box-shadow:0 10px 34px rgba(10,45,85,.06);min-height:168px}
+    .flowInput.featured{border-color:color-mix(in srgb,var(--blue) 48%,var(--line));background:linear-gradient(180deg,color-mix(in srgb,var(--blue) 6%,var(--surface)),var(--surface))}
+    .flowInputTop{display:flex;align-items:center;gap:9px;color:var(--blue);font-size:.7rem;font-weight:850;letter-spacing:.11em;text-transform:uppercase}
+    .flowNum{width:27px;height:27px;border-radius:9px;background:color-mix(in srgb,var(--blue) 11%,var(--surface));display:grid;place-items:center;font-size:.72rem}
+    .flowInput h3{font-size:1.14rem;margin-top:18px;letter-spacing:-.03em}
+    .flowInput strong{display:block;color:var(--blue);font-size:.91rem;margin-top:9px}
+    .flowTags{display:flex;gap:6px;flex-wrap:wrap;margin-top:15px}
+    .flowTags span{font-size:.71rem;font-weight:700;color:var(--muted);padding:5px 8px;border:1px solid var(--line);border-radius:999px;background:var(--soft)}
+    .mergeRail{height:76px;position:relative;margin:0 11%}
+    .mergeRail:before{content:"";position:absolute;left:5%;right:5%;top:34px;height:1px;background:color-mix(in srgb,var(--blue) 56%,var(--line))}
+    .mergeRail:after{content:"";position:absolute;left:50%;top:34px;width:1px;height:35px;background:var(--blue)}
+    .mergeRail i{position:absolute;top:0;width:1px;height:35px;background:color-mix(in srgb,var(--blue) 56%,var(--line))}
+    .mergeRail i:nth-child(1){left:5%}.mergeRail i:nth-child(2){left:50%}.mergeRail i:nth-child(3){right:5%}
+    .mergeRail b{position:absolute;left:50%;bottom:0;transform:translate(-50%,7px);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:11px solid var(--blue)}
+    .hefestoCore{width:min(780px,100%);margin:0 auto;padding:24px 28px;border:1px solid color-mix(in srgb,var(--blue) 50%,var(--line));border-radius:24px;background:linear-gradient(180deg,color-mix(in srgb,var(--blue) 8%,var(--surface)),var(--surface));text-align:center;box-shadow:0 14px 44px rgba(10,45,85,.09)}
+    .hefestoCore small,.bimCore small{display:block;color:var(--blue);font-size:.7rem;font-weight:850;letter-spacing:.12em;text-transform:uppercase}
+    .hefestoCore h3{font-size:1.7rem;margin-top:9px}
+    .coreMeta{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-top:16px}
+    .coreMeta span{padding:6px 9px;border:1px solid var(--line);border-radius:999px;background:var(--surface);font-size:.72rem;font-weight:750;color:var(--muted)}
+    .flowDown{height:54px;width:1px;background:linear-gradient(180deg,color-mix(in srgb,var(--blue) 55%,var(--line)),var(--blue));margin:0 auto;position:relative}
+    .flowDown:after{content:"";position:absolute;left:50%;bottom:-1px;transform:translateX(-50%);border-left:6px solid transparent;border-right:6px solid transparent;border-top:11px solid var(--blue)}
+    .bimCore{width:min(680px,100%);margin:0 auto;padding:21px 26px;border:1px solid var(--line);border-radius:22px;background:var(--surface);text-align:center}
+    .bimCore h3{font-size:1.55rem;margin-top:8px}.bimCore p{margin:8px 0 0;color:var(--muted);font-size:.9rem}
+    .outRail{height:74px;position:relative;margin:0 11%}
+    .outRail:before{content:"";position:absolute;left:5%;right:5%;top:38px;height:1px;background:color-mix(in srgb,var(--blue) 56%,var(--line))}
+    .outRail:after{content:"";position:absolute;left:50%;top:0;width:1px;height:39px;background:color-mix(in srgb,var(--blue) 56%,var(--line))}
+    .outRail i{position:absolute;top:38px;width:1px;height:30px;background:color-mix(in srgb,var(--blue) 56%,var(--line))}
+    .outRail i:nth-child(1){left:5%}.outRail i:nth-child(2){left:50%}.outRail i:nth-child(3){right:5%}
+    .flowOutputs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .flowOutput{padding:18px 20px;border:1px solid var(--line);border-radius:17px;background:var(--surface);text-align:center}
+    .flowOutput b{display:block;color:var(--blue);font-size:.72rem;font-weight:850;letter-spacing:.11em;text-transform:uppercase}
+    .flowOutput strong{display:block;margin-top:8px;font-size:1rem}.flowOutput span{display:block;margin-top:5px;color:var(--muted);font-size:.78rem}
+    .flowNote{margin:22px auto 0;text-align:center;color:var(--muted);font-size:.84rem;max-width:800px}.flowNote b{color:var(--text)}
+    @media(max-width:980px){.heroMini{margin-inline:auto}.flowInputs,.flowOutputs{grid-template-columns:1fr}.mergeRail,.outRail{display:none}.flowInput{min-height:0}.hefestoCore{margin-top:18px}.flowDown{height:42px}}
+    @media(max-width:720px){.heroSubclaim{font-size:1.14rem}.hefestoCore,.bimCore{padding:21px 18px}.hefestoCore h3{font-size:1.4rem}.bimCore h3{font-size:1.3rem}.flowInput{padding:20px}.flowOutputs{gap:10px}.flowNote{font-size:.8rem}}
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
   </style>
 <script>(function(){try{var s=localStorage.getItem("hefestolab-theme");document.documentElement.dataset.theme=s||((window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark")}catch(e){}})();</script>
@@ -210,9 +253,11 @@
 <div class="heroCopy">
 <span class="badge"><span class="dot"></span> HEFESTO Pre-BIM Modeler · Beta pública en septiembre de 2026</span>
 <h1>BIM desde el <span>primer trazo.</span></h1>
-<p class="lead">HEFESTO cubre <b>arquitectura, estructura y MEP</b> en una sola aplicación de escritorio: modelado 3D, planos y detalles, nubes de puntos, mediciones y presupuestos automáticos enlazados a bases de precios. <b>La herramienta ya está operativa y se usa en proyectos reales; la beta pública abre en septiembre de 2026.</b></p>
+<p class="heroSubclaim">O desde <span>donde estés.</span></p>
+<p class="lead">Empieza desde una idea, convierte un proyecto tradicional o digitaliza un activo existente. HEFESTO organiza geometría, datos y documentación en una <b>base BIM ligera, trazable y ampliable</b>, sin obligarte a rehacer el trabajo dos veces.</p>
+<span class="heroMini">Con <b>HEFESTO JSON</b> como núcleo abierto y legible por IA para conectar personas, procesos, IFC, Revit, BC3, Excel y futuros agentes.</span>
 <div class="heroBtns"><a class="btn primary" href="tools/ifc-drawing/index.html">Probar IFC Drawing · gratis →</a><a class="btn secondary" href="#beta">Apuntarme a la beta de septiembre</a></div>
-<div class="chips"><span class="chip">Arquitectura · Estructura · MEP</span><span class="chip">Planos, detalles y cotas</span><span class="chip">Ingeniería industrial y de detalle</span><span class="chip">Presupuestos BC3 automáticos</span><span class="chip">PDF · DXF · IFC · BC3 · Excel · Word</span><span class="chip">Nubes de puntos</span></div>
+<div class="chips"><span class="chip">Proyecto nuevo · BIM desde el primer trazo</span><span class="chip">Proyecto tradicional · ahora me piden BIM</span><span class="chip">Activo existente · BIM donde todavía no hay BIM</span><span class="chip">Arquitectura · Estructura · MEP · Industria</span><span class="chip">PDF · DXF · IFC · BC3 · Excel · JSON · IA</span><span class="chip">Nubes de puntos · planos · documentación</span></div>
 </div>
 <div aria-label="Interfaz de HEFESTO Pre-BIM Modeler" class="visual">
 <div class="glow"></div>
@@ -232,7 +277,24 @@
 <article class="card"><div class="cardIcon">✦</div><h3>Automatización e IA</h3><p>Una arquitectura orientada a incorporar asistentes, MCP y procesos capaces de interpretar documentación técnica.</p><span class="status">Línea activa de desarrollo</span></article>
 <article class="card"><div class="cardIcon">⌁</div><h3>Industrial y AEC</h3><p>El mismo enfoque de datos para edificios, estructuras, instalaciones, equipos y componentes industriales.</p><span class="status">Casos de uso diversos</span></article>
 </div></div></section>
-<section class="section" id="flujo"><div class="wrap"><div class="head"><div><div class="kicker">Flujo de trabajo</div><h2>De la información inicial a un modelo utilizable.</h2></div><p>HEFESTO busca que el dato nazca pronto y pueda seguir evolucionando sin depender de una única herramienta.</p></div><div class="flow"><div class="step"><span class="n">01 · ENTRADA</span><b>Planos y datos</b><span>Información gráfica, requisitos, fichas y datos de proyecto.</span></div><div class="step"><span class="n">02 · MODELO</span><b>Geometría y objetos</b><span>Elementos 2D/3D con propiedades y relaciones útiles.</span></div><div class="step"><span class="n">03 · INFORMACIÓN</span><b>Cantidades y coste</b><span>Mediciones y presupuesto vinculados al modelo.</span></div><div class="step"><span class="n">04 · CONTINUIDAD</span><b>Interoperabilidad</b><span>Datos preparados para otros formatos, herramientas y automatizaciones.</span></div></div></div></section>
+<section class="section" id="flujo"><div class="wrap"><div class="head"><div><div class="kicker">Tres puntos de partida</div><h2>Una misma base BIM, empieces donde empieces.</h2></div><p>Tres situaciones distintas. Un único proceso: ordenar la información y convertirla en BIM ligero.</p></div><div class="flowStory">
+<div class="flowInputs">
+<article class="flowInput"><div class="flowInputTop"><span class="flowNum">01</span> Empezar</div><h3>Idea, croquis o plano.</h3><strong>BIM desde el primer trazo.</strong><div class="flowTags"><span>Idea</span><span>Croquis</span><span>Plano</span></div></article>
+<article class="flowInput featured"><div class="flowInputTop"><span class="flowNum">02</span> Convertir</div><h3>Proyecto tradicional terminado.</h3><strong>Ahora me piden BIM.</strong><div class="flowTags"><span>CAD</span><span>PDF</span><span>Memorias</span><span>Mediciones</span></div></article>
+<article class="flowInput"><div class="flowInputTop"><span class="flowNum">03</span> Digitalizar</div><h3>Activo ya construido.</h3><strong>BIM donde todavía no hay BIM.</strong><div class="flowTags"><span>Nube de puntos</span><span>Planos antiguos</span><span>Fotos</span></div></article>
+</div>
+<div class="mergeRail" aria-hidden="true"><i></i><i></i><i></i><b></b></div>
+<div class="hefestoCore"><small>HEFESTO</small><h3>Geometría + datos + trazabilidad</h3><div class="coreMeta"><span>HEFESTO JSON</span><span>Mediciones</span><span>Coste</span><span>Interoperabilidad</span><span>IA</span></div></div>
+<div class="flowDown" aria-hidden="true"></div>
+<div class="bimCore"><small>Resultado</small><h3>BIM ligero</h3><p>Ligero en el proceso. Riguroso en los datos.</p></div>
+<div class="outRail" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="flowOutputs">
+<div class="flowOutput"><b>Usar</b><strong>Trabajar ya</strong><span>Modelo · mediciones · planos</span></div>
+<div class="flowOutput"><b>Entregar</b><strong>Cumplir BIM</strong><span>IFC · BC3 · Excel · DXF</span></div>
+<div class="flowOutput"><b>Ampliar</b><strong>Seguir creciendo</strong><span>Revit · CYPE · IA · MCP</span></div>
+</div>
+<div class="flowNote"><b>HEFESTO crea la base.</b> Después decides hasta dónde necesita llegar el proyecto.</div>
+</div></div></section>
 <section class="section soft" id="beta"><div class="wrap"><div class="head"><div><div class="kicker">Lanzamiento</div><h2>Beta pública en septiembre de 2026.</h2></div><p>No es una beta a medio hacer: la herramienta ya está operativa y produce proyectos reales de arquitectura, estructura, MEP e ingeniería de detalle. Lo que abre en septiembre es el acceso, con plazas limitadas y precio de lanzamiento.</p></div><div class="betaGrid">
 <div class="betaCard accent">
 <span class="betaWhen"><span class="dot" style="width:7px;height:7px;border-radius:50%;background:currentColor;display:inline-block"></span> Septiembre de 2026</span>
@@ -249,7 +311,7 @@
 <li><b>Influencia en la hoja de ruta</b>: tus casos de uso entran en el orden de trabajo</li>
 <li><b>Sesión de puesta en marcha</b> en remoto para arrancar con un proyecto real tuyo</li>
 </ul>
-<div class="betaCta"><a class="btn primary" href="mailto:info@solucionesbim.com?subject=Reserva%20de%20plaza%20Early%20Access%20HEFESTO%20(septiembre%202026)&amp;body=Hola%20Luis%2C%0A%0AQuiero%20reservar%20una%20plaza%20del%20programa%20Early%20Access%20de%20HEFESTO%20Pre-BIM%20Modeler.%0A%0ANombre%3A%20%0AEmpresa%3A%20%0ATel%C3%A9fono%3A%20%0ATipo%20de%20proyectos%20en%20los%20que%20lo%20usar%C3%ADa%3A%20%0A%0AGracias.">Reservar plaza · 499 €/año →</a><a class="btn secondary" href="mailto:info@solucionesbim.com?subject=Informaci%C3%B3n%20sobre%20la%20beta%20de%20HEFESTO&amp;body=Hola%20Luis%2C%0A%0AMe%20interesa%20la%20beta%20de%20HEFESTO%20Pre-BIM%20Modeler%20y%20me%20gustar%C3%ADa%20recibir%20informaci%C3%B3n%20antes%20de%20decidir.%0A%0ANombre%3A%20%0AEmpresa%3A%20%0A%0AGracias.">Quiero más información</a></div>
+<div class="betaCta"><a class="btn primary" href="https://forms.cloud.microsoft/r/D8F223JxTW" rel="noopener" target="_blank">Reservar plaza · 499 €/año →</a><a class="btn secondary" href="mailto:info@solucionesbim.com?subject=Informaci%C3%B3n%20sobre%20la%20beta%20de%20HEFESTO&amp;body=Hola%20Luis%2C%0A%0AMe%20interesa%20la%20beta%20de%20HEFESTO%20Pre-BIM%20Modeler%20y%20me%20gustar%C3%ADa%20recibir%20informaci%C3%B3n%20antes%20de%20decidir.%0A%0ANombre%3A%20%0AEmpresa%3A%20%0A%0AGracias.">Quiero más información</a></div>
 <p class="priceNote">La reserva no supone ningún pago ahora. Se confirma por correo con las condiciones antes del lanzamiento.</p>
 </div>
 <div class="betaCard">

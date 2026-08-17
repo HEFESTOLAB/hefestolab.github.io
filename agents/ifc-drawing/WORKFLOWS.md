@@ -26,8 +26,8 @@ Use [TOOLS.md](TOOLS.md) for exact selectors and interactions. Use specialist gu
 
 - **Objective:** Dimension the requested plan to an appropriate technical level.
 - **Preconditions:** WF-002 complete; active vector plan; scope agreed.
-- **Tools:** `TOOL-DIMENSION`, `TOOL-SNAP`, `TOOL-ORTHO`, `TOOL-SELECT-ANNOTATION`, `TOOL-NAVIGATE-2D`.
-- **Steps:** Read [DIMENSIONING.md](DIMENSIONING.md); inspect the full plan; dimension in passes—overall, partial chains, openings, interiors, QA; use wheel zoom around each target; place each dimension with two reference clicks and a placement click; correct offsets/text in properties if needed.
+- **Tools:** `TOOL-DIMENSION`, `TOOL-DIMENSION-CHAIN`, `TOOL-SNAP`, `TOOL-ORTHO`, `TOOL-SELECT-ANNOTATION`, `TOOL-NAVIGATE-2D`.
+- **Steps:** Read [DIMENSIONING.md](DIMENSIONING.md); inspect the full plan; dimension in passes—overall, partial chains, openings, interiors, QA; use wheel zoom and pan around each target; use `Cota` for one measurement or `Cota cadena` for ordered consecutive references; finish a chain with a blank placement click; switch to `Seleccionar` and drag any chain segment when the complete system needs a new offset.
 - **Validation:** Values are plausible; references align with intended geometry; overall and partial systems are present; no important item in scope remains undefined; no excessive overlap.
 - **Completion:** Dimension coverage and legibility both pass [QA-CHECKLIST.md](QA-CHECKLIST.md).
 - **Frequent errors:** Stopping after two overall dimensions; missing openings/interiors; free-clicking near geometry without checking SNAP; leaving a pending dimension; creating duplicates.
@@ -66,9 +66,9 @@ Use [TOOLS.md](TOOLS.md) for exact selectors and interactions. Use specialist gu
 
 - **Objective:** Arrange existing views on a technically legible sheet.
 - **Preconditions:** Required views generated; annotations substantially complete.
-- **Tools:** `TOOL-CREATE-SHEET`, `TOOL-ADD-VIEW`, `TOOL-MOVE-RESIZE-VIEWPORT`, `TOOL-SHEET-PROPERTIES`, `TOOL-VIEWPORT-PROPERTIES`.
-- **Steps:** Read [SHEET-COMPOSITION.md](SHEET-COMPOSITION.md); create a sheet; set number, title, project, author, format and orientation; add views from the modal or drag tree views to paper; review the automatically selected initial scales; move/resize/recentre and change scales as justified.
-- **Validation:** All content stays inside margins and clear of the title block; view/scale labels show; no overlaps; information is readable; format and orientation suit the content.
+- **Tools:** `TOOL-CREATE-SHEET`, `TOOL-ADD-VIEW`, `TOOL-MOVE-RESIZE-VIEWPORT`, `TOOL-SHEET-PROPERTIES`, `TOOL-VIEWPORT-PROPERTIES`, `TOOL-NAVIGATE-SHEET`.
+- **Steps:** Read [SHEET-COMPOSITION.md](SHEET-COMPOSITION.md); create a sheet; set number, title, project, author, format and orientation; add views from the modal or drag tree views to paper; review the automatically selected initial scales; move/resize/recentre and change scales as justified; drag each title/scale label or set its X/Y values independently of the viewport; use zoom/pan for detailed inspection and fit for the final whole-sheet review.
+- **Validation:** All content stays inside margins and clear of the title block; long metadata remains complete; every title/scale label is intentionally placed and agrees with PDF output; no overlaps; information is readable; format and orientation suit the content.
 - **Completion:** Sheet passes the Sheet section of [QA-CHECKLIST.md](QA-CHECKLIST.md).
 - **Frequent errors:** Assuming one format or scale fits all projects; resizing without rechecking crop; covering the title block; adding duplicates.
 
@@ -111,3 +111,33 @@ Use [TOOLS.md](TOOLS.md) for exact selectors and interactions. Use specialist gu
 - **Validation:** Every requested view exists and is correct; dimensioning is technically sufficient; sheets are legible; outputs complete without errors.
 - **Completion:** The full requested set passes QA and the generated downloads are accounted for.
 - **Frequent errors:** Generating every possible view without purpose; under-dimensioning; using rigid layouts; assuming browser download success; failing to reinspect after scale or viewport changes.
+
+## WF-012 — Hide one IFC element directly in a 2D view
+
+- **Objective:** Remove one projected IFC element from the active view without navigating to 3D.
+- **Preconditions:** Real IFC loaded; generated 2D projection active.
+- **Tools:** `TOOL-SELECT-IFC-ELEMENT`, `TOOL-CONTROL-IFC-DISPLAY`.
+- **Steps:** Activate `Seleccionar`; click the element linework in 2D; wait for the orange highlight and IFC details; click `Ocultar elemento` in the inspector; wait for reprojection.
+- **Validation:** The exact element disappears from the active view and its highlight/identity matched the intended object before hiding.
+- **Completion:** Per-view visibility is updated without changing other views or source IFC data.
+- **Frequent errors:** Clicking an annotation instead of IFC linework; not waiting for first-time lazy identification; using a saved project without the source IFC loaded.
+
+## WF-013 — Save and continue a drawing project
+
+- **Objective:** Preserve IFC Drawing work for a later browser session.
+- **Preconditions:** Project contains useful views, annotations or sheets.
+- **Tools:** `TOOL-SAVE-OPEN-PROJECT`, `TOOL-RECONNECT-IFC`.
+- **Steps:** Click `Guardar proyecto`; retain the downloaded `.hefesto-drawing.json`; later open IFC Drawing, click `Abrir proyecto` and select that file; verify the restored tree, active drawing/sheet, dimensions, chains, areas, schedules, view display and viewports; if new projections or IFC interaction are required, click `Reconectar IFC` and select the source IFC.
+- **Validation:** Restored counts, names, sheet fields and visible layout match the saved state; after reconnection, `data-hefesto-project-detached="false"`, the model is visible, the prior documentation remains and a new test view can be generated.
+- **Completion:** The reopened project remains editable/exportable and, when reconnected, can continue producing IFC-derived views.
+- **Frequent errors:** Expecting the JSON to embed the original IFC; using ordinary `Abrir IFC` instead of `Reconectar IFC`; opening an unrelated JSON; leaving the application without an explicit save.
+
+## WF-014 — Create rooms and an area schedule
+
+- **Objective:** Annotate plan rooms from manual boundaries or `IfcSpace`, then place a reusable area table on a sheet.
+- **Preconditions:** Active generated plan; real IFC loaded for automatic space import.
+- **Tools:** `TOOL-AREA`, `TOOL-AREA-SCHEDULE`, `TOOL-ADD-VIEW`, `TOOL-MOVE-RESIZE-VIEWPORT`.
+- **Steps:** Inspect the plan; accept the automatic `IfcSpace` import when valid or click `Importar IfcSpace` to refresh; create missing rooms manually with `Área`; verify each number, name, polygon and square metres; intentionally keep or hide all/individual area labels; click `Crear/actualizar cuadro`; inspect the table; drag it from `Cuadros de áreas` to the target sheet or use `Añadir a plano`; size and place it clear of the title block.
+- **Validation:** Visible plan labels match intended rooms; hidden labels remain absent in drawing, sheet, PDF, SVG and DXF while their polygons and schedule rows remain; manual/IFC origins are correct; schedule row count equals area count; the final row appears on screen and in PDF.
+- **Completion:** Room annotations and the linked schedule are saved, sheet-ready and export correctly.
+- **Frequent errors:** Trusting malformed/overlapping source spaces without review; leaving duplicate room numbers; forgetting to refresh after edits; clipping the last PDF row; treating the table as a scaled drawing view.

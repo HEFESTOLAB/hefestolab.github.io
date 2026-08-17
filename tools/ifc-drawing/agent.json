@@ -1,11 +1,34 @@
 {
   "schema": "hefesto-agent-ready/0.1",
+  "version": "0.4",
   "application": "HEFESTO IFC Drawing",
   "agentReady": true,
   "uiLanguage": "es",
   "applicationUrl": "https://hefestolab.github.io/tools/ifc-drawing/",
   "guideUrl": "https://hefestolab.github.io/agents/ifc-drawing/",
   "skillUrl": "https://hefestolab.github.io/agents/ifc-drawing/SKILL.md",
+  "capabilities": [
+    "open-ifc-local",
+    "generate-vector-views",
+    "pan-zoom-2d",
+    "select-hide-ifc-in-2d",
+    "dimension-and-move",
+    "dimension-chain-and-move-group",
+    "create-and-import-room-areas",
+    "control-area-label-visibility",
+    "compose-area-schedules",
+    "compose-and-navigate-sheets",
+    "move-sheet-view-title-and-scale",
+    "save-reopen-project",
+    "reconnect-source-ifc",
+    "export-pdf-svg-dxf"
+  ],
+  "projectFormat": {
+    "schema": "hefestolab-ifc-drawing-project",
+    "version": 1,
+    "extension": ".hefesto-drawing.json",
+    "embedsSourceIfc": false
+  },
   "documentation": {
     "tools": "https://hefestolab.github.io/agents/ifc-drawing/TOOLS.md",
     "workflows": "https://hefestolab.github.io/agents/ifc-drawing/WORKFLOWS.md",

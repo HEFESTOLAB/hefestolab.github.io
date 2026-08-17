@@ -1,6 +1,6 @@
 # Verified tool reference
 
-This inventory was derived from `tools/ifc-drawing/index.html` and `assets/js/app.js` in HEFESTOLAB v2.9.2. It documents only controls and interactions present in that code. The visible UI is Spanish. Dynamic selectors exist only while their corresponding inspector or view is open.
+This inventory was derived from `tools/ifc-drawing/index.html` and `assets/js/app.js` in HEFESTOLAB v2.9.5 / IFC Drawing v0.8. It documents only controls and interactions present in that code. The visible UI is Spanish. Dynamic selectors exist only while their corresponding inspector or view is open.
 
 ## TOOL-LOAD-DEMO
 
@@ -175,16 +175,16 @@ This inventory was derived from `tools/ifc-drawing/index.html` and `assets/js/ap
 ## TOOL-SELECT-IFC-ELEMENT
 
 - **Tool ID:** `TOOL-SELECT-IFC-ELEMENT`
-- **Visible Spanish label:** `Seleccionar elemento en 3D`
-- **DOM selector:** dynamic `#selectIfc3d`, then `#viewer3d canvas`; dynamic `#ifcClearSelection`, `#ifcOpenDrawing`
-- **Purpose:** Select one rendered IFC element and expose category, GlobalId and local ID.
-- **Required mode:** `model` for picking.
+- **Visible Spanish label:** `Seleccionar`; secondary action `Seleccionar también en 3D`
+- **DOM selector:** `[data-draw-tool="select"]`, `#drawingSvg`; secondary dynamic `#selectIfc3d`, then `#viewer3d canvas`; dynamic `#ifcClearSelection`, `#ifcOpenDrawing`
+- **Purpose:** Select one IFC element from its projected 2D linework or rendered 3D geometry and expose category, GlobalId and local ID.
+- **Required mode:** `drawing` for direct 2D picking; `model` for the secondary 3D route.
 - **Preconditions:** Real IFC loaded; active generated 2D view if visibility/colour changes are intended.
-- **Activation:** From 2D view properties click `Seleccionar elemento en 3D`, then click geometry in the model.
-- **Interaction:** A click without pointer movement performs ray selection.
-- **Expected result:** Element highlight and inspector details; optional return to active drawing.
+- **Activation:** With `Seleccionar` active, click IFC linework in the 2D view. If needed, use `Seleccionar también en 3D` and click model geometry.
+- **Interaction:** The first 2D pick lazily resolves projected geometry; wait for it. A 3D click without pointer movement performs ray selection.
+- **Expected result:** Orange highlight in the active 2D view and the 3D model, plus inspector details; optional return from 3D to the drawing.
 - **Success indicator:** Status selection text and `Elemento IFC` inspector.
-- **Cancel method:** `Cerrar selección` or click empty space.
+- **Cancel method:** `Cerrar selección`, `Escape`, or click true blank space in the 2D drawing. The blank click clears the orange 2D/3D highlight and `data-hefesto-selected-ifc-key`.
 - **Relevant keyboard shortcuts:** None.
 - **Agent notes:** Camera drag is ignored as a selection when movement exceeds four pixels.
 - **Known limitations:** Requires pickable geometry and engine IDs; not available in Demo.
@@ -195,7 +195,7 @@ This inventory was derived from `tools/ifc-drawing/index.html` and `assets/js/ap
 - **Visible Spanish label:** Category eye/colour controls; `Ocultar elemento`, `Mostrar elemento`, `Aplicar color`, `Color original`, `Restablecer vista`
 - **DOM selector:** dynamic `[data-cat-vis]`, `[data-cat-color-on]`, `[data-cat-color]`, `#ifcHideInView`, `#ifcShowInView`, `#ifcApplyColor`, `#ifcClearColor`, `#resetIfcDisplay`
 - **Purpose:** Change category or exact-element visibility/colour in one vector 2D view.
-- **Required mode:** Active generated 2D view; model mode temporarily for exact-element picking.
+- **Required mode:** Active generated 2D view; 3D mode is optional for secondary picking.
 - **Preconditions:** Real IFC with usable categories/IDs.
 - **Activation:** Use view inspector controls.
 - **Interaction:** Each change reprojects the view; wait for completion before another change.
@@ -226,35 +226,35 @@ This inventory was derived from `tools/ifc-drawing/index.html` and `assets/js/ap
 ## TOOL-NAVIGATE-2D
 
 - **Tool ID:** `TOOL-NAVIGATE-2D`
-- **Visible Spanish label:** `Encuadrar` only in view properties; wheel/double-click have no label.
+- **Visible Spanish label:** `Encuadrar` only in view properties; wheel/double-click/pan have no label.
 - **DOM selector:** `#drawingSvg`, dynamic `#fit2d`
-- **Purpose:** Zoom a 2D drawing around the cursor or fit the whole view.
+- **Purpose:** Zoom a 2D drawing around the cursor, pan it, or fit the whole view.
 - **Required mode:** `drawing` with generated vector view.
 - **Preconditions:** Active non-pending view.
-- **Activation:** Wheel over drawing to zoom; double-click drawing or click inspector `Encuadrar` to fit.
-- **Interaction:** Repeated wheel input changes zoom while keeping the cursor location stable.
+- **Activation:** Wheel over drawing to zoom; with `Seleccionar`, drag blank space to pan; middle-button drag, `Shift`+drag or `Space`+drag pan from any drawing tool; double-click drawing or click inspector `Encuadrar` to fit.
+- **Interaction:** Repeated wheel input changes zoom while keeping the cursor location stable. Pan changes the viewBox without moving annotations or geometry.
 - **Expected result:** ViewBox changes; double-click restores calculated bounds and padding.
 - **Success indicator:** Visible scale/context change or full geometry fitted.
 - **Cancel method:** Reverse wheel direction or fit again.
-- **Relevant keyboard shortcuts:** None.
+- **Relevant keyboard shortcuts:** Hold `Space` while dragging to pan.
 - **Agent notes:** This interaction is intentionally explicit because visual agents may not discover it.
-- **Known limitations:** No verified 2D pan exists.
+- **Known limitations:** Primary-button blank-space pan is reserved for `Seleccionar`; use the alternate gestures while another drawing tool is active.
 
 ## TOOL-SELECT-ANNOTATION
 
 - **Tool ID:** `TOOL-SELECT-ANNOTATION`
 - **Visible Spanish label:** `Seleccionar`
 - **DOM selector:** `[data-draw-tool="select"]`, drawing annotations `[data-ann]`
-- **Purpose:** Select a dimension or text annotation; drag text; edit/delete through inspector.
+- **Purpose:** Select a dimension, linked chain, room area or text annotation; drag text or reposition a completed dimension/chain; edit/delete through inspector.
 - **Required mode:** `drawing`.
 - **Preconditions:** Active vector 2D view with annotations.
 - **Activation:** Activate `Seleccionar`, then click an annotation.
-- **Interaction:** Drag text directly; edit selected properties; press Delete/Backspace or inspector `Eliminar` to remove.
-- **Expected result:** Selection highlight and matching `Cota` or `Texto` inspector.
+- **Interaction:** Drag text directly. Drag a dimension line or its text perpendicular to the measured references to change its offset. Edit selected properties; press Delete/Backspace or inspector `Eliminar` to remove.
+- **Expected result:** Selection highlight and matching `Cota`, `Cadena de cotas`, `Área` or `Texto` inspector.
 - **Success indicator:** `data-hefesto-draw-tool="select"`; annotation-selected styling.
 - **Cancel method:** `Escape`, inspector `Cerrar`, or click empty drawing area.
 - **Relevant keyboard shortcuts:** `Escape`; `Delete`; `Backspace` when no form field is focused.
-- **Agent notes:** Direct drag applies only to text, not dimensions.
+- **Agent notes:** Dimension dragging preserves both measured reference points and changes only the placement offset.
 - **Known limitations:** No undo; deleting is immediate.
 
 ## TOOL-DIMENSION
@@ -273,6 +273,57 @@ This inventory was derived from `tools/ifc-drawing/index.html` and `assets/js/ap
 - **Relevant keyboard shortcuts:** `Escape`; `F8` for ORTO; hold `Shift` for temporary ORTO while defining point 2.
 - **Agent notes:** Read [DIMENSIONING.md](DIMENSIONING.md); placing a few dimensions is not automatically a complete task.
 - **Known limitations:** Manual only; no auto-dimension; free clicks remain possible when SNAP finds no reference.
+
+## TOOL-DIMENSION-CHAIN
+
+- **Tool ID:** `TOOL-DIMENSION-CHAIN`
+- **Visible Spanish label:** `Cota cadena`
+- **DOM selector:** `[data-draw-tool="dimension-chain"]`; generated chain segments use `[data-ann]` and a shared internal chain ID.
+- **Purpose:** Create consecutive aligned dimension segments and keep them linked for joint repositioning/deletion.
+- **Required mode:** `drawing`.
+- **Preconditions:** Active generated vector plan/elevation/section; visible geometric references; SNAP recommended.
+- **Activation:** Click `Cota cadena`.
+- **Interaction:** Click at least two consecutive linework references. Continue adding references, then click true blank space to use that point as the common offset and finish. Switch to `Seleccionar` and drag any segment to move the whole chain.
+- **Expected result:** One dimension per consecutive pair, all sharing one placement offset and highlighted together when selected.
+- **Success indicator:** `Cadena de cotas creada` toast; `Cadena de cotas` inspector with the number of segments; every linked segment moves to the same new offset.
+- **Cancel method:** `Escape` cancels a pending chain. `Eliminar cadena`, Delete or Backspace removes every linked segment.
+- **Relevant keyboard shortcuts:** `Escape`; `Delete`; `Backspace`; `F8`; hold `Shift` for temporary ORTO.
+- **Agent notes:** A click near linework adds another reference; a blank click ends the chain. Verify the blank point is not within SNAP/pick tolerance of unrelated linework.
+- **Known limitations:** This is manual chained dimensioning, not automatic whole-model dimensioning.
+
+## TOOL-AREA
+
+- **Tool ID:** `TOOL-AREA`
+- **Visible Spanish label:** `Área`, `Dibujar área`, `Importar IfcSpace`, `Ocultar textos`, `Mostrar textos`, `Ocultar texto`, `Mostrar texto`
+- **DOM selector:** `[data-draw-tool="area"]`; dynamic `#areaManual`, `#areaIfc`, `#areaLabelsVisible`; selected fields/actions `#areaEditNumber`, `#areaEditName`, `#areaToggleLabel`.
+- **Purpose:** Draw and label a room area manually or import projected room areas from IFC space entities, with global or per-area label visibility.
+- **Required mode:** `drawing` with an active plan.
+- **Preconditions:** Manual areas need a generated vector plan. IFC import additionally requires a loaded IFC with classified `IFCSPACE` geometry.
+- **Activation:** Click `Área`/`Dibujar área`, or click `Importar IfcSpace`.
+- **Interaction:** Manual: click perimeter vertices, then click the first point, double-click or press `Enter`; enter room number and name; click `Crear área`. IFC: wait while every `IfcSpace` in the plan projection band is analysed and labelled. Generated plans automatically attempt this import once. Use `Ocultar textos` for the complete plan or select one area and use `Ocultar texto` for only that annotation.
+- **Expected result:** Blue translucent polygon with optional room number/name/square-metres label; source is shown as `Manual` or `IfcSpace`. Hiding text preserves the polygon and schedule row in screen and exports.
+- **Success indicator:** `Área creada` or `Espacios IFC importados` toast, visible polygons/labels and updated area statistics.
+- **Cancel method:** `Escape` cancels a pending perimeter; modal `Cancelar` discards it; `Eliminar área` removes a completed area.
+- **Relevant keyboard shortcuts:** `Enter` closes a valid manual perimeter; `Escape` cancels; Delete/Backspace removes a selected area.
+- **Agent notes:** If an IFC has no usable `IfcSpace`, the import button stays disabled. Review imported names and polygons before documentation export. The plan-wide label switch has priority over the individual area switch.
+- **Known limitations:** Automatic geometry follows the projected `IfcSpace` outline exposed by the IFC engine; malformed, overlapping or incorrectly classified spaces remain source-data issues.
+
+## TOOL-AREA-SCHEDULE
+
+- **Tool ID:** `TOOL-AREA-SCHEDULE`
+- **Visible Spanish label:** `Crear/actualizar cuadro`, `Cuadro de áreas`, `Actualizar`, `Añadir a plano`
+- **DOM selector:** dynamic `#areaSchedule`, `#areaMakeSchedule`, `#scheduleRefresh`, `#scheduleAddSheet`; tree `#schedulesTree [data-view]`.
+- **Purpose:** Build an area schedule from one plan and place it on sheets as a draggable/resizable table viewport.
+- **Required mode:** Create from a plan or selected area; inspect in `drawing`; place/edit in `sheet`.
+- **Preconditions:** Active plan; zero or more manual/IFC areas. A sheet is created automatically if required when adding the schedule.
+- **Activation:** Click `Crear/actualizar cuadro`; then use `Añadir a plano` or drag the schedule tree item to paper.
+- **Interaction:** Edit room number/name before or after schedule creation; linked schedules refresh. Move/resize its viewport like other sheet content. Schedule scale is `TABLA`, not `1:n`.
+- **Expected result:** Table columns `Nº`, `Estancia`, `Origen`, `Área`; all rows remain present in screen, SVG and PDF output.
+- **Success indicator:** Schedule tree item reports its area count; table appears in drawing/sheet; PDF contains the same row count.
+- **Cancel method:** `Eliminar cuadro` removes the schedule and its sheet viewports; `Quitar` removes only one viewport.
+- **Relevant keyboard shortcuts:** None.
+- **Agent notes:** Use `Actualizar` after bulk changes. Verify the last row in PDF, especially on dense schedules.
+- **Known limitations:** One schedule is linked to one source plan; no totals/subtotals or multi-plan aggregation are provided in this version.
 
 ## TOOL-TEXT
 
@@ -431,14 +482,14 @@ This inventory was derived from `tools/ifc-drawing/index.html` and `assets/js/ap
 
 - **Tool ID:** `TOOL-MOVE-RESIZE-VIEWPORT`
 - **Visible Spanish label:** No button label; direct sheet interaction.
-- **DOM selector:** dynamic `.sheet-vp`; lower-right `.vp-resize`
-- **Purpose:** Move or resize a viewport on the active sheet.
+- **DOM selector:** dynamic `.sheet-vp`; lower-right `.vp-resize`; movable label `.vp-label[data-vp-label]`
+- **Purpose:** Move or resize a viewport, or reposition its title/scale label independently on the active sheet.
 - **Required mode:** `sheet`.
 - **Preconditions:** Active sheet with viewport.
-- **Activation:** Pointer-drag viewport body to move; drag `.vp-resize` to resize.
-- **Interaction:** Movement is clamped within 10 mm paper margins; minimum size is 35×28 mm. Resizing changes the displayed window.
-- **Expected result:** Viewport position/size updates and inspector stays linked.
-- **Success indicator:** Viewport selected border and changed X/Y/width/height values.
+- **Activation:** Pointer-drag viewport body to move; drag `.vp-resize` to resize; drag `.vp-label` to move title and scale together without moving the viewport.
+- **Interaction:** Viewport movement is clamped within 10 mm paper margins; minimum size is 35×28 mm. Label movement is clamped to the paper and stored relative to its viewport. Resizing changes the displayed window.
+- **Expected result:** Viewport position/size or independent label position updates and inspector stays linked.
+- **Success indicator:** Viewport selected border and changed viewport or title/scale X/Y values.
 - **Cancel method:** No drag cancel/undo; restore numerically in inspector.
 - **Relevant keyboard shortcuts:** None.
 - **Agent notes:** Recheck crop, labels, title block and overlaps after each resize.
@@ -459,20 +510,71 @@ This inventory was derived from `tools/ifc-drawing/index.html` and `assets/js/ap
 - **Cancel method:** Restore prior value manually.
 - **Relevant keyboard shortcuts:** None.
 - **Agent notes:** Formats: A4, A3, A2, A1, A0; orientations: Horizontal/Vertical.
-- **Known limitations:** Changing sheet size does not automatically rearrange viewports.
+- **Known limitations:** Changing sheet size does not automatically rearrange viewports. The title block grows within the page and wraps long metadata instead of clipping it.
+
+## TOOL-NAVIGATE-SHEET
+
+- **Tool ID:** `TOOL-NAVIGATE-SHEET`
+- **Visible Spanish label:** `−`, `Encuadrar`, `+`; wheel/pan gestures have no label.
+- **DOM selector:** `#sheetCanvas`, `#sheetPaper`, `#btnSheetZoomOut`, `#btnSheetZoomFit`, `#btnSheetZoomIn`
+- **Purpose:** Zoom and pan the sheet workspace without altering paper content or viewport positions.
+- **Required mode:** `sheet`.
+- **Preconditions:** Active sheet.
+- **Activation:** Wheel over the paper or use toolbar zoom buttons; pan with middle-button drag, `Shift`+drag or `Space`+drag; click `Encuadrar` to refit.
+- **Interaction:** Cursor-centred zoom expands the scrollable paper workspace. Pan changes workspace scroll only.
+- **Expected result:** The chosen paper area can be inspected closely while sheet geometry remains unchanged.
+- **Success indicator:** Paper scale changes or the workspace scroll position changes; title block and viewport coordinates remain constant.
+- **Cancel method:** Reverse the gesture or use `Encuadrar`.
+- **Relevant keyboard shortcuts:** Hold `Space` while dragging to pan.
+- **Agent notes:** Use this for inspection and precise editing; PDF size and scale are unaffected.
+- **Known limitations:** It is workspace navigation, not a viewport crop operation.
+
+## TOOL-SAVE-OPEN-PROJECT
+
+- **Tool ID:** `TOOL-SAVE-OPEN-PROJECT`
+- **Visible Spanish label:** `Guardar proyecto`, `Abrir proyecto`
+- **DOM selector:** `#btnSaveProject`, `label[for="projectInput"]`, hidden `#projectInput`
+- **Purpose:** Download or reopen an editable IFC Drawing project.
+- **Required mode:** Any.
+- **Preconditions:** Saving requires views, sheets or project data; opening requires a valid `.hefesto-drawing.json` or `.json` file.
+- **Activation:** Click `Guardar proyecto` to download; click `Abrir proyecto` and select the saved file to restore it.
+- **Interaction:** The JSON preserves levels, projected vector views, viewBoxes, text, areas and their label visibility, chain linkage, per-view visibility/colour, area schedules, captured 3D images, sheets, viewports and moved title/scale label positions.
+- **Expected result:** A `.hefesto-drawing.json` download, or a restored editable project after reopening.
+- **Success indicator:** Download name uses the project name; reopening restores tree items, active view/sheet and a success toast.
+- **Cancel method:** Cancel the system file picker. Opening another IFC or project replaces the current workspace.
+- **Relevant keyboard shortcuts:** None.
+- **Agent notes:** The saved file is local and portable. Reopened projections, annotations, schedules and sheets can be edited and exported. `data-hefesto-project-detached="true"` means the project is open but its source IFC is not yet reattached.
+- **Known limitations:** The original IFC geometry is not embedded; use `Reconectar IFC` rather than ordinary `Abrir IFC` when continuing a saved project.
+
+## TOOL-RECONNECT-IFC
+
+- **Tool ID:** `TOOL-RECONNECT-IFC`
+- **Visible Spanish label:** `Reconectar IFC`
+- **DOM selector:** `#btnReconnectIfc`, hidden `#reconnectIfcInput`, dynamic `#inspReconnectIfc`
+- **Purpose:** Reattach the source IFC to a reopened project without resetting its saved documentation.
+- **Required mode:** Any after `Abrir proyecto`; the control appears only while the project is detached.
+- **Preconditions:** Valid reopened `.hefesto-drawing.json`; source IFC available; application served over HTTP; engine dependencies reachable.
+- **Activation:** Click `Reconectar IFC`, choose the original `.ifc`, then wait for local conversion/classification.
+- **Interaction:** The model is loaded like a normal IFC, but existing levels, drawings, annotations, areas, schedules, viewBoxes, sheets and viewports are preserved. Missing IFC levels are merged. A differing filename produces a warning but does not block reconnection.
+- **Expected result:** Model workspace is usable again; new plans/elevations/sections and 3D operations are enabled; saved documentation remains in the tree and sheets.
+- **Success indicator:** `data-hefesto-model-loaded="true"`, `data-hefesto-project-detached="false"`, hidden reconnect button and `IFC reconectado` status/toast.
+- **Cancel method:** Cancel the file picker. A failed reconnection keeps the project detached and its documentation available.
+- **Relevant keyboard shortcuts:** None.
+- **Agent notes:** Ordinary `Abrir IFC` starts a new IFC project and replaces documentation. Use this control for continuation.
+- **Known limitations:** The IFC is referenced by user choice, not embedded; the filename warning cannot prove file identity.
 
 ## TOOL-VIEWPORT-PROPERTIES
 
 - **Tool ID:** `TOOL-VIEWPORT-PROPERTIES`
-- **Visible Spanish label:** `Escala`, `X (mm)`, `Y (mm)`, `Ancho (mm)`, `Alto (mm)`, `Recentrar`, `Quitar`
-- **DOM selector:** dynamic `#vpScale`, `#vpX`, `#vpY`, `#vpW`, `#vpH`, `#vpCenter`, `#vpDelete`
-- **Purpose:** Precisely control selected viewport scale, position, size and view centre.
+- **Visible Spanish label:** `Escala`, viewport `X (mm)`/`Y (mm)`, `Ancho (mm)`, `Alto (mm)`, title/scale `X (mm)`/`Y (mm)`, `Restablecer posición`, `Recentrar`, `Quitar`
+- **DOM selector:** dynamic `#vpScale`, `#vpX`, `#vpY`, `#vpW`, `#vpH`, `#vpLabelX`, `#vpLabelY`, `#vpLabelReset`, `#vpCenter`, `#vpDelete`
+- **Purpose:** Precisely control selected viewport scale, position, size, view centre and independent title/scale label position.
 - **Required mode:** `sheet`, selected viewport.
 - **Preconditions:** Existing viewport.
 - **Activation:** Click viewport, then edit inspector.
-- **Interaction:** Numeric fields commit on change; select a scale; `Recentrar` restores vector view bounds centre; `Quitar` removes viewport.
-- **Expected result:** Viewport rerenders with requested window and geometry scale.
-- **Success indicator:** Display and inspector agree; label shows selected `1:n` or NTS.
+- **Interaction:** Numeric fields commit on change; select a scale; set title/scale X/Y or drag the label; `Restablecer posición` returns the label below the centred viewport; `Recentrar` restores vector view bounds centre; `Quitar` removes viewport.
+- **Expected result:** Viewport rerenders with requested window, geometry scale and label position.
+- **Success indicator:** Display and inspector agree; label shows selected `1:n`, NTS or TABLA at the requested position.
 - **Cancel method:** Restore prior values; removed viewport can only be re-added.
 - **Relevant keyboard shortcuts:** None.
 - **Agent notes:** Verified standard scales: 1:10, 1:20, 1:25, 1:50, 1:75, 1:100, 1:125, 1:150, 1:200, 1:250, 1:500, 1:1000, plus an automatically calculated fallback if present.
@@ -492,7 +594,7 @@ This inventory was derived from `tools/ifc-drawing/index.html` and `assets/js/ap
 - **Success indicator:** `PDF exportado` status and `PDF generado` toast.
 - **Cancel method:** None after generation begins.
 - **Relevant keyboard shortcuts:** None.
-- **Agent notes:** Hidden-line checkbox affects PDF. Only the active sheet is exported.
+- **Agent notes:** Hidden-line and area-label visibility affect PDF. Moved title/scale labels use their saved sheet positions. Only the active sheet is exported.
 - **Known limitations:** Browser download policy may hide/block download; no multi-page all-sheet export.
 
 ## TOOL-EXPORT-SVG
@@ -509,7 +611,7 @@ This inventory was derived from `tools/ifc-drawing/index.html` and `assets/js/ap
 - **Success indicator:** `SVG exportado` toast.
 - **Cancel method:** None after click.
 - **Relevant keyboard shortcuts:** None.
-- **Agent notes:** Hidden-line state controls whether hidden segments are included.
+- **Agent notes:** Hidden-line state and area-label visibility are preserved in SVG output.
 - **Known limitations:** Unavailable for 3D captures or pending/no view.
 
 ## TOOL-EXPORT-DXF
@@ -526,7 +628,7 @@ This inventory was derived from `tools/ifc-drawing/index.html` and `assets/js/ap
 - **Success indicator:** `DXF 2D exportado` toast stating model units are metres.
 - **Cancel method:** None after click.
 - **Relevant keyboard shortcuts:** None.
-- **Agent notes:** Visible/hidden and coloured line groups become DXF layers; dimensions/text are emitted as basic entities.
+- **Agent notes:** Visible/hidden and coloured line groups become DXF layers; dimensions and visible text are emitted as basic entities. Hidden area labels are omitted while area polygon geometry remains.
 - **Known limitations:** 2D only; not a 3D model export; unavailable for 3D captures.
 
 ## TOOL-THEME
@@ -575,11 +677,11 @@ This inventory was derived from `tools/ifc-drawing/index.html` and `assets/js/ap
 - **Interaction:** Normal browser navigation.
 - **Expected result:** `../../index.html` opens.
 - **Success indicator:** IFC Drawing is no longer the active page.
-- **Cancel method:** Browser Back may return if session state remains available, but persistence is not guaranteed.
+- **Cancel method:** Browser Back may return; save the project first if its current state matters.
 - **Relevant keyboard shortcuts:** Browser navigation shortcuts only.
 - **Agent notes:** Do not use as a completion action unless the user requested leaving the tool.
-- **Known limitations:** Session edits are not explicitly saved before navigation.
+- **Known limitations:** Navigation does not autosave; use `Guardar proyecto` explicitly.
 
 ## Explicitly absent capabilities
 
-The audited version contains no auto-dimension tool, no auto-layout tool, no public agent execution API, no MCP/WebMCP server, no backend and no verified 2D pan. Do not invent selectors or workflows for them.
+The audited version contains no auto-dimension tool, no auto-layout tool, no public agent execution API, no MCP/WebMCP server, no backend and no automatic cloud save. Do not invent selectors or workflows for them.

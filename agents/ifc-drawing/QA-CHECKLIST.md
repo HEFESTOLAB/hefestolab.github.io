@@ -10,6 +10,9 @@ Use only the sections relevant to the current task. A successful click is not su
 - [ ] Plan, elevation or section orientation and cut/depth settings match the task.
 - [ ] Visible and hidden-line representation is appropriate.
 - [ ] Category or element visibility and colours are intentional.
+- [ ] An element selected from 2D linework is clearly highlighted and any per-view hide/show change affects the intended view only.
+- [ ] Clicking true blank space in 2D clears the IFC key, orange 2D highlight, 3D highlight and status selection.
+- [ ] Wheel zoom, fit and pan can reach every required area without modifying the drawing.
 - [ ] Linework is clear enough for the intended output scale.
 - [ ] A 3D capture, if used, matches the intended camera and is labelled NTS.
 
@@ -24,17 +27,32 @@ Use only the sections relevant to the current task. A successful click is not su
 - [ ] SNAP references were used where valid; ORTO use matches the intended direction.
 - [ ] Dimensions do not cross or overlap unnecessarily.
 - [ ] Text is readable and does not obscure important geometry.
+- [ ] Completed dimensions can be repositioned without deleting them, and their PDF text is legible at the nominal 2.1 mm printed height.
+- [ ] A chained dimension finishes with a blank click, highlights as one system and moves every segment to one common offset when any segment is dragged.
 - [ ] Duplicate dimensions and annotations without technical value were removed.
+
+## Areas
+
+- [ ] Every required room has one valid polygon, number, name and plausible square metres.
+- [ ] Automatic areas correspond to intended `IfcSpace` geometry in the active plan band; malformed or overlapping source spaces were not accepted blindly.
+- [ ] Manual and IFC area origins are distinguishable and duplicate room numbers were corrected.
+- [ ] Plan-wide and per-area text visibility is intentional; hidden labels remain hidden in sheet/PDF/SVG/DXF without removing polygons or schedule rows.
+- [ ] The linked area schedule row count equals the plan area count.
+- [ ] Room edits propagate after schedule update and remain after project save/reopen.
 
 ## Sheet
 
 - [ ] Format and orientation suit the number, proportions and density of views.
 - [ ] Viewports stay within margins and clear of the title block.
 - [ ] Viewports, labels and scale labels do not overlap.
+- [ ] Each title/scale label can be moved independently of its viewport, its X/Y fields match the visible location, and the PDF uses the same position.
 - [ ] Each view is large enough to read at its selected scale.
 - [ ] Equal or different scales were chosen deliberately.
 - [ ] The title block number, title, project, author and format are correct.
+- [ ] Long title-block values wrap or expand without truncation, and the complete title block remains inside A0/A1/A2/A3/A4 paper bounds.
+- [ ] Sheet zoom, pan and fit allow close inspection without changing viewport coordinates.
 - [ ] No unintended duplicate or deleted view remains.
+- [ ] Area schedules are labelled `TABLA`, remain inside margins, and show every row including the last one.
 - [ ] The paper is used effectively without crowding.
 
 ## Export
@@ -45,3 +63,12 @@ Use only the sections relevant to the current task. A successful click is not su
 - [ ] The operation completed without an error status or toast.
 - [ ] A browser download was generated when browser policy permits it.
 - [ ] The resulting filename and, where inspectable, document content match the intended view or sheet.
+
+## Project persistence
+
+- [ ] `Guardar proyecto` downloads a `.hefesto-drawing.json` file.
+- [ ] Reopening that file restores views, viewBoxes, dimensions/chains/text, areas and label visibility, schedules, IFC display overrides, sheets, viewports and title/scale label positions.
+- [ ] A reopened project shows `data-hefesto-project-detached="true"` and `Reconectar IFC`.
+- [ ] Reconnecting the source IFC changes model-loaded to true and project-detached to false without changing saved drawing/sheet counts.
+- [ ] After reconnection, one new IFC-derived view can be generated while previous documentation remains present.
+- [ ] The user understands that the saved project does not embed the original IFC and must use `Reconectar IFC` for new projections or 3D operations.

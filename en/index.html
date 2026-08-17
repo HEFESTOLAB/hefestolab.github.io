@@ -5,7 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
 <title>HEFESTOLAB | HEFESTO Pre-BIM Modeler</title>
-<meta content="HEFESTO Pre-BIM Modeler: architecture, structure and MEP in one app. 3D modelling, drawings and details, point clouds and automatic BC3 cost plans. In use on real projects. Beta in September 2026." name="description"/>
+<meta content="HEFESTO Pre-BIM Modeler: BIM from the first line or wherever you start. Begin with an idea, convert a traditional project or digitise an existing asset into a lightweight, traceable and extensible BIM foundation." name="description"/>
 <meta content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" name="robots"/>
 <meta content="#07111f" name="theme-color"/>
 <link href="https://hefestolab.github.io/en/" rel="canonical"/>
@@ -23,15 +23,15 @@
 <meta content="website" property="og:type"/>
 <meta content="en_US" property="og:locale"/>
 <meta content="HEFESTOLAB" property="og:site_name"/>
-<meta content="HEFESTOLAB | BIM from the first line" property="og:title"/>
-<meta content="HEFESTO Pre-BIM Modeler: architecture, structure and MEP in one app. 3D modelling, drawings and details, point clouds and automatic BC3 cost plans. In use on real projects. Beta in September 2026." property="og:description"/>
+<meta content="HEFESTOLAB | BIM from the first line or wherever you start" property="og:title"/>
+<meta content="HEFESTO Pre-BIM Modeler: BIM from the first line or wherever you start. Begin with an idea, convert a traditional project or digitise an existing asset into a lightweight, traceable and extensible BIM foundation." property="og:description"/>
 <meta content="https://hefestolab.github.io/en/" property="og:url"/>
 <meta content="https://hefestolab.github.io/assets/images/og-hefestolab-en.jpg" property="og:image"/>
 <meta content="1200" property="og:image:width"/>
 <meta content="630" property="og:image:height"/>
 <meta content="summary_large_image" name="twitter:card"/>
-<meta content="HEFESTOLAB | BIM from the first line" name="twitter:title"/>
-<meta content="HEFESTO Pre-BIM Modeler: architecture, structure and MEP in one app. 3D modelling, drawings and details, point clouds and automatic BC3 cost plans. In use on real projects. Beta in September 2026." name="twitter:description"/>
+<meta content="HEFESTOLAB | BIM from the first line or wherever you start" name="twitter:title"/>
+<meta content="HEFESTO Pre-BIM Modeler: BIM from the first line or wherever you start. Begin with an idea, convert a traditional project or digitise an existing asset into a lightweight, traceable and extensible BIM foundation." name="twitter:description"/>
 <meta content="https://hefestolab.github.io/assets/images/og-hefestolab-en.jpg" name="twitter:image"/>
 <script type="application/ld+json">
   {
@@ -176,6 +176,49 @@
     .fmt{padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--soft);font-size:.79rem;font-weight:750}
     .fmt i{font-style:normal;color:var(--muted);font-weight:650}
     @media(max-width:980px){.discRow{grid-template-columns:1fr}}
+
+    .heroSubclaim{margin:10px 0 0;font-size:clamp(1.18rem,2.25vw,2rem);font-weight:800;letter-spacing:-.04em;color:var(--text)}
+    .heroSubclaim span{color:var(--blue)}
+    .hero .lead{margin-top:22px}
+    .heroMini{display:block;margin-top:14px;color:var(--muted);font-size:.94rem;max-width:680px}
+    .heroMini b{color:var(--text)}
+    .flowStory{display:grid;gap:0}
+    .flowInputs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .flowInput{padding:22px 23px 20px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);box-shadow:0 10px 34px rgba(10,45,85,.06);min-height:168px}
+    .flowInput.featured{border-color:color-mix(in srgb,var(--blue) 48%,var(--line));background:linear-gradient(180deg,color-mix(in srgb,var(--blue) 6%,var(--surface)),var(--surface))}
+    .flowInputTop{display:flex;align-items:center;gap:9px;color:var(--blue);font-size:.7rem;font-weight:850;letter-spacing:.11em;text-transform:uppercase}
+    .flowNum{width:27px;height:27px;border-radius:9px;background:color-mix(in srgb,var(--blue) 11%,var(--surface));display:grid;place-items:center;font-size:.72rem}
+    .flowInput h3{font-size:1.14rem;margin-top:18px;letter-spacing:-.03em}
+    .flowInput strong{display:block;color:var(--blue);font-size:.91rem;margin-top:9px}
+    .flowTags{display:flex;gap:6px;flex-wrap:wrap;margin-top:15px}
+    .flowTags span{font-size:.71rem;font-weight:700;color:var(--muted);padding:5px 8px;border:1px solid var(--line);border-radius:999px;background:var(--soft)}
+    .mergeRail{height:76px;position:relative;margin:0 11%}
+    .mergeRail:before{content:"";position:absolute;left:5%;right:5%;top:34px;height:1px;background:color-mix(in srgb,var(--blue) 56%,var(--line))}
+    .mergeRail:after{content:"";position:absolute;left:50%;top:34px;width:1px;height:35px;background:var(--blue)}
+    .mergeRail i{position:absolute;top:0;width:1px;height:35px;background:color-mix(in srgb,var(--blue) 56%,var(--line))}
+    .mergeRail i:nth-child(1){left:5%}.mergeRail i:nth-child(2){left:50%}.mergeRail i:nth-child(3){right:5%}
+    .mergeRail b{position:absolute;left:50%;bottom:0;transform:translate(-50%,7px);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:11px solid var(--blue)}
+    .hefestoCore{width:min(780px,100%);margin:0 auto;padding:24px 28px;border:1px solid color-mix(in srgb,var(--blue) 50%,var(--line));border-radius:24px;background:linear-gradient(180deg,color-mix(in srgb,var(--blue) 8%,var(--surface)),var(--surface));text-align:center;box-shadow:0 14px 44px rgba(10,45,85,.09)}
+    .hefestoCore small,.bimCore small{display:block;color:var(--blue);font-size:.7rem;font-weight:850;letter-spacing:.12em;text-transform:uppercase}
+    .hefestoCore h3{font-size:1.7rem;margin-top:9px}
+    .coreMeta{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-top:16px}
+    .coreMeta span{padding:6px 9px;border:1px solid var(--line);border-radius:999px;background:var(--surface);font-size:.72rem;font-weight:750;color:var(--muted)}
+    .flowDown{height:54px;width:1px;background:linear-gradient(180deg,color-mix(in srgb,var(--blue) 55%,var(--line)),var(--blue));margin:0 auto;position:relative}
+    .flowDown:after{content:"";position:absolute;left:50%;bottom:-1px;transform:translateX(-50%);border-left:6px solid transparent;border-right:6px solid transparent;border-top:11px solid var(--blue)}
+    .bimCore{width:min(680px,100%);margin:0 auto;padding:21px 26px;border:1px solid var(--line);border-radius:22px;background:var(--surface);text-align:center}
+    .bimCore h3{font-size:1.55rem;margin-top:8px}.bimCore p{margin:8px 0 0;color:var(--muted);font-size:.9rem}
+    .outRail{height:74px;position:relative;margin:0 11%}
+    .outRail:before{content:"";position:absolute;left:5%;right:5%;top:38px;height:1px;background:color-mix(in srgb,var(--blue) 56%,var(--line))}
+    .outRail:after{content:"";position:absolute;left:50%;top:0;width:1px;height:39px;background:color-mix(in srgb,var(--blue) 56%,var(--line))}
+    .outRail i{position:absolute;top:38px;width:1px;height:30px;background:color-mix(in srgb,var(--blue) 56%,var(--line))}
+    .outRail i:nth-child(1){left:5%}.outRail i:nth-child(2){left:50%}.outRail i:nth-child(3){right:5%}
+    .flowOutputs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .flowOutput{padding:18px 20px;border:1px solid var(--line);border-radius:17px;background:var(--surface);text-align:center}
+    .flowOutput b{display:block;color:var(--blue);font-size:.72rem;font-weight:850;letter-spacing:.11em;text-transform:uppercase}
+    .flowOutput strong{display:block;margin-top:8px;font-size:1rem}.flowOutput span{display:block;margin-top:5px;color:var(--muted);font-size:.78rem}
+    .flowNote{margin:22px auto 0;text-align:center;color:var(--muted);font-size:.84rem;max-width:800px}.flowNote b{color:var(--text)}
+    @media(max-width:980px){.heroMini{margin-inline:auto}.flowInputs,.flowOutputs{grid-template-columns:1fr}.mergeRail,.outRail{display:none}.flowInput{min-height:0}.hefestoCore{margin-top:18px}.flowDown{height:42px}}
+    @media(max-width:720px){.heroSubclaim{font-size:1.14rem}.hefestoCore,.bimCore{padding:21px 18px}.hefestoCore h3{font-size:1.4rem}.bimCore h3{font-size:1.3rem}.flowInput{padding:20px}.flowOutputs{gap:10px}.flowNote{font-size:.8rem}}
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
   </style>
 <script>(function(){try{var s=localStorage.getItem("hefestolab-theme");document.documentElement.dataset.theme=s||((window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark")}catch(e){}})();</script>
@@ -196,9 +239,11 @@
 <div class="heroCopy">
 <span class="badge"><span class="dot"></span> HEFESTO Pre-BIM Modeler · Public beta in September 2026</span>
 <h1>BIM from the <span>first line.</span></h1>
-<p class="lead">HEFESTO covers <b>architecture, structure and MEP</b> in a single desktop application: 3D modelling, drawings and details, point clouds, quantities and automatic cost plans linked to price databases. <b>The tool is already operational and in use on real projects; the public beta opens in September 2026.</b></p>
+<p class="heroSubclaim">Or from <span>wherever you start.</span></p>
+<p class="lead">Begin with an idea, convert a traditional project or digitise an existing asset. HEFESTO organises geometry, data and documentation into a <b>lightweight, traceable and extensible BIM foundation</b>, without forcing you to do the work twice.</p>
+<span class="heroMini">With <b>HEFESTO JSON</b> as an open, AI-readable core connecting people, processes, IFC, Revit, BC3, Excel and future agents.</span>
 <div class="heroBtns"><a class="btn primary" href="../tools/ifc-drawing/index.html">Try IFC Drawing · free →</a><a class="btn secondary" href="#beta">Join the September beta</a></div>
-<div class="chips"><span class="chip">2D / 3D modelling</span><span class="chip">Quantities and cost data</span><span class="chip">JSON · IFC · Revit · Dynamo</span><span class="chip">Component Studio</span></div>
+<div class="chips"><span class="chip">New project · BIM from the first line</span><span class="chip">Traditional project · now I need BIM</span><span class="chip">Existing asset · BIM where there is no BIM yet</span><span class="chip">Architecture · Structure · MEP · Industry</span><span class="chip">PDF · DXF · IFC · BC3 · Excel · JSON · AI</span><span class="chip">Point clouds · drawings · documentation</span></div>
 </div>
 <div aria-label="Conceptual representation of the HEFESTO interface" class="visual">
 <div class="glow"></div>
@@ -218,7 +263,24 @@
 <article class="card"><div class="cardIcon">✦</div><h3>Automation and AI</h3><p>An architecture designed to incorporate assistants, MCP and processes capable of interpreting technical documentation.</p><span class="status">Active development line</span></article>
 <article class="card"><div class="cardIcon">⌁</div><h3>Industrial and AEC</h3><p>The same data approach for buildings, structures, services, equipment and industrial components.</p><span class="status">Multiple use cases</span></article>
 </div></div></section>
-<section class="section" id="flujo"><div class="wrap"><div class="head"><div><div class="kicker">Workflow</div><h2>From initial information to a usable model.</h2></div><p>HEFESTO aims to make data available early and keep it evolving without depending on a single tool.</p></div><div class="flow"><div class="step"><span class="n">01 · INPUT</span><b>Drawings and data</b><span>Graphical information, requirements, datasheets and project data.</span></div><div class="step"><span class="n">02 · MODEL</span><b>Geometry and objects</b><span>2D/3D elements with useful properties and relationships.</span></div><div class="step"><span class="n">03 · INFORMATION</span><b>Quantities and cost</b><span>Quantities and cost data linked to the model.</span></div><div class="step"><span class="n">04 · CONTINUITY</span><b>Interoperability</b><span>Data prepared for other formats, tools and automation.</span></div></div></div></section>
+<section class="section" id="flujo"><div class="wrap"><div class="head"><div><div class="kicker">Three starting points</div><h2>One BIM foundation, wherever you start.</h2></div><p>Three different situations. One process: organise the information and turn it into lightweight BIM.</p></div><div class="flowStory">
+<div class="flowInputs">
+<article class="flowInput"><div class="flowInputTop"><span class="flowNum">01</span> Start</div><h3>Idea, sketch or drawing.</h3><strong>BIM from the first line.</strong><div class="flowTags"><span>Idea</span><span>Sketch</span><span>Drawing</span></div></article>
+<article class="flowInput featured"><div class="flowInputTop"><span class="flowNum">02</span> Convert</div><h3>Completed traditional project.</h3><strong>Now I need BIM.</strong><div class="flowTags"><span>CAD</span><span>PDF</span><span>Reports</span><span>Quantities</span></div></article>
+<article class="flowInput"><div class="flowInputTop"><span class="flowNum">03</span> Digitise</div><h3>Existing built asset.</h3><strong>BIM where there is no BIM yet.</strong><div class="flowTags"><span>Point cloud</span><span>Legacy drawings</span><span>Photos</span></div></article>
+</div>
+<div class="mergeRail" aria-hidden="true"><i></i><i></i><i></i><b></b></div>
+<div class="hefestoCore"><small>HEFESTO</small><h3>Geometry + data + traceability</h3><div class="coreMeta"><span>HEFESTO JSON</span><span>Quantities</span><span>Cost</span><span>Interoperability</span><span>AI</span></div></div>
+<div class="flowDown" aria-hidden="true"></div>
+<div class="bimCore"><small>Result</small><h3>Lightweight BIM</h3><p>Lightweight process. Rigorous data.</p></div>
+<div class="outRail" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="flowOutputs">
+<div class="flowOutput"><b>Use</b><strong>Get to work</strong><span>Model · quantities · drawings</span></div>
+<div class="flowOutput"><b>Deliver</b><strong>Meet BIM requirements</strong><span>IFC · BC3 · Excel · DXF</span></div>
+<div class="flowOutput"><b>Extend</b><strong>Keep growing</strong><span>Revit · CYPE · AI · MCP</span></div>
+</div>
+<div class="flowNote"><b>HEFESTO creates the foundation.</b> Then you decide how far the project needs to go.</div>
+</div></div></section>
 <section class="section soft" id="beta"><div class="wrap"><div class="head"><div><div class="kicker">Launch</div><h2>Public beta in September 2026.</h2></div><p>This is not a half-finished beta: the tool is already operational and delivering real architecture, structure, MEP and detail engineering projects. What opens in September is access, with limited seats and launch pricing.</p></div><div class="betaGrid">
 <div class="betaCard accent">
 <span class="betaWhen">September 2026</span>
@@ -235,7 +297,7 @@
 <li><b>Roadmap influence</b>: your use cases enter the work queue</li>
 <li><b>Remote onboarding session</b> to get started on a real project of yours</li>
 </ul>
-<div class="betaCta"><a class="btn primary" href="mailto:info@solucionesbim.com?subject=HEFESTO%20Early%20Access%20seat%20request%20(September%202026)&amp;body=Hi%20Luis%2C%0A%0AI%27d%20like%20to%20reserve%20a%20seat%20in%20the%20HEFESTO%20Pre-BIM%20Modeler%20Early%20Access%20programme.%0A%0AName%3A%20%0ACompany%3A%20%0APhone%3A%20%0AProjects%20I%20would%20use%20it%20on%3A%20%0A%0AThanks.">Reserve a seat · €499/year →</a><a class="btn secondary" href="mailto:info@solucionesbim.com?subject=Information%20about%20the%20HEFESTO%20beta&amp;body=Hi%20Luis%2C%0A%0AI%27m%20interested%20in%20the%20HEFESTO%20Pre-BIM%20Modeler%20beta%20and%20would%20like%20more%20information%20before%20deciding.%0A%0AName%3A%20%0ACompany%3A%20%0A%0AThanks.">I want more information</a></div>
+<div class="betaCta"><a class="btn primary" href="https://forms.cloud.microsoft/r/D8F223JxTW" rel="noopener" target="_blank">Reserve a seat · €499/year →</a><a class="btn secondary" href="mailto:info@solucionesbim.com?subject=Information%20about%20the%20HEFESTO%20beta&amp;body=Hi%20Luis%2C%0A%0AI%27m%20interested%20in%20the%20HEFESTO%20Pre-BIM%20Modeler%20beta%20and%20would%20like%20more%20information%20before%20deciding.%0A%0AName%3A%20%0ACompany%3A%20%0A%0AThanks.">I want more information</a></div>
 <p class="priceNote">Reserving a seat involves no payment now. It is confirmed by email, with the full terms, before launch.</p>
 </div>
 <div class="betaCard">

@@ -14,12 +14,12 @@
   <meta name="hefesto-agent-guide" content="https://hefestolab.github.io/agents/ifc-drawing/">
   <meta name="hefesto-agent-skill" content="https://hefestolab.github.io/agents/ifc-drawing/SKILL.md">
   <link rel="icon" href="../../assets/brand/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/ifc-drawing.css?v=0.5.0">
+  <link rel="stylesheet" href="assets/css/ifc-drawing.css?v=0.8.0">
   <script type="application/json" id="hefesto-agent-manifest">
   {
     "application": "HEFESTO IFC Drawing",
     "agentReady": true,
-    "version": "0.1",
+    "version": "0.4",
     "guide": "https://hefestolab.github.io/agents/ifc-drawing/",
     "skill": "https://hefestolab.github.io/agents/ifc-drawing/SKILL.md",
     "manifest": "https://hefestolab.github.io/tools/ifc-drawing/agent.json"
@@ -39,6 +39,11 @@
         <small id="fileMeta">Ningún IFC cargado</small>
       </div>
       <div class="top-spacer"></div>
+      <label class="top-btn" for="projectInput" title="Reabrir un proyecto guardado de IFC Drawing" data-hefesto-tool="open-project" data-hefesto-purpose="Open a saved HEFESTO IFC Drawing project">Abrir proyecto</label>
+      <input id="projectInput" type="file" accept=".json,.hefesto-drawing.json,application/json" aria-label="Seleccionar proyecto guardado de IFC Drawing" data-hefesto-tool="project-file-input" hidden>
+      <label class="top-btn hidden" id="btnReconnectIfc" for="reconnectIfcInput" title="Reconectar el IFC original sin perder las vistas, planos ni anotaciones" data-hefesto-tool="reconnect-ifc" data-hefesto-purpose="Reconnect the source IFC to a saved project while preserving documentation">Reconectar IFC</label>
+      <input id="reconnectIfcInput" type="file" accept=".ifc,.IFC" aria-label="Reconectar el archivo IFC original" data-hefesto-tool="reconnect-ifc-file-input" hidden>
+      <button class="top-btn" id="btnSaveProject" type="button" title="Guardar vistas, planos y anotaciones para continuar después" data-hefesto-tool="save-project" data-hefesto-purpose="Save the current IFC Drawing project as a local JSON file">Guardar proyecto</button>
       <button class="top-btn" id="btnDemo" type="button" title="Cargar proyecto de demostración" data-hefesto-tool="load-demo" data-hefesto-purpose="Load the local vector demonstration project">Demo</button>
       <label class="top-btn primary" for="ifcInput" title="Abrir un archivo IFC desde este dispositivo" data-hefesto-tool="open-ifc" data-hefesto-purpose="Choose an IFC file for local browser processing">Abrir IFC</label>
       <input id="ifcInput" type="file" accept=".ifc,.IFC" aria-label="Seleccionar archivo IFC local" data-hefesto-tool="ifc-file-input" hidden>
@@ -64,6 +69,8 @@
       <div class="context-tools hidden" id="drawingTools">
         <button class="tool-btn active" data-draw-tool="select" data-hefesto-tool="select-annotation" data-hefesto-purpose="Select, inspect, move or delete 2D annotations" type="button">Seleccionar</button>
         <button class="tool-btn" data-draw-tool="dimension" data-hefesto-tool="dimension" data-hefesto-purpose="Create a manual aligned dimension with three clicks" type="button">Cota</button>
+        <button class="tool-btn" data-draw-tool="dimension-chain" data-hefesto-tool="dimension-chain" data-hefesto-purpose="Create a chained dimension and finish it by clicking blank space" type="button">Cota cadena</button>
+        <button class="tool-btn" data-draw-tool="area" data-hefesto-tool="area" data-hefesto-purpose="Draw and label a room area polygon manually" type="button">Área</button>
         <button class="tool-btn" data-draw-tool="text" data-hefesto-tool="text" data-hefesto-purpose="Place a text annotation in the active 2D view" type="button">Texto</button>
         <span class="mini-sep"></span>
         <button class="tool-btn mode-toggle active" id="toggleSnapBtn" type="button" aria-pressed="true" aria-label="Activar o desactivar SNAP" title="Activar/desactivar referencias a objetos (extremo, punto medio y arista)" data-hefesto-tool="toggle-snap" data-hefesto-purpose="Toggle endpoint, midpoint and edge snapping in 2D">SNAP</button>
@@ -76,6 +83,10 @@
       <div class="context-tools hidden" id="sheetTools">
         <button class="tool-btn" id="btnNewSheet" type="button" data-hefesto-tool="create-sheet" data-hefesto-purpose="Create a new drawing sheet">+ Plano</button>
         <button class="tool-btn" id="btnAddView" type="button" data-hefesto-tool="add-view-to-sheet" data-hefesto-purpose="Add an existing view to the active sheet">+ Vista</button>
+        <span class="mini-sep"></span>
+        <button class="tool-btn" id="btnSheetZoomOut" type="button" title="Alejar el plano" aria-label="Alejar el plano" data-hefesto-tool="sheet-zoom-out" data-hefesto-purpose="Zoom out the drawing sheet">−</button>
+        <button class="tool-btn" id="btnSheetZoomFit" type="button" title="Encuadrar el plano" data-hefesto-tool="sheet-zoom-fit" data-hefesto-purpose="Fit the whole drawing sheet in the workspace">Encuadrar</button>
+        <button class="tool-btn" id="btnSheetZoomIn" type="button" title="Acercar el plano" aria-label="Acercar el plano" data-hefesto-tool="sheet-zoom-in" data-hefesto-purpose="Zoom in the drawing sheet">+</button>
         <span class="mini-sep"></span>
         <button class="tool-btn primary" id="btnExportPdf" type="button" data-hefesto-tool="export-pdf" data-hefesto-purpose="Export the active drawing sheet as PDF">Exportar PDF</button>
       </div>
@@ -111,6 +122,8 @@
               <div id="elevationsTree"></div>
               <div class="tree-folder"><span>◈</span><b>Vistas 3D</b></div>
               <div id="views3dTree"></div>
+              <div class="tree-folder"><span>▦</span><b>Cuadros de áreas</b></div>
+              <div id="schedulesTree"></div>
             </div>
           </section>
           <section class="tree-section open">
@@ -205,7 +218,7 @@
       <span class="status-sep"></span>
       <span id="statusCoords">X 0.000 · Y 0.000</span>
       <span class="status-sep"></span>
-      <span id="statusVersion">IFC Drawing v0.5 · Preview</span>
+      <span id="statusVersion">IFC Drawing v0.8 · Preview</span>
     </footer>
   </div>
 
@@ -220,8 +233,8 @@
   </div>
 
   <script src="assets/js/vendor/jspdf.umd.min.js?v=2.5.2"></script>
-  <script src="assets/js/dimension-utils.js?v=0.3.1"></script>
-  <script src="assets/js/app.js?v=0.5.1"></script>
+  <script src="assets/js/dimension-utils.js?v=0.4.0"></script>
+  <script src="assets/js/app.js?v=0.8.0"></script>
 <script>
   // Ajuste de contexto: el aviso de servidor local solo tiene sentido al abrir con doble clic (file://).
   (function(){
