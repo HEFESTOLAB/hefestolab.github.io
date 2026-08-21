@@ -1,0 +1,19 @@
+{
+  "platform": "HEFESTO FORGE",
+  "version": "1.0",
+  "courses": [
+    {
+      "id": "ia-aplicada",
+      "number": "001",
+      "title": "IA aplicada",
+      "subtitle": "De LLM a agentes, MCP e IA local",
+      "status": "available",
+      "language": "es",
+      "url": "courses/ia-aplicada/index.html",
+      "price": "free",
+      "level": "Introducción práctica / profesional",
+      "version": "1.0",
+      "lastReviewed": "2026-08-20"
+    }
+  ]
+}

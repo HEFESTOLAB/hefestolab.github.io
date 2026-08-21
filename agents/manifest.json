@@ -1,6 +1,6 @@
 {
   "schema": "hefesto-agent-ready/0.1",
-  "version": "0.4",
+  "version": "0.5",
   "applications": [
     {
       "id": "ifc-drawing",

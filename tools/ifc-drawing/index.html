@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#1f2937">
   <title>IFC Drawing · HEFESTOLAB Tools</title>
-  <meta name="description" content="Herramienta experimental de HEFESTOLAB para abrir IFC localmente, generar proyecciones 2D, acotar, componer planos y exportar PDF/DXF.">
+  <meta name="description" content="Herramienta experimental de HEFESTOLAB para abrir IFC localmente, generar proyecciones 2D, crear cotas lineales, angulares, de diámetro y radio, componer planos y exportar PDF/DXF.">
   <link rel="canonical" href="https://hefestolab.github.io/tools/ifc-drawing/">
   <link rel="alternate" hreflang="es" href="https://hefestolab.github.io/tools/ifc-drawing/">
   <link rel="alternate" hreflang="x-default" href="https://hefestolab.github.io/tools/ifc-drawing/">
@@ -14,12 +14,12 @@
   <meta name="hefesto-agent-guide" content="https://hefestolab.github.io/agents/ifc-drawing/">
   <meta name="hefesto-agent-skill" content="https://hefestolab.github.io/agents/ifc-drawing/SKILL.md">
   <link rel="icon" href="../../assets/brand/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/ifc-drawing.css?v=0.8.0">
+  <link rel="stylesheet" href="assets/css/ifc-drawing.css?v=0.9.0">
   <script type="application/json" id="hefesto-agent-manifest">
   {
     "application": "HEFESTO IFC Drawing",
     "agentReady": true,
-    "version": "0.4",
+    "version": "0.5",
     "guide": "https://hefestolab.github.io/agents/ifc-drawing/",
     "skill": "https://hefestolab.github.io/agents/ifc-drawing/SKILL.md",
     "manifest": "https://hefestolab.github.io/tools/ifc-drawing/agent.json"
@@ -69,6 +69,9 @@
       <div class="context-tools hidden" id="drawingTools">
         <button class="tool-btn active" data-draw-tool="select" data-hefesto-tool="select-annotation" data-hefesto-purpose="Select, inspect, move or delete 2D annotations" type="button">Seleccionar</button>
         <button class="tool-btn" data-draw-tool="dimension" data-hefesto-tool="dimension" data-hefesto-purpose="Create a manual aligned dimension with three clicks" type="button">Cota</button>
+        <button class="tool-btn" data-draw-tool="angle-dimension" data-hefesto-tool="angle-dimension" data-hefesto-purpose="Create an angular dimension from a vertex and two rays" type="button">∠ Angular</button>
+        <button class="tool-btn" data-draw-tool="diameter-dimension" data-hefesto-tool="diameter-dimension" data-hefesto-purpose="Create a diameter dimension with two references and an offset" type="button">⌀ Diámetro</button>
+        <button class="tool-btn" data-draw-tool="radius-dimension" data-hefesto-tool="radius-dimension" data-hefesto-purpose="Create a radius dimension from centre to circumference" type="button">R Radio</button>
         <button class="tool-btn" data-draw-tool="dimension-chain" data-hefesto-tool="dimension-chain" data-hefesto-purpose="Create a chained dimension and finish it by clicking blank space" type="button">Cota cadena</button>
         <button class="tool-btn" data-draw-tool="area" data-hefesto-tool="area" data-hefesto-purpose="Draw and label a room area polygon manually" type="button">Área</button>
         <button class="tool-btn" data-draw-tool="text" data-hefesto-tool="text" data-hefesto-purpose="Place a text annotation in the active 2D view" type="button">Texto</button>
@@ -143,7 +146,7 @@
             <div class="start-mark"><img src="../../assets/brand/hefesto-symbol.svg" alt=""></div>
             <span class="start-kicker">HEFESTOLAB TOOLS · EXPERIMENTAL</span>
             <h1>IFC Drawing</h1>
-            <p>Abre un IFC en tu navegador, genera plantas, secciones y alzados vectoriales, acota, compón hojas y exporta a PDF o DXF.</p>
+            <p>Abre un IFC en tu navegador, genera plantas, secciones y alzados vectoriales, crea cotas lineales, angulares, de diámetro y radio, compón hojas y exporta a PDF o DXF.</p>
             <div class="start-actions">
               <label class="big-btn primary" for="ifcInput" data-hefesto-tool="open-ifc" data-hefesto-purpose="Choose an IFC file for local browser processing">Abrir archivo IFC</label>
               <button class="big-btn" id="btnDemoStart" type="button" data-hefesto-tool="load-demo" data-hefesto-purpose="Load the local vector demonstration project">Probar sin IFC</button>
@@ -153,7 +156,7 @@
               <span><b>Vectorial</b> · vistas, cotas y PDF</span>
               <span><b>Sin cuenta</b> · no requiere registro</span>
             </div>
-            <p class="start-foot" id="startFoot">La demo permite recorrer la interfaz, las cotas y el compositor de planos sin necesidad de un modelo. Para trabajar con un IFC real, ábrelo con el botón de arriba: el archivo se procesa en tu propio equipo y no se sube a ningún servidor.</p>
+            <p class="start-foot" id="startFoot">La demo carga el proyecto técnico V_3 del acumulador, con vistas, cotas, vista 3D y plano editables sin necesidad del IFC original. Para generar nuevas proyecciones, abre un IFC real: se procesa en tu propio equipo y no se sube a ningún servidor.</p>
           </div>
         </div>
 
@@ -218,7 +221,7 @@
       <span class="status-sep"></span>
       <span id="statusCoords">X 0.000 · Y 0.000</span>
       <span class="status-sep"></span>
-      <span id="statusVersion">IFC Drawing v0.8 · Preview</span>
+      <span id="statusVersion">IFC Drawing v0.9 · Preview</span>
     </footer>
   </div>
 
@@ -233,15 +236,15 @@
   </div>
 
   <script src="assets/js/vendor/jspdf.umd.min.js?v=2.5.2"></script>
-  <script src="assets/js/dimension-utils.js?v=0.4.0"></script>
-  <script src="assets/js/app.js?v=0.8.0"></script>
+  <script src="assets/js/dimension-utils.js?v=0.5.0"></script>
+  <script src="assets/js/app.js?v=0.9.0"></script>
 <script>
   // Ajuste de contexto: el aviso de servidor local solo tiene sentido al abrir con doble clic (file://).
   (function(){
     if(location.protocol!=='file:')return;
     var f=document.getElementById('startFoot');
     if(f)f.innerHTML='Estás abriendo la herramienta con doble clic (<code>file://</code>). '+
-      'La demo funciona, pero para cargar un IFC real hace falta servirla por <b>http://127.0.0.1</b>: '+
+      'Para cargar la nueva demo técnica o un IFC real hace falta servir esta copia por <b>http://127.0.0.1</b>: '+
       'ejecuta <b>INICIAR_HEFESTOLAB_LOCAL.bat</b> en la raíz de esta copia. El IFC seguirá siendo local.';
   })();
 </script>

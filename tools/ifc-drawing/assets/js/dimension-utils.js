@@ -51,5 +51,64 @@
     };
   }
 
-  global.HEFESTO_IFC_DIMENSIONS = Object.freeze({ geometry, readableAngle, textLayout });
+  function angleGeometry(annotation) {
+    const vertex = [Number(annotation.vertex[0]), Number(annotation.vertex[1])];
+    const first = [Number(annotation.a[0]), Number(annotation.a[1])];
+    const second = [Number(annotation.b[0]), Number(annotation.b[1])];
+    let startAngle = Math.atan2(first[1] - vertex[1], first[0] - vertex[0]);
+    let endAngle = Math.atan2(second[1] - vertex[1], second[0] - vertex[0]);
+    let sweep = endAngle - startAngle;
+    while (sweep <= -Math.PI) sweep += Math.PI * 2;
+    while (sweep > Math.PI) sweep -= Math.PI * 2;
+    const direction = sweep >= 0 ? 1 : -1;
+    const radians = Math.abs(sweep);
+    const radius = Math.max(1e-6, Math.abs(Number(annotation.radius) || 0));
+    const end = startAngle + sweep;
+    const midAngle = startAngle + sweep / 2;
+    const point = (angle, distance = radius) => [
+      vertex[0] + Math.cos(angle) * distance,
+      vertex[1] + Math.sin(angle) * distance
+    ];
+    return {
+      vertex,
+      first,
+      second,
+      startAngle,
+      endAngle: end,
+      midAngle,
+      direction,
+      radians,
+      degrees: radians * 180 / Math.PI,
+      radius,
+      start: point(startAngle),
+      end: point(end),
+      mid: point(midAngle),
+      point
+    };
+  }
+
+  function angleArcPoints(geom, maxStepDegrees = 6) {
+    const steps = Math.max(4, Math.ceil(geom.degrees / Math.max(1, Number(maxStepDegrees) || 6)));
+    const points = [];
+    for (let i = 0; i <= steps; i++) {
+      const angle = geom.startAngle + (geom.endAngle - geom.startAngle) * (i / steps);
+      points.push(geom.point(angle));
+    }
+    return points;
+  }
+
+  function angleTextLayout(geom, gap) {
+    const distance = geom.radius + Math.max(0, Number(gap) || 0);
+    const p = geom.point(geom.midAngle, distance);
+    return { x: p[0], y: p[1], angle: 0 };
+  }
+
+  global.HEFESTO_IFC_DIMENSIONS = Object.freeze({
+    geometry,
+    readableAngle,
+    textLayout,
+    angleGeometry,
+    angleArcPoints,
+    angleTextLayout
+  });
 })(typeof globalThis !== 'undefined' ? globalThis : this);

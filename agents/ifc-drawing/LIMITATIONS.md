@@ -4,10 +4,10 @@ These limitations are separated by source. Do not describe browser or IFC-source
 
 ## Application limitations
 
-- There is no automatic whole-model dimensioning tool. Single dimensions use three clicks; manual chained dimensions use consecutive reference clicks and a blank placement click.
+- There is no automatic whole-model dimensioning or circle-recognition tool. Linear, diameter and radius dimensions use two references plus a placement click; angular dimensions use vertex, two rays and an arc-radius click; chains use consecutive references and a blank placement click.
 - There is no automatic sheet-layout tool.
 - 2D and sheet pan are local navigation gestures; they do not change view geometry, viewport crop or PDF content.
-- The Demo contains prepared vector views but no 3D IFC geometry. It cannot generate new plans, elevations, sections or 3D captures.
+- The Demo contains the supplied V_3 project, including projected vector views and one captured 3D image, but no live 3D IFC geometry. It cannot generate new projections, recolour live items or create a fresh 3D capture.
 - New projections, IFC category/element controls and 3D capture require a successfully loaded real IFC.
 - SVG and DXF export require an active generated vector 2D view. Captured 3D raster views are not exported as standalone SVG or DXF.
 - PDF exports the active sheet, not every sheet as a multi-page set.

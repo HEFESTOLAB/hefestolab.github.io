@@ -1,0 +1,19 @@
+{
+  "platform": "HEFESTO FORGE",
+  "version": "1.0",
+  "courses": [
+    {
+      "id": "applied-ai",
+      "number": "001",
+      "title": "Applied AI",
+      "subtitle": "From LLMs to agents, MCP and local AI",
+      "status": "available",
+      "language": "en",
+      "url": "courses/applied-ai/index.html",
+      "price": "free",
+      "level": "Practical / professional introduction",
+      "version": "1.0",
+      "lastReviewed": "2026-08-20"
+    }
+  ]
+}

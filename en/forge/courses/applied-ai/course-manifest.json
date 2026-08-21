@@ -1,0 +1,59 @@
+{
+  "platform": "HEFESTO FORGE",
+  "course": "Applied AI",
+  "courseId": "applied-ai",
+  "version": "1.0",
+  "lastUpdated": "2026-08-20",
+  "language": "en",
+  "access": "free",
+  "modules": [
+    {
+      "id": "01-understanding-ai",
+      "title": "Understand before you use",
+      "url": "01-understanding-ai.html",
+      "topics": ["generative AI", "LLMs", "tokens", "context window", "training and inference", "web search", "hallucinations", "multimodality", "tools", "professional verification"],
+      "updatePriority": "medium",
+      "lastReviewed": "2026-08-20"
+    },
+    {
+      "id": "02-models",
+      "title": "Choose the right tool",
+      "url": "02-models.html",
+      "topics": ["model ecosystem", "OpenAI", "Anthropic", "Google", "other assistants", "open models", "cloud AI", "local AI", "privacy", "cost", "speed", "context", "task-based selection"],
+      "updatePriority": "high",
+      "lastReviewed": "2026-08-20"
+    },
+    {
+      "id": "03-context-engineering",
+      "title": "Context is part of the system",
+      "url": "03-context-engineering.html",
+      "topics": ["objective", "context", "constraints", "data", "examples", "output format", "iteration", "documents", "images", "structured data", "sources", "verification", "reusable instructions"],
+      "updatePriority": "medium",
+      "lastReviewed": "2026-08-20"
+    },
+    {
+      "id": "04-agents",
+      "title": "From answering to acting",
+      "url": "04-agents.html",
+      "topics": ["agents", "chatbots", "tools", "connectors", "permissions", "browser agents", "coding agents", "Codex", "Claude Code", "Skills", "Agent Ready", "scheduled tasks", "automation", "human oversight", "IFC Drawing"],
+      "updatePriority": "high",
+      "lastReviewed": "2026-08-20"
+    },
+    {
+      "id": "05-mcp-local-ai",
+      "title": "Connect AI to real tools",
+      "url": "05-mcp-local-ai.html",
+      "topics": ["MCP", "client", "server", "tools", "resources", "prompts", "permissions", "security", "local AI", "LM Studio", "open models", "RAM", "VRAM", "quantisation", "privacy", "hybrid architecture", "RAG", "embeddings", "retrieval"],
+      "updatePriority": "high",
+      "lastReviewed": "2026-08-20"
+    },
+    {
+      "id": "06-real-lab",
+      "title": "THE FORGE",
+      "url": "06-real-lab.html",
+      "topics": ["IFC Drawing", "agents", "Agent Ready applications", "HEFESTO Pre-BIM Modeler", "HEFESTO JSON", "MCP", "Component Studio", "DN100 flange", "local AI", "projects", "interoperability"],
+      "updatePriority": "high",
+      "lastReviewed": "2026-08-20"
+    }
+  ]
+}

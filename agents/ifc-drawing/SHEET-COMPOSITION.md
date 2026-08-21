@@ -7,7 +7,7 @@ Use this guide after the required views and annotations exist. Read the sheet to
 1. Inspect the relative proportions and information density of all candidate views.
 2. Decide which views belong together logically: for example, plans by level, related elevations, or a plan with its corresponding section.
 3. Choose sheet format and orientation for the content, not by habit.
-4. Add views and any required area schedules, then move and resize their viewports while respecting borders and the title block.
+4. Add views and any required area schedules, then move, resize and crop their viewports while respecting borders and the title block.
 5. Adjust each viewport scale where necessary.
 6. Drag each title/scale label or set its X/Y coordinates so it is clear of geometry and neighbouring viewports.
 7. Recheck titles, scale labels, margins, overlaps and unused paper.
@@ -53,7 +53,9 @@ Do not replace or work around the application's automatic initial scale logic.
 
 ## Viewport controls
 
-Drag a viewport body to move it. Drag its lower-right resize handle to resize it. Drag the view label to reposition its title and scale together without moving the viewport. The inspector also exposes viewport X, Y, width, height and scale, plus exact label X/Y coordinates, label reset, recenter and remove controls. Use numeric properties when precise alignment is more reliable than pointer movement.
+Drag a viewport body to move it. Drag its lower-right handle for a centred resize. Use the independent left, right, top and bottom handles to crop one edge while keeping the opposite model edge anchored. Drag the view label to reposition title and scale together. The inspector also exposes X, Y, width, height, scale, label coordinates, recenter and remove controls.
+
+For a captured 3D image, `Rellenar · recortar` fills the complete viewport instead of shrinking the model inside letterboxing; focus X/Y controls which portion remains visible. `Encajar completa` is still available when the full image is more important than maximising its size.
 
 The sheet workspace itself can be navigated without changing the composition. Use the mouse wheel or `−`/`+` to zoom, `Encuadrar` to fit, and middle-button drag, `Shift`+drag or `Space`+drag to pan.
 

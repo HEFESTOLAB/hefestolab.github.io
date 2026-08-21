@@ -1,0 +1,12 @@
+{
+  "course": "IA aplicada",
+  "currentVersion": "1.0",
+  "changes": [
+    {
+      "version": "1.0",
+      "date": "2026-08-20",
+      "type": "initial-release",
+      "description": "Publicación inicial del curso IA aplicada de HEFESTO FORGE."
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "platform": "HEFESTO FORGE",
+  "course": "IA aplicada",
+  "courseId": "ia-aplicada",
+  "version": "1.0",
+  "lastUpdated": "2026-08-20",
+  "language": "es",
+  "access": "free",
+  "modules": [
+    {
+      "id": "01-entender-la-ia",
+      "title": "Entender antes de utilizar",
+      "url": "01-entender-la-ia.html",
+      "topics": ["IA generativa", "LLM", "tokens", "ventana de contexto", "entrenamiento e inferencia", "búsqueda web", "alucinaciones", "multimodalidad", "herramientas", "verificación profesional"],
+      "updatePriority": "medium",
+      "lastReviewed": "2026-08-20"
+    },
+    {
+      "id": "02-modelos",
+      "title": "Elegir la herramienta adecuada",
+      "url": "02-modelos.html",
+      "topics": ["ecosistema de modelos", "OpenAI", "Anthropic", "Google", "otros asistentes", "modelos abiertos", "IA cloud", "IA local", "privacidad", "coste", "velocidad", "contexto", "selección por tarea"],
+      "updatePriority": "high",
+      "lastReviewed": "2026-08-20"
+    },
+    {
+      "id": "03-context-engineering",
+      "title": "El contexto es parte del sistema",
+      "url": "03-context-engineering.html",
+      "topics": ["objetivo", "contexto", "restricciones", "datos", "ejemplos", "formato de salida", "iteración", "documentos", "imágenes", "datos estructurados", "fuentes", "verificación", "instrucciones reutilizables"],
+      "updatePriority": "medium",
+      "lastReviewed": "2026-08-20"
+    },
+    {
+      "id": "04-agentes",
+      "title": "De responder a actuar",
+      "url": "04-agentes.html",
+      "topics": ["agentes", "chatbots", "tools", "connectors", "permisos", "agentes de navegador", "coding agents", "Codex", "Claude Code", "Skills", "Agent Ready", "tareas programadas", "automatizaciones", "supervisión humana", "IFC Drawing"],
+      "updatePriority": "high",
+      "lastReviewed": "2026-08-20"
+    },
+    {
+      "id": "05-mcp-ia-local",
+      "title": "Conectar la IA con herramientas reales",
+      "url": "05-mcp-ia-local.html",
+      "topics": ["MCP", "cliente", "servidor", "tools", "resources", "prompts", "permisos", "seguridad", "IA local", "LM Studio", "modelos abiertos", "RAM", "VRAM", "cuantización", "privacidad", "arquitectura híbrida", "RAG", "embeddings", "recuperación"],
+      "updatePriority": "high",
+      "lastReviewed": "2026-08-20"
+    },
+    {
+      "id": "06-laboratorio-real",
+      "title": "THE FORGE",
+      "url": "06-laboratorio-real.html",
+      "topics": ["IFC Drawing", "agentes", "aplicaciones Agent Ready", "HEFESTO Pre-BIM Modeler", "HEFESTO JSON", "MCP", "Component Studio", "brida DN100", "IA local", "proyecto", "interoperabilidad"],
+      "updatePriority": "high",
+      "lastReviewed": "2026-08-20"
+    }
+  ]
+}

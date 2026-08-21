@@ -10,6 +10,7 @@ Use only the sections relevant to the current task. A successful click is not su
 - [ ] Plan, elevation or section orientation and cut/depth settings match the task.
 - [ ] Visible and hidden-line representation is appropriate.
 - [ ] Category or element visibility and colours are intentional.
+- [ ] Persistent 3D element/category colours apply to the intended items, survive save/reconnect and appear in a new 3D capture.
 - [ ] An element selected from 2D linework is clearly highlighted and any per-view hide/show change affects the intended view only.
 - [ ] Clicking true blank space in 2D clears the IFC key, orange 2D highlight, 3D highlight and status selection.
 - [ ] Wheel zoom, fit and pan can reach every required area without modifying the drawing.
@@ -29,6 +30,7 @@ Use only the sections relevant to the current task. A successful click is not su
 - [ ] Text is readable and does not obscure important geometry.
 - [ ] Completed dimensions can be repositioned without deleting them, and their PDF text is legible at the nominal 2.1 mm printed height.
 - [ ] A chained dimension finishes with a blank click, highlights as one system and moves every segment to one common offset when any segment is dragged.
+- [ ] Angular, diameter and radius dimensions use verified references, correct `°`/`Ø`/`R` notation and identical geometry in drawing, sheet, SVG/DXF and PDF.
 - [ ] Duplicate dimensions and annotations without technical value were removed.
 
 ## Areas
@@ -47,6 +49,8 @@ Use only the sections relevant to the current task. A successful click is not su
 - [ ] Viewports, labels and scale labels do not overlap.
 - [ ] Each title/scale label can be moved independently of its viewport, its X/Y fields match the visible location, and the PDF uses the same position.
 - [ ] Each view is large enough to read at its selected scale.
+- [ ] Left, right, top and bottom crop handles preserve the opposite edge and do not change the selected scale.
+- [ ] A 3D viewport in fill mode stays visually large; its X/Y focus and PDF crop match the on-screen sheet.
 - [ ] Equal or different scales were chosen deliberately.
 - [ ] The title block number, title, project, author and format are correct.
 - [ ] Long title-block values wrap or expand without truncation, and the complete title block remains inside A0/A1/A2/A3/A4 paper bounds.
@@ -68,6 +72,7 @@ Use only the sections relevant to the current task. A successful click is not su
 
 - [ ] `Guardar proyecto` downloads a `.hefesto-drawing.json` file.
 - [ ] Reopening that file restores views, viewBoxes, dimensions/chains/text, areas and label visibility, schedules, IFC display overrides, sheets, viewports and title/scale label positions.
+- [ ] Reopening also restores specialised dimensions, viewport four-side crops, 3D fit/focus and saved live-model colour overrides for the next IFC reconnection.
 - [ ] A reopened project shows `data-hefesto-project-detached="true"` and `Reconectar IFC`.
 - [ ] Reconnecting the source IFC changes model-loaded to true and project-detached to false without changing saved drawing/sheet counts.
 - [ ] After reconnection, one new IFC-derived view can be generated while previous documentation remains present.

@@ -26,8 +26,8 @@ Use [TOOLS.md](TOOLS.md) for exact selectors and interactions. Use specialist gu
 
 - **Objective:** Dimension the requested plan to an appropriate technical level.
 - **Preconditions:** WF-002 complete; active vector plan; scope agreed.
-- **Tools:** `TOOL-DIMENSION`, `TOOL-DIMENSION-CHAIN`, `TOOL-SNAP`, `TOOL-ORTHO`, `TOOL-SELECT-ANNOTATION`, `TOOL-NAVIGATE-2D`.
-- **Steps:** Read [DIMENSIONING.md](DIMENSIONING.md); inspect the full plan; dimension in passes—overall, partial chains, openings, interiors, QA; use wheel zoom and pan around each target; use `Cota` for one measurement or `Cota cadena` for ordered consecutive references; finish a chain with a blank placement click; switch to `Seleccionar` and drag any chain segment when the complete system needs a new offset.
+- **Tools:** `TOOL-DIMENSION`, `TOOL-SPECIAL-DIMENSIONS`, `TOOL-DIMENSION-CHAIN`, `TOOL-SNAP`, `TOOL-ORTHO`, `TOOL-SELECT-ANNOTATION`, `TOOL-NAVIGATE-2D`.
+- **Steps:** Read [DIMENSIONING.md](DIMENSIONING.md); inspect the full plan; dimension in passes—overall, partial chains, openings, radii/diameters/angles where technically justified, interiors, QA; use wheel zoom and pan; use the corresponding specialised tool only with verified references; finish a chain with a blank placement click; reposition completed systems deliberately.
 - **Validation:** Values are plausible; references align with intended geometry; overall and partial systems are present; no important item in scope remains undefined; no excessive overlap.
 - **Completion:** Dimension coverage and legibility both pass [QA-CHECKLIST.md](QA-CHECKLIST.md).
 - **Frequent errors:** Stopping after two overall dimensions; missing openings/interiors; free-clicking near geometry without checking SNAP; leaving a pending dimension; creating duplicates.
@@ -67,7 +67,7 @@ Use [TOOLS.md](TOOLS.md) for exact selectors and interactions. Use specialist gu
 - **Objective:** Arrange existing views on a technically legible sheet.
 - **Preconditions:** Required views generated; annotations substantially complete.
 - **Tools:** `TOOL-CREATE-SHEET`, `TOOL-ADD-VIEW`, `TOOL-MOVE-RESIZE-VIEWPORT`, `TOOL-SHEET-PROPERTIES`, `TOOL-VIEWPORT-PROPERTIES`, `TOOL-NAVIGATE-SHEET`.
-- **Steps:** Read [SHEET-COMPOSITION.md](SHEET-COMPOSITION.md); create a sheet; set number, title, project, author, format and orientation; add views from the modal or drag tree views to paper; review the automatically selected initial scales; move/resize/recentre and change scales as justified; drag each title/scale label or set its X/Y values independently of the viewport; use zoom/pan for detailed inspection and fit for the final whole-sheet review.
+- **Steps:** Read [SHEET-COMPOSITION.md](SHEET-COMPOSITION.md); create a sheet; set metadata, format and orientation; add views; review automatic scales; move/resize and use the four side handles for deliberate crop; for a 3D capture choose fill/contain and focus; place each title/scale label intentionally; use zoom/pan for detailed inspection and fit for the final review.
 - **Validation:** All content stays inside margins and clear of the title block; long metadata remains complete; every title/scale label is intentionally placed and agrees with PDF output; no overlaps; information is readable; format and orientation suit the content.
 - **Completion:** Sheet passes the Sheet section of [QA-CHECKLIST.md](QA-CHECKLIST.md).
 - **Frequent errors:** Assuming one format or scale fits all projects; resizing without rechecking crop; covering the title block; adding duplicates.
@@ -127,7 +127,7 @@ Use [TOOLS.md](TOOLS.md) for exact selectors and interactions. Use specialist gu
 - **Objective:** Preserve IFC Drawing work for a later browser session.
 - **Preconditions:** Project contains useful views, annotations or sheets.
 - **Tools:** `TOOL-SAVE-OPEN-PROJECT`, `TOOL-RECONNECT-IFC`.
-- **Steps:** Click `Guardar proyecto`; retain the downloaded `.hefesto-drawing.json`; later open IFC Drawing, click `Abrir proyecto` and select that file; verify the restored tree, active drawing/sheet, dimensions, chains, areas, schedules, view display and viewports; if new projections or IFC interaction are required, click `Reconectar IFC` and select the source IFC.
+- **Steps:** Click `Guardar proyecto`; retain the downloaded `.hefesto-drawing.json`; later reopen it; verify drawings/sheets, all four dimension types, chains, areas, schedules, view display, viewport crops, 3D image focus and saved 3D colours; reconnect the source IFC when new projections or live 3D interaction are required.
 - **Validation:** Restored counts, names, sheet fields and visible layout match the saved state; after reconnection, `data-hefesto-project-detached="false"`, the model is visible, the prior documentation remains and a new test view can be generated.
 - **Completion:** The reopened project remains editable/exportable and, when reconnected, can continue producing IFC-derived views.
 - **Frequent errors:** Expecting the JSON to embed the original IFC; using ordinary `Abrir IFC` instead of `Reconectar IFC`; opening an unrelated JSON; leaving the application without an explicit save.

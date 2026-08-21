@@ -1,23 +1,23 @@
 # Verified tool reference
 
-This inventory was derived from `tools/ifc-drawing/index.html` and `assets/js/app.js` in HEFESTOLAB v2.9.5 / IFC Drawing v0.8. It documents only controls and interactions present in that code. The visible UI is Spanish. Dynamic selectors exist only while their corresponding inspector or view is open.
+This inventory was verified against `tools/ifc-drawing/index.html` and `assets/js/app.js` in IFC Drawing v0.9. It documents only controls and interactions present in that code. The visible UI is Spanish. Dynamic selectors exist only while their corresponding inspector or view is open.
 
 ## TOOL-LOAD-DEMO
 
 - **Tool ID:** `TOOL-LOAD-DEMO`
 - **Visible Spanish label:** `Demo`, `Cargar demo`, `Probar sin IFC`
 - **DOM selector:** `#btnDemo`, `#btnDemoSide`, `#btnDemoStart`
-- **Purpose:** Load prepared vector plan, section and elevation views plus an A3 demo sheet.
+- **Purpose:** Load the supplied `V_3_acumulador opus5 alto` project with eight editable views, a captured 3D image and its composed A4 sheet.
 - **Required mode:** Any initial state.
 - **Preconditions:** None; no IFC or network-loaded engine is required.
 - **Activation:** Click any Demo control.
 - **Interaction:** One click; wait for `Demo cargada`.
-- **Expected result:** Drawing mode opens with demo views, annotations and a sheet.
-- **Success indicator:** Project name `HEFESTO · Proyecto de demostración`; file meta `Demo vectorial · sin IFC`; success toast.
+- **Expected result:** Sheet mode opens the complete technical demo project; its projected views, annotations, captured 3D image and viewports remain editable.
+- **Success indicator:** Project name `V_3_acumulador opus5 alto`; eight views, one sheet and a `Demo cargada` success toast.
 - **Cancel method:** None after activation; opening a real IFC replaces the session content.
 - **Relevant keyboard shortcuts:** None.
 - **Agent notes:** Use it to test dimensions, text, sheets and exports.
-- **Known limitations:** No 3D geometry; cannot generate new projections or capture a 3D view.
+- **Known limitations:** The demo contains a captured 3D image but not the live IFC geometry; it cannot generate new projections or recolour/capture the live model without opening the source IFC.
 
 ## TOOL-OPEN-IFC
 
@@ -169,7 +169,7 @@ This inventory was derived from `tools/ifc-drawing/index.html` and `assets/js/ap
 - **Success indicator:** `Vista 3D creada` toast and resolution in inspector.
 - **Cancel method:** Modal cancel before capture; afterward use `Eliminar vista` in its inspector.
 - **Relevant keyboard shortcuts:** `Escape` closes modal.
-- **Agent notes:** The captured camera is fixed; capture again for another viewpoint.
+- **Agent notes:** Colours applied to 3D elements/categories are included in the capture. On a sheet, use `Rellenar · recortar` and focus X/Y to keep the image large while controlling the crop.
 - **Known limitations:** Real IFC only; raster JPEG; NTS; standalone SVG/DXF unavailable.
 
 ## TOOL-SELECT-IFC-ELEMENT
@@ -188,6 +188,21 @@ This inventory was derived from `tools/ifc-drawing/index.html` and `assets/js/ap
 - **Relevant keyboard shortcuts:** None.
 - **Agent notes:** Camera drag is ignored as a selection when movement exceeds four pixels.
 - **Known limitations:** Requires pickable geometry and engine IDs; not available in Demo.
+
+## TOOL-CONTROL-3D-COLOUR
+
+- **Tool ID:** `TOOL-CONTROL-3D-COLOUR`
+- **Visible Spanish label:** `Color en modelo 3D`, `Aplicar al elemento`, `Aplicar categoría`, `Original elemento`, `Original categoría`
+- **DOM selector:** dynamic `#ifc3dColor`, `#ifc3dApplyItem`, `#ifc3dApplyCategory`, `#ifc3dClearItem`, `#ifc3dClearCategory`
+- **Purpose:** Persistently recolour one selected IFC item or every item in its IFC category in the live 3D model.
+- **Required mode:** `model` with an exact IFC selection.
+- **Preconditions:** Real IFC loaded with pickable geometry; category action additionally requires semantic classification.
+- **Activation:** Click the 3D element, choose a colour, then apply it to the item or category.
+- **Interaction:** Exact-item colour overrides its category colour. Original-item falls back to the category colour when one exists.
+- **Expected result:** The 3D model updates and subsequent 3D captures include the colour.
+- **Success indicator:** Visible colour change and success toast; the setting survives save/reopen and is restored after `Reconectar IFC`.
+- **Cancel method:** Use the matching `Original` action.
+- **Known limitations:** A reopened project has no live geometry to colour until its source IFC is reconnected.
 
 ## TOOL-CONTROL-IFC-DISPLAY
 
@@ -273,6 +288,23 @@ This inventory was derived from `tools/ifc-drawing/index.html` and `assets/js/ap
 - **Relevant keyboard shortcuts:** `Escape`; `F8` for ORTO; hold `Shift` for temporary ORTO while defining point 2.
 - **Agent notes:** Read [DIMENSIONING.md](DIMENSIONING.md); placing a few dimensions is not automatically a complete task.
 - **Known limitations:** Manual only; no auto-dimension; free clicks remain possible when SNAP finds no reference.
+
+## TOOL-SPECIAL-DIMENSIONS
+
+- **Tool ID:** `TOOL-SPECIAL-DIMENSIONS`
+- **Visible Spanish labels:** `∠ Angular`, `⌀ Diámetro`, `R Radio`
+- **DOM selector:** `[data-draw-tool="angle-dimension"]`, `[data-draw-tool="diameter-dimension"]`, `[data-draw-tool="radius-dimension"]`
+- **Purpose:** Add manual angular, diameter or radius dimensions to a vector plan, elevation or section.
+- **Required mode:** `drawing`.
+- **Preconditions:** Generated vector view with identifiable references; SNAP recommended.
+- **Activation:** Click the corresponding tool in Documentation.
+- **Interaction:** Diameter and radius use two references plus a third placement click. Angular uses vertex, first ray, second ray and a fourth click that sets the arc radius.
+- **Expected result:** Editable blue technical annotation; diameter labels begin with `Ø`, radius labels with `R`, and angular labels show degrees.
+- **Success indicator:** New annotation is visible in the source drawing, every sheet viewport that uses it, SVG/DXF and PDF.
+- **Cancel method:** `Escape` cancels a pending operation; select/delete removes a completed annotation.
+- **Relevant keyboard shortcuts:** `Escape`; `F8` and temporary `Shift` apply to aligned diameter/radius acquisition.
+- **Agent notes:** The tools do not infer circles from segmented IFC edges. Choose true centre/circumference or opposite diameter references deliberately.
+- **Known limitations:** Manual reference acquisition; no automatic circle recognition.
 
 ## TOOL-DIMENSION-CHAIN
 
@@ -482,17 +514,17 @@ This inventory was derived from `tools/ifc-drawing/index.html` and `assets/js/ap
 
 - **Tool ID:** `TOOL-MOVE-RESIZE-VIEWPORT`
 - **Visible Spanish label:** No button label; direct sheet interaction.
-- **DOM selector:** dynamic `.sheet-vp`; lower-right `.vp-resize`; movable label `.vp-label[data-vp-label]`
-- **Purpose:** Move or resize a viewport, or reposition its title/scale label independently on the active sheet.
+- **DOM selector:** dynamic `.sheet-vp`; lower-right `.vp-resize`; four side handles `[data-crop-side]`; movable label `.vp-label[data-vp-label]`
+- **Purpose:** Move or resize a viewport, crop it independently from left/right/top/bottom, or reposition its title/scale label on the active sheet.
 - **Required mode:** `sheet`.
 - **Preconditions:** Active sheet with viewport.
-- **Activation:** Pointer-drag viewport body to move; drag `.vp-resize` to resize; drag `.vp-label` to move title and scale together without moving the viewport.
-- **Interaction:** Viewport movement is clamped within 10 mm paper margins; minimum size is 35×28 mm. Label movement is clamped to the paper and stored relative to its viewport. Resizing changes the displayed window.
+- **Activation:** Pointer-drag viewport body to move; drag `.vp-resize` to resize; drag a side handle to crop that edge; drag `.vp-label` to move title and scale together without moving the viewport.
+- **Interaction:** Viewport movement is clamped within 10 mm paper margins; minimum size is 35×28 mm. A side crop preserves the opposite model edge. Label movement is clamped to the paper and stored relative to its viewport.
 - **Expected result:** Viewport position/size or independent label position updates and inspector stays linked.
 - **Success indicator:** Viewport selected border and changed viewport or title/scale X/Y values.
 - **Cancel method:** No drag cancel/undo; restore numerically in inspector.
 - **Relevant keyboard shortcuts:** None.
-- **Agent notes:** Recheck crop, labels, title block and overlaps after each resize.
+- **Agent notes:** Recheck crop, labels, title block and overlaps after each resize. Captured 3D views default to `Rellenar · recortar`; focus X/Y selects the visible part of the image.
 - **Known limitations:** No alignment guides, snapping or automatic layout.
 
 ## TOOL-SHEET-PROPERTIES
@@ -538,7 +570,7 @@ This inventory was derived from `tools/ifc-drawing/index.html` and `assets/js/ap
 - **Required mode:** Any.
 - **Preconditions:** Saving requires views, sheets or project data; opening requires a valid `.hefesto-drawing.json` or `.json` file.
 - **Activation:** Click `Guardar proyecto` to download; click `Abrir proyecto` and select the saved file to restore it.
-- **Interaction:** The JSON preserves levels, projected vector views, viewBoxes, text, areas and their label visibility, chain linkage, per-view visibility/colour, area schedules, captured 3D images, sheets, viewports and moved title/scale label positions.
+- **Interaction:** The JSON preserves levels, projected vector views, viewBoxes, linear/angular/diameter/radius dimensions, text, areas and label visibility, chain linkage, per-view display, persistent 3D colours, schedules, captured 3D images, sheets, four-sided viewport crops, 3D fit/focus and moved title/scale labels.
 - **Expected result:** A `.hefesto-drawing.json` download, or a restored editable project after reopening.
 - **Success indicator:** Download name uses the project name; reopening restores tree items, active view/sheet and a success toast.
 - **Cancel method:** Cancel the system file picker. Opening another IFC or project replaces the current workspace.
@@ -566,13 +598,13 @@ This inventory was derived from `tools/ifc-drawing/index.html` and `assets/js/ap
 ## TOOL-VIEWPORT-PROPERTIES
 
 - **Tool ID:** `TOOL-VIEWPORT-PROPERTIES`
-- **Visible Spanish label:** `Escala`, viewport `X (mm)`/`Y (mm)`, `Ancho (mm)`, `Alto (mm)`, title/scale `X (mm)`/`Y (mm)`, `Restablecer posición`, `Recentrar`, `Quitar`
-- **DOM selector:** dynamic `#vpScale`, `#vpX`, `#vpY`, `#vpW`, `#vpH`, `#vpLabelX`, `#vpLabelY`, `#vpLabelReset`, `#vpCenter`, `#vpDelete`
-- **Purpose:** Precisely control selected viewport scale, position, size, view centre and independent title/scale label position.
+- **Visible Spanish label:** `Escala`, viewport `X (mm)`/`Y (mm)`, `Ancho (mm)`, `Alto (mm)`, 3D `Ajuste`/`Foco`, title/scale coordinates, `Recentrar`, `Quitar`
+- **DOM selector:** dynamic `#vpScale`, `#vpX`, `#vpY`, `#vpW`, `#vpH`, `#vpImageFit`, `#vpImageFocusX`, `#vpImageFocusY`, `#vpLabelX`, `#vpLabelY`, `#vpLabelReset`, `#vpCenter`, `#vpDelete`
+- **Purpose:** Precisely control viewport scale, position, size, crop/focus, view centre and independent title/scale label position.
 - **Required mode:** `sheet`, selected viewport.
 - **Preconditions:** Existing viewport.
 - **Activation:** Click viewport, then edit inspector.
-- **Interaction:** Numeric fields commit on change; select a scale; set title/scale X/Y or drag the label; `Restablecer posición` returns the label below the centred viewport; `Recentrar` restores vector view bounds centre; `Quitar` removes viewport.
+- **Interaction:** Numeric fields commit on change; select a scale; set title/scale X/Y or drag the label; set captured-3D fit/focus; `Recentrar` restores vector bounds centre; `Quitar` removes viewport.
 - **Expected result:** Viewport rerenders with requested window, geometry scale and label position.
 - **Success indicator:** Display and inspector agree; label shows selected `1:n`, NTS or TABLA at the requested position.
 - **Cancel method:** Restore prior values; removed viewport can only be re-added.

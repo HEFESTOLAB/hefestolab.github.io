@@ -1,6 +1,6 @@
 # Dimensioning criteria
 
-This file teaches what to dimension, not only how to press `Cota` or `Cota cadena`. Read the single-dimension, chain, SNAP and ORTO entries in [TOOLS.md](TOOLS.md) first. Dimensions are manual; there is no auto-dimension tool.
+This file teaches what to dimension, not only how to press `Cota`, `∠ Angular`, `⌀ Diámetro`, `R Radio` or `Cota cadena`. Read the dimension, SNAP and ORTO entries in [TOOLS.md](TOOLS.md) first. Dimensions are manual; there is no auto-dimension tool.
 
 ## General method
 
@@ -23,6 +23,14 @@ Use `Cota cadena` when several consecutive references form one ordered horizonta
 Do not mix unrelated directions in one chain. Prefer several coherent chains to one visually tangled system.
 
 The target is technical completeness plus legibility, not the maximum possible dimension count.
+
+## Angular, diameter and radius dimensions
+
+- Use an angular dimension only when the vertex and both physical directions are unambiguous. The fourth click controls the arc radius and must keep the label clear of nearby geometry.
+- Use a diameter dimension between true opposite points of a circular feature. IFC Drawing prefixes the measured span with `Ø`; it does not infer a circle from segmented edges.
+- Use a radius dimension from the verified centre to the circumference. IFC Drawing prefixes that distance with `R`.
+- Do not use specialised prefixes to disguise a generic linear measurement. If centre, circumference or rays are uncertain, omit the dimension or add a clarifying note.
+- The same annotation geometry is used in the source drawing, sheet viewport, SVG/DXF and PDF. Recheck the printed result at the target scale.
 
 ## Plans
 
