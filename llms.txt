@@ -18,6 +18,19 @@ JSON HEFESTO es el núcleo de información de HEFESTO. Está diseñado como una 
 
 JSON HEFESTO is HEFESTO's information core. It is designed as a compact, structured operational representation for automation, interoperability and LLM-assisted workflows. It is not presented as a replacement for IFC; IFC remains an open exchange layer across platforms.
 
+## HEFESTO FORGE
+
+HEFESTO FORGE is HEFESTOLAB's free Applied Technology Learning Lab. Course content is free to access; applications, AI models or external services used in exercises may require their own account, subscription or licence.
+
+- Catálogo / Catalogue (ES): https://hefestolab.github.io/forge/
+- Catalogue (EN): https://hefestolab.github.io/en/forge/
+- Curso IA aplicada: https://hefestolab.github.io/forge/courses/ia-aplicada/
+- Applied AI course: https://hefestolab.github.io/en/forge/courses/applied-ai/
+- Course catalogue data: https://hefestolab.github.io/forge/courses.json
+- Course manifest: https://hefestolab.github.io/forge/courses/ia-aplicada/course-manifest.json
+
+The first course covers AI foundations, model selection, context engineering, agents, MCP, local AI and real technical labs. HEFESTO IFC Drawing is used as the free Agent Ready browser-lab application; browser-agent compatibility depends on the agent, browser, version, permissions and learner configuration.
+
 ## Product state / Estado
 
 HEFESTO and several HEFESTOLAB resources are currently in development. Published pages distinguish current functionality from research and future development targets.
