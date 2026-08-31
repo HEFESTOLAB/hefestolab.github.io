@@ -36,3 +36,11 @@
 .viewer-force.hidden{display:none}
 .viewer-force input{margin-top:2px;accent-color:var(--amber)}
 .visual-element small.note{color:var(--muted);opacity:.8}
+
+/* Panel izquierdo: la lista de filtros no debe recortar el recuento. */
+.filter-list{overflow-x:hidden;overflow-y:auto}
+.filter-item{min-width:0}
+.filter-item>span{flex:1 1 auto;min-width:0}
+.filter-item>small{flex:0 0 auto;margin-left:auto;padding-left:6px;font-variant-numeric:tabular-nums}
+.filter-item>input{flex:0 0 auto}
+.quiet-btn.active{border-color:var(--blue);color:var(--blue);background:rgba(8,121,232,.12)}

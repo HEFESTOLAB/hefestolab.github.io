@@ -11,7 +11,7 @@
     page: 0, pageSize: 250, profile: 'equilibrado', allowRisk: false, issueFilter: null,
     ifcBytes: null, ifcText: '', viewer: null, viewerHost: null, viewerReady: false, viewerBusy: false,
     viewerError: null, viewerUsesRecovered: false, visualFocus: null, visualIsolated: false,
-    viewerRiskAccepted: false, viewerForceAccepted: false
+    viewerRiskAccepted: false, viewerForceAccepted: false, qaColors: false, visualNoGeometry: false
   };
   const demoIfc = `ISO-10303-21;
 HEADER;
@@ -284,7 +284,7 @@ END-ISO-10303-21;`;
     state.ifcText = needsRecovery ? (ifcText || '') : '';
     state.selection = new Set(analysis.elements.map(e => e.stepId));
     state.search = ''; state.category = 'all'; state.level = 'all'; state.page = 0; state.allowRisk = false; state.issueFilter = null; state.visualFocus = null;
-    state.viewerRiskAccepted = false; state.viewerForceAccepted = false; state.visualIsolated = false;
+    state.viewerRiskAccepted = false; state.viewerForceAccepted = false; state.visualIsolated = false; state.visualNoGeometry = false; state.qaColors = false;
     $('app').dataset.modelLoaded = 'true'; $('fileName').textContent = analysis.source.name;
     $('fileInfo').textContent = `${bytes(analysis.source.size)} · ${n0(analysis.source.entitiesRecovered)} entidades recuperadas · ${n0(analysis.elements.length)} elementos`;
     $('schemaChip').textContent = analysis.source.schema;
@@ -522,6 +522,7 @@ END-ISO-10303-21;`;
   /** Devuelve la vista completa: sin aislar, sin filtros y sin selección resaltada. */
   function showEverything() {
     state.visualIsolated = false;
+    state.visualNoGeometry = false;
     state.issueFilter = null;
     state.search = '';
     state.category = 'all';
@@ -537,6 +538,27 @@ END-ISO-10303-21;`;
     setStatus('Vista completa restablecida', '', `${state.analysis ? state.analysis.elements.length : 0} elementos visibles`);
   }
 
+  /**
+   * Lleva al modelo 3D el filtro activo del panel izquierdo. Sin filtro devuelve
+   * el modelo completo; con filtro aísla y encuadra ese conjunto sin repintarlo,
+   * para no perder los colores reales del IFC.
+   */
+  async function syncViewerWithFilter() {
+    if (!state.viewerReady || !state.viewer || !state.analysis) return;
+    const rows = filteredElements();
+    const total = state.analysis.elements.length;
+    if (!rows.length) { toast('Ningún elemento coincide con el filtro.', 'warn'); return; }
+    if (rows.length === total) {
+      state.visualIsolated = false;
+      await state.viewer.showAll();
+      await state.viewer.clearSelection();
+      await state.viewer.fit();
+      syncIsolationBar();
+      return;
+    }
+    await focusVisualElements(rows, { isolate: true, highlight: false });
+  }
+
   function visualGuids(elements) { return elements.map(element => element.globalId).filter(Boolean); }
 
   async function focusVisualElements(elements, options) {
@@ -550,12 +572,27 @@ END-ISO-10303-21;`;
     if (options && options.showAll) await viewer.showAll();
     if (options && options.isolate) {
       const count = await viewer.isolate(guids);
-      if (!count) { toast('Los elementos seleccionados no tienen geometría enlazada.', 'warn'); return; }
+      if (!count) {
+        // Sin geometría no se aísla nada: el modelo se queda como estaba en vez
+        // de vaciarse la pantalla, que es lo que ocurría antes.
+        state.visualNoGeometry = true;
+        syncIsolationBar();
+        toast('Esos elementos no tienen geometría propia en el modelo 3D. El modelo se deja como estaba.', 'warn');
+        return;
+      }
       state.visualIsolated = true;
+      state.visualNoGeometry = false;
       // El aviso se pinta ya: no debe depender de que termine el encuadre.
       syncIsolationBar();
     }
-    await viewer.select(guids, { zoom: !(options && options.zoom === false), problem: !!(options && options.problem) });
+    if (options && options.highlight === false) {
+      // Filtrar por categoría o planta encuadra el conjunto pero no lo repinta:
+      // así se sigue viendo el color real de los materiales del IFC.
+      await viewer.clearSelection();
+      if (!(options && options.zoom === false)) await viewer.zoomTo(guids);
+    } else {
+      await viewer.select(guids, { zoom: !(options && options.zoom === false), problem: !!(options && options.problem) });
+    }
     if (elements.length === 1) state.visualFocus = elements[0].stepId;
     refreshVisualSelection(true);
   }
@@ -686,9 +723,10 @@ END-ISO-10303-21;`;
   function isolationBar(rows) {
     const total = state.analysis.elements.length;
     const listaReducida = rows.length < total;
-    if (!state.visualIsolated && !listaReducida) return '';
+    if (!state.visualIsolated && !state.visualNoGeometry && !listaReducida) return '';
     const partes = [];
     if (state.visualIsolated) partes.push('el modelo 3D muestra solo los elementos aislados');
+    else if (state.visualNoGeometry) partes.push('esos elementos no se dibujan en 3D (huecos, conjuntos o piezas sin forma propia), así que el modelo sigue completo');
     if (listaReducida) partes.push(`la lista muestra ${n0(rows.length)} de ${n0(total)} elementos`);
     return `<div class="isolation-bar"><span><b>Vista reducida:</b> ${esc(partes.join(' y '))}.</span><button class="action-btn primary" data-action="viewer-show-all">Ver todo el modelo</button></div>`;
   }
@@ -704,7 +742,7 @@ END-ISO-10303-21;`;
       const focused = state.analysis.elements.find(element => element.stepId === state.visualFocus);
       if (focused) visible.unshift(focused);
     }
-    $('stage').innerHTML = `<div class="visual-shell"><div class="visual-heading"><div><span class="eyebrow">Fase 2 · Revisión visual</span><h2>Modelo e incidencias, en el mismo lugar.</h2><p>${n0(rows.length)} elementos visibles · ${n0(problematic.length)} con incidencias · ${n0(state.selection.size)} incluidos en la exportación.</p></div><div class="toolbar"><input class="search" id="elementSearch" type="search" value="${esc(state.search)}" placeholder="Buscar clase, nombre, GlobalId, material…"><button class="action-btn primary" data-tab-go="export">Preparar exportación →</button></div></div><div class="visual-grid"><section class="model-card"><div class="model-toolbar"><div><b>IFC interactivo</b><span>${state.viewerUsesRecovered ? 'vista saneada · original intacto' : 'órbita · zoom · selección por clic'}</span></div><div class="model-actions"><button class="quiet-btn" data-action="viewer-load">Cargar 3D</button><button class="quiet-btn" data-action="viewer-show-all" ${state.viewerReady ? '' : 'disabled'}>Ver todo</button><button class="quiet-btn" data-action="viewer-fit" ${state.viewerReady ? '' : 'disabled'}>Encuadrar</button><button class="quiet-btn" data-action="viewer-isolate-selected" ${state.viewerReady ? '' : 'disabled'}>Aislar incluidos</button><button class="quiet-btn optional" data-action="viewer-view" data-view="iso" ${state.viewerReady ? '' : 'disabled'}>ISO</button><button class="quiet-btn optional" data-action="viewer-view" data-view="planta" ${state.viewerReady ? '' : 'disabled'}>Planta</button></div></div>${isolationBar(rows)}<div class="ifc-viewer-host" id="ifcViewerHost"><div class="viewer-overlay" id="viewerOverlay"><div class="viewer-overlay-card"><i>◇</i><b id="viewerOverlayTitle">Visualiza el IFC y localiza los problemas</b><p id="viewerOverlayText">Carga la geometría cuando quieras. El IFC continúa en este dispositivo.</p><div class="mini-progress"><span id="viewerMiniBar"></span></div><label class="viewer-force hidden" id="viewerForceRow"><input type="checkbox" id="viewerForce"><span>Entiendo que el navegador puede quedarse bloqueado y que tendría que cerrar la pestaña. El control previo y las exportaciones ya están disponibles sin el 3D.</span></label><button class="action-btn primary" id="viewerLoadButton" data-action="viewer-load">Cargar modelo 3D</button></div></div></div><div class="model-bottom"><div class="viewer-legend"><span><i class="normal"></i>Correcto</span><span><i class="review"></i>Revisar</span><span><i class="error"></i>Problemático</span><span><i class="selected"></i>Seleccionado</span></div><div class="visual-detail" id="visualDetail"><span>Haz clic en el modelo o en un elemento del panel.</span></div></div></section><aside class="visual-control"><div class="control-head"><div><span class="eyebrow">Panel de control</span><h3>Problemas y elementos</h3></div>${state.issueFilter ? '<button class="quiet-btn" data-action="clear-issue">Quitar filtro</button>' : ''}</div><div class="control-actions"><button class="action-btn ${state.issueFilter === PROBLEM_FILTER ? 'primary' : 'secondary'}" data-action="viewer-problems">${state.issueFilter === PROBLEM_FILTER ? 'Volver al modelo completo' : `Ver ${n0(problematic.length)} problemáticos`}</button><button class="action-btn secondary" data-action="select-filtered">Incluir visibles</button><button class="action-btn secondary" data-action="clear-filtered">Excluir visibles</button></div><div class="issue-buttons">${linkedFindings.map(finding => `<button class="issue-button ${state.issueFilter === finding.code ? 'active' : ''}" data-visual-finding="${esc(finding.code)}"><span class="severity ${severityClass(finding.severity)}">${esc(finding.severity)}</span><b>${esc(finding.title)}</b><small>${finding.elementIds.length} elementos</small></button>`).join('') || '<p class="empty-control">No hay incidencias vinculadas a elementos.</p>'}</div><div class="element-control-list">${visible.map(element => `<article class="visual-element ${statusClass(element.status)}" data-visual-card="${element.stepId}"><label title="Incluir en la exportación"><input class="row-check" type="checkbox" data-select-id="${element.stepId}" ${state.selection.has(element.stepId) ? 'checked' : ''}></label><button data-visual-element="${element.stepId}"><span class="state-dot ${statusClass(element.status)}"></span><b>${esc(element.description || element.name || element.ifcClass)}</b><small>${esc(element.ifcClass)} · ${esc(element.level)}</small><small>${esc(element.unit)} ${n(element.value, 5)} · #${element.stepId}</small>${element.issues.length ? `<em>${esc(element.issues.slice(0, 3).join(' · '))}</em>` : (element.notes.length ? `<small class=\"note\">${esc(element.notes.slice(0, 2).join(' · '))}</small>` : '')}</button></article>`).join('') || '<p class="empty-control">Ningún elemento coincide con los filtros.</p>'}</div>${rows.length > visible.length ? `<div class="control-note">Se muestran los primeros ${visible.length} de ${rows.length}; el Excel conserva toda la selección.</div>` : ''}</aside></div></div>`;
+    $('stage').innerHTML = `<div class="visual-shell"><div class="visual-heading"><div><span class="eyebrow">Fase 2 · Revisión visual</span><h2>Modelo e incidencias, en el mismo lugar.</h2><p>${n0(rows.length)} elementos visibles · ${n0(problematic.length)} con incidencias · ${n0(state.selection.size)} incluidos en la exportación.</p></div><div class="toolbar"><input class="search" id="elementSearch" type="search" value="${esc(state.search)}" placeholder="Buscar clase, nombre, GlobalId, material…"><button class="action-btn primary" data-tab-go="export">Preparar exportación →</button></div></div><div class="visual-grid"><section class="model-card"><div class="model-toolbar"><div><b>IFC interactivo</b><span>${state.viewerUsesRecovered ? 'vista saneada · original intacto' : 'órbita · zoom · selección por clic'}</span></div><div class="model-actions"><button class="quiet-btn" data-action="viewer-load">Cargar 3D</button><button class="quiet-btn" data-action="viewer-show-all" ${state.viewerReady ? '' : 'disabled'}>Ver todo</button><button class="quiet-btn" data-action="viewer-fit" ${state.viewerReady ? '' : 'disabled'}>Encuadrar</button><button class="quiet-btn" data-action="viewer-isolate-selected" ${state.viewerReady ? '' : 'disabled'}>Aislar incluidos</button><button class="quiet-btn ${state.qaColors ? 'active' : ''}" data-action="viewer-qa-colors" ${state.viewerReady ? '' : 'disabled'} title="Alternar entre los materiales del IFC y el color por estado de la medición">${state.qaColors ? 'Color real' : 'Color QA'}</button><button class="quiet-btn optional" data-action="viewer-view" data-view="iso" ${state.viewerReady ? '' : 'disabled'}>ISO</button><button class="quiet-btn optional" data-action="viewer-view" data-view="planta" ${state.viewerReady ? '' : 'disabled'}>Planta</button></div></div>${isolationBar(rows)}<div class="ifc-viewer-host" id="ifcViewerHost"><div class="viewer-overlay" id="viewerOverlay"><div class="viewer-overlay-card"><i>◇</i><b id="viewerOverlayTitle">Visualiza el IFC y localiza los problemas</b><p id="viewerOverlayText">Carga la geometría cuando quieras. El IFC continúa en este dispositivo.</p><div class="mini-progress"><span id="viewerMiniBar"></span></div><label class="viewer-force hidden" id="viewerForceRow"><input type="checkbox" id="viewerForce"><span>Entiendo que el navegador puede quedarse bloqueado y que tendría que cerrar la pestaña. El control previo y las exportaciones ya están disponibles sin el 3D.</span></label><button class="action-btn primary" id="viewerLoadButton" data-action="viewer-load">Cargar modelo 3D</button></div></div></div><div class="model-bottom"><div class="viewer-legend">${state.qaColors ? '<span><i class="normal"></i>Correcto</span><span><i class="review"></i>Revisar</span><span><i class="error"></i>Problemático</span>' : '<span>Materiales del IFC</span>'}<span><i class="selected"></i>Seleccionado</span></div><div class="visual-detail" id="visualDetail"><span>Haz clic en el modelo o en un elemento del panel.</span></div></div></section><aside class="visual-control"><div class="control-head"><div><span class="eyebrow">Panel de control</span><h3>Problemas y elementos</h3></div>${state.issueFilter ? '<button class="quiet-btn" data-action="clear-issue">Quitar filtro</button>' : ''}</div><div class="control-actions"><button class="action-btn ${state.issueFilter === PROBLEM_FILTER ? 'primary' : 'secondary'}" data-action="viewer-problems">${state.issueFilter === PROBLEM_FILTER ? 'Volver al modelo completo' : `Ver ${n0(problematic.length)} problemáticos`}</button><button class="action-btn secondary" data-action="select-filtered">Incluir visibles</button><button class="action-btn secondary" data-action="clear-filtered">Excluir visibles</button></div><div class="issue-buttons">${linkedFindings.map(finding => `<button class="issue-button ${state.issueFilter === finding.code ? 'active' : ''}" data-visual-finding="${esc(finding.code)}"><span class="severity ${severityClass(finding.severity)}">${esc(finding.severity)}</span><b>${esc(finding.title)}</b><small>${finding.elementIds.length} elementos</small></button>`).join('') || '<p class="empty-control">No hay incidencias vinculadas a elementos.</p>'}</div><div class="element-control-list">${visible.map(element => `<article class="visual-element ${statusClass(element.status)}" data-visual-card="${element.stepId}"><label title="Incluir en la exportación"><input class="row-check" type="checkbox" data-select-id="${element.stepId}" ${state.selection.has(element.stepId) ? 'checked' : ''}></label><button data-visual-element="${element.stepId}"><span class="state-dot ${statusClass(element.status)}"></span><b>${esc(element.description || element.name || element.ifcClass)}</b><small>${esc(element.ifcClass)} · ${esc(element.level)}</small><small>${esc(element.unit)} ${n(element.value, 5)} · #${element.stepId}</small>${element.issues.length ? `<em>${esc(element.issues.slice(0, 3).join(' · '))}</em>` : (element.notes.length ? `<small class=\"note\">${esc(element.notes.slice(0, 2).join(' · '))}</small>` : '')}</button></article>`).join('') || '<p class="empty-control">Ningún elemento coincide con los filtros.</p>'}</div>${rows.length > visible.length ? `<div class="control-note">Se muestran los primeros ${visible.length} de ${rows.length}; el Excel conserva toda la selección.</div>` : ''}</aside></div></div>`;
     const input = $('elementSearch'); if (input) { input.focus({ preventScroll: true }); input.setSelectionRange(input.value.length, input.value.length); }
     mountViewer();
   }
@@ -782,6 +820,12 @@ END-ISO-10303-21;`;
       // también los filtros de la lista. Antes exigía que el visor estuviera
       // cargado (`&& state.viewer`), así que sin 3D el botón no hacía nada.
       if (action.dataset.action === 'viewer-show-all') showEverything();
+      if (action.dataset.action === 'viewer-qa-colors' && state.viewer) {
+        state.qaColors = !state.qaColors;
+        Promise.resolve(state.viewer.setQaColorMode(state.qaColors)).catch(() => {});
+        renderElements();
+        setStatus(state.qaColors ? 'Color por estado de la medición' : 'Colores originales del IFC', '', state.qaColors ? 'azul correcto · ámbar revisar · rojo problemático' : 'materiales tal y como vienen en el archivo');
+      }
       if (action.dataset.action === 'viewer-isolate-selected') {
         focusVisualElements(state.analysis.elements.filter(element => state.selection.has(element.stepId)), { isolate: true });
       }
@@ -826,8 +870,10 @@ END-ISO-10303-21;`;
       const id = +event.target.dataset.selectId; event.target.checked ? state.selection.add(id) : state.selection.delete(id);
       $('badgeElements').textContent = state.selection.size; renderSide(); setStatus('Selección actualizada', '', `${state.selection.size} elementos seleccionados · 0 datos enviados`); return;
     }
-    if (event.target.name === 'category') { state.category = event.target.value; state.page = 0; state.issueFilter = null; renderSide(); renderStage(); return; }
-    if (event.target.name === 'level') { state.level = event.target.value; state.page = 0; renderSide(); renderStage(); return; }
+    // Filtrar por categoría o planta también actúa sobre el modelo: aísla y
+    // encuadra ese conjunto. Antes solo cambiaba la lista y el 3D no se enteraba.
+    if (event.target.name === 'category') { state.category = event.target.value; state.page = 0; state.issueFilter = null; renderSide(); renderStage(); syncViewerWithFilter(); return; }
+    if (event.target.name === 'level') { state.level = event.target.value; state.page = 0; renderSide(); renderStage(); syncViewerWithFilter(); return; }
     if (event.target.name === 'profile') { state.profile = event.target.value; renderStage(); return; }
     if (event.target.id === 'allowRisk') { state.allowRisk = event.target.checked; renderStage(); return; }
     if (event.target.id === 'viewerForce') { state.viewerForceAccepted = event.target.checked; updateViewerOverlay(); return; }

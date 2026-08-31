@@ -20,6 +20,9 @@
       this.localByGuid = new Map();
       this.guidByLocal = new Map();
       this.selectedIds = [];
+      // Por defecto se respeta el material del IFC; el color por estado es opcional.
+      this.qaColorMode = false;
+      this._painted = false;
       this._visibility = Promise.resolve();
       this._disposed = false;
     }
@@ -87,6 +90,7 @@
       this.localByGuid.clear();
       this.guidByLocal.clear();
       this.selectedIds = [];
+      this._painted = false;
       const pending = [];
       for (const [id] of [...e.fragments.list]) {
         try { pending.push(Promise.resolve(e.fragments.core.disposeModel(id))); } catch (_) {}
@@ -168,37 +172,62 @@
 
     material(hex) { return { color: this.color(hex), renderedFaces: 1, opacity: 1, transparent: false }; }
 
-    async applyQaColors() {
-      if (!this.model) return;
+    /**
+     * Devuelve los elementos indicados a su aspecto de reposo: el material real
+     * del IFC, o el color del control de calidad si esa vista está activada. Por
+     * defecto manda el material del archivo, que es lo que el modelador ve en su
+     * programa; el color QA es una capa que se enciende cuando hace falta.
+     */
+    async restoreColors(ids) {
+      if (!this.model || !ids || !ids.length) return;
+      if (!this.qaColorMode) {
+        try { await withTimeout(this.model.resetColor(ids), 3500, 'Color original no disponible'); } catch (_) {}
+        return;
+      }
       const groups = { normal: [], review: [], error: [] };
+      const wanted = new Set(ids);
       for (const element of this.elements) {
         const id = this.localByGuid.get(element.globalId);
-        if (id === undefined) continue;
+        if (id === undefined || !wanted.has(id)) continue;
         groups[element.status === 'Error' ? 'error' : element.status === 'Revisar' ? 'review' : 'normal'].push(id);
       }
+      this._painted = true;
       await Promise.allSettled(Object.keys(groups).filter(key => groups[key].length).map(key =>
         withTimeout(this.model.setColor(groups[key], this.color(COLORS[key])), 3500, 'Color no disponible')
       ));
+    }
+
+    allLinkedIds() {
+      const ids = [];
+      for (const [, id] of this.localByGuid) ids.push(id);
+      return ids;
+    }
+
+    async applyQaColors() {
+      if (!this.model) return;
+      // Recién cargado el modelo ya tiene sus materiales: no hace falta pedir al
+      // worker que reponga miles de colores que nadie ha tocado.
+      if (!this.qaColorMode && !this._painted) return;
+      this._painted = this.qaColorMode;
+      const selected = new Set(this.selectedIds);
+      await this.restoreColors(this.allLinkedIds().filter(id => !selected.has(id)));
       this.refresh();
+    }
+
+    /** Alterna entre el color real del IFC y el color por estado de la medición. */
+    async setQaColorMode(enabled) {
+      this.qaColorMode = !!enabled;
+      await this.applyQaColors();
+      return this.qaColorMode;
     }
 
     async select(guids, options) {
       if (!this.model) return 0;
       const ids = this.localIds(guids);
-      if (this.selectedIds.length) {
-        const restore = { normal: [], review: [], error: [] };
-        const previous = new Set(this.selectedIds);
-        for (const element of this.elements) {
-          const id = this.localByGuid.get(element.globalId);
-          if (!previous.has(id)) continue;
-          restore[element.status === 'Error' ? 'error' : element.status === 'Revisar' ? 'review' : 'normal'].push(id);
-        }
-        await Promise.allSettled(Object.keys(restore).filter(key => restore[key].length).map(key =>
-          withTimeout(this.model.setColor(restore[key], this.color(COLORS[key])), 2500, 'Restauración de color no disponible')
-        ));
-      }
+      if (this.selectedIds.length) await this.restoreColors(this.selectedIds);
       this.selectedIds = ids;
       if (ids.length) {
+        this._painted = true;
         try { await withTimeout(this.model.setColor(ids, this.color((options && options.problem) ? COLORS.error : COLORS.selected)), 2500, 'Selección no disponible'); } catch (_) {}
       }
       if (!options || options.zoom !== false) await this.zoomTo(guids);
@@ -217,8 +246,13 @@
     isolate(guids) {
       return this.queueVisibility(async () => {
         const e = this.engine;
-        const ids = this.localIds(guids);
+        let ids = this.localIds(guids);
         if (!e || !this.model || !ids.length) return 0;
+        // Aislar solo lo que se puede ver. Si ninguno de los elementos tiene
+        // geometría, no se oculta nada: dejar la escena vacía no ayuda a nadie.
+        const drawable = await this.drawableIds(ids);
+        if (!drawable.length) return 0;
+        ids = drawable;
         // No se usa Hider.isolate: internamente lanza «ocultar todo» y «mostrar
         // la selección» a la vez con Promise.all, y cuando el ocultado termina
         // el último desaparece el modelo entero. Aquí se hace en orden.
@@ -250,17 +284,43 @@
       return camera && camera.position && camera.position.clone ? camera.position.clone().set(x, y, z) : { x, y, z, isVector3: true };
     }
 
+    /**
+     * Una caja es válida solo si tiene números reales. Los elementos sin malla
+     * propia (un IfcStair de conjunto, una anotación) devuelven una caja vacía
+     * con min/max a null: si se aceptaba, la cámara se iba al origen y parecía
+     * que el modelo había desaparecido.
+     */
+    validBox(item) {
+      if (!item || !item.min || !item.max) return false;
+      if (typeof item.isEmpty === 'function' && item.isEmpty()) return false;
+      const { min, max } = item;
+      return Number.isFinite(min.x) && Number.isFinite(min.y) && Number.isFinite(min.z) &&
+        Number.isFinite(max.x) && Number.isFinite(max.y) && Number.isFinite(max.z) &&
+        max.x >= min.x && max.y >= min.y && max.z >= min.z;
+    }
+
     async boxOf(ids) {
       if (!this.model || !ids.length) return null;
       let boxes;
       try { boxes = await this.model.getBoxes(ids); } catch (_) { return null; }
       let box = null;
       for (const item of boxes || []) {
-        if (!item || !item.min || !item.max) continue;
+        if (!this.validBox(item)) continue;
         if (!box) box = item.clone ? item.clone() : item;
         else if (box.union) box.union(item);
       }
       return box;
+    }
+
+    /** Identificadores que realmente tienen geometría dibujada en el modelo. */
+    async drawableIds(ids) {
+      if (!this.model || !ids.length) return [];
+      let boxes;
+      try { boxes = await this.model.getBoxes(ids); } catch (_) { return ids.slice(); }
+      if (!boxes || boxes.length !== ids.length) return ids.slice();
+      const out = [];
+      for (let i = 0; i < ids.length; i++) if (this.validBox(boxes[i])) out.push(ids[i]);
+      return out;
     }
 
     /**
