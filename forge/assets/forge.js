@@ -3,7 +3,7 @@
   const theme=document.getElementById('theme');
   const menu=document.getElementById('menu');
   const mobile=document.getElementById('mobile');
-  const systemTheme=()=>window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
+  const systemTheme=()=>'dark';
   let saved=null;
   try{saved=localStorage.getItem('hefestolab-theme')}catch(_error){}
   const apply=value=>{

@@ -1,0 +1,10 @@
+{
+  "course": "pre-bim-modeler",
+  "versions": [
+    {
+      "version": "1.0",
+      "date": "2026-09-25",
+      "notes": "Primera edición para el lanzamiento público de HEFESTO Pre-BIM Modeler."
+    }
+  ]
+}

@@ -6,7 +6,7 @@
 <title>Aviso legal | HEFESTOLAB</title>
 <meta content="Aviso legal e información del prestador del servicio de la sociedad de la información de HEFESTOLAB." name="description"/>
 <meta content="noindex,follow" name="robots"/>
-<meta content="#07111f" name="theme-color"/>
+<meta content="#020810" name="theme-color"/>
 <link href="https://hefestolab.github.io/legal/aviso-legal.html" rel="canonical"/>
 <link href="../assets/brand/favicon.svg" rel="icon" type="image/svg+xml"/>
 <link href="../assets/brand/apple-touch-icon.png" rel="apple-touch-icon"/>
@@ -15,7 +15,7 @@
 @font-face{font-family:Inter;src:url('../assets/fonts/inter-latin-700.woff2') format('woff2');font-weight:700;font-display:swap}
 @font-face{font-family:Inter;src:url('../assets/fonts/inter-latin-800.woff2') format('woff2');font-weight:800;font-display:swap}
 :root{--bg:#fff;--surface:#fff;--soft:#f5f8fc;--text:#0d2038;--muted:#60738a;--line:#dce6f0;--blue:#0879e8;--r:20px;--max:820px}
-[data-theme="dark"]{--bg:#07111f;--surface:#0d1d31;--soft:#0a1829;--text:#f1f7ff;--muted:#a9b9cb;--line:#20364f}
+[data-theme="dark"]{--bg:#020810;--surface:#07131f;--soft:#040c18;--text:#f1f7ff;--muted:#a9b9cb;--line:#132b44}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased}
 a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
 .wrap{width:min(var(--max),calc(100% - 40px));margin:auto}
@@ -43,7 +43,7 @@ footer{border-top:1px solid var(--line);background:var(--soft);padding:30px 0;co
 .foot a{color:var(--muted)}
 @media(max-width:620px){.datos dl{grid-template-columns:1fr;gap:3px 0}.datos dd{margin-bottom:10px}}
 </style>
-<script>(function(){try{var s=localStorage.getItem("hefestolab-theme");document.documentElement.dataset.theme=s||((window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark")}catch(e){}})();</script>
+<script>(function(){try{var s=localStorage.getItem("hefestolab-theme");document.documentElement.dataset.theme=s||"dark"}catch(e){}})();</script>
 </head>
 <body>
 <header><div class="wrap nav">
@@ -104,5 +104,5 @@ footer{border-top:1px solid var(--line);background:var(--soft);padding:30px 0;co
 <div><a href="../index.html">Inicio</a> · <a href="privacidad.html">Política de privacidad</a> · <a href="../en/legal/legal-notice.html" hreflang="en" lang="en">English</a></div>
 </div></footer>
 
-<script>(()=>{const r=document.documentElement,t=document.getElementById('theme');const sys=()=>(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';let s=null;try{s=localStorage.getItem('hefestolab-theme')}catch(e){}const ap=v=>{r.dataset.theme=v;t.setAttribute('aria-pressed',String(v==='dark'))};ap(s||sys());t.addEventListener('click',()=>{const n=r.dataset.theme==='dark'?'light':'dark';ap(n);try{localStorage.setItem('hefestolab-theme',n)}catch(e){}})})();</script>
+<script>(()=>{const r=document.documentElement,t=document.getElementById('theme');const sys=()=>'dark';let s=null;try{s=localStorage.getItem('hefestolab-theme')}catch(e){}const ap=v=>{r.dataset.theme=v;t.setAttribute('aria-pressed',String(v==='dark'))};ap(s||sys());t.addEventListener('click',()=>{const n=r.dataset.theme==='dark'?'light':'dark';ap(n);try{localStorage.setItem('hefestolab-theme',n)}catch(e){}})})();</script>
 </body></html>

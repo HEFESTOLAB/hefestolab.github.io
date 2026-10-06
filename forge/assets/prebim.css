@@ -1,0 +1,65 @@
+/* HEFESTO FORGE · Curso 002 · HEFESTO Pre-BIM Modeler */
+.hv{--hv-h:clamp(360px,62vh,640px);display:grid;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow)}
+.hv-stage{position:relative;height:var(--hv-h);min-height:300px}
+.hv canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+.hv canvas:active{cursor:grabbing}
+.hv-hint{position:absolute;left:12px;bottom:10px;right:12px;font-size:.74rem;color:var(--muted);pointer-events:none;text-shadow:0 1px 0 var(--bg)}
+.hv-loading{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-weight:650;padding:24px;text-align:center}
+.hv-info{position:absolute;top:12px;right:12px;width:min(300px,calc(100% - 24px));max-height:calc(100% - 60px);overflow:auto;background:color-mix(in srgb,var(--surface) 94%,transparent);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-size:.84rem;box-shadow:var(--shadow)}
+.hv-info b{display:block;margin-bottom:8px;font-size:.9rem}
+.hv-info dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:0}
+.hv-info dt{color:var(--muted)}
+.hv-info dd{margin:0;font-weight:650;word-break:break-word}
+.hv-close{position:absolute;top:6px;right:8px;border:0;background:none;color:var(--muted);font-size:1.3rem;cursor:pointer}
+.hv-bar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:10px 12px;border-top:1px solid var(--line);background:var(--surface-2)}
+.hv-bar button{border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:9px;padding:6px 11px;font-size:.82rem;font-weight:650;cursor:pointer}
+.hv-bar button:hover{border-color:var(--blue-2)}
+.hv-bar button[aria-pressed="true"]{background:color-mix(in srgb,var(--blue) 18%,var(--surface));border-color:var(--blue)}
+.hv-bar button[aria-pressed="false"]{color:var(--muted);text-decoration:line-through}
+.hv-sep{width:1px;height:22px;background:var(--line);margin:0 4px}
+.hv-cut{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--muted);margin-left:auto}
+.hv-cut input{width:150px;accent-color:var(--blue)}
+.hv-plate{grid-template-columns:1fr 290px}
+.hv-plate .hv-stage{height:auto;min-height:420px}
+.hv-params{padding:18px;display:grid;gap:14px;align-content:start;border-left:1px solid var(--line);background:var(--surface-2);font-size:.86rem}
+.hv-params label{display:grid;gap:4px;font-weight:650}
+.hv-params output{float:right;color:var(--blue-2);font-variant-numeric:tabular-nums}
+.hv-params input[type=range]{accent-color:var(--blue);width:100%}
+.hv-check{display:flex!important;align-items:center;gap:8px}
+.hv-mass{margin-top:6px;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--surface)}
+.hv-mass span{display:block;color:var(--muted);font-size:.76rem}
+.hv-mass b{font-size:1.5rem;letter-spacing:-.02em}
+.fig{margin:26px 0;display:grid;gap:10px}
+.fig img{display:block;width:100%;height:auto;border-radius:16px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff}
+.fig figcaption{color:var(--muted);font-size:.86rem}
+.fig figcaption b{color:var(--text)}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch;margin:26px 0}
+.duo>*{min-width:0}
+.duo .fig{margin:0}
+.duo .hv{--hv-h:420px}
+.flow-arrow{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:.82rem;font-weight:700}
+.compare-slider{position:relative;margin:26px 0;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);aspect-ratio:1600/786;--pos:50%}
+.compare-slider img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.compare-slider .after{clip-path:inset(0 0 0 var(--pos))}
+.compare-slider::after{content:"";position:absolute;top:0;bottom:0;left:var(--pos);width:3px;background:#fff;box-shadow:0 0 12px rgba(0,0,0,.5);pointer-events:none}
+.compare-slider input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.compare-slider .tagl,.compare-slider .tagr{position:absolute;top:12px;padding:5px 10px;border-radius:8px;background:rgba(6,16,30,.78);color:#fff;font-size:.78rem;font-weight:700;pointer-events:none}
+.compare-slider .tagl{left:12px}.compare-slider .tagr{right:12px}
+.code{margin:18px 0;border-radius:14px;border:1px solid var(--line);background:var(--deep);color:#d7e7ff;overflow:auto;font:500 .8rem/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;padding:16px 18px;max-height:420px}
+.code .c{color:#7f95ad}.code .k{color:#7cc4ff}.code .s{color:#ffd28a}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0}
+.kpi{border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--surface)}
+.kpi b{display:block;font-size:1.6rem;letter-spacing:-.03em;line-height:1.1}
+.kpi span{color:var(--muted);font-size:.8rem}
+.compare td.num,.compare th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.compare tfoot td{font-weight:800;border-top:2px solid var(--line)}
+.who{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:22px 0}
+.who div{border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--surface)}
+.who b{display:block;margin-bottom:4px}
+.who p{margin:0;color:var(--muted);font-size:.9rem}
+.price-band{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:center;border:1px solid var(--line);border-radius:22px;padding:28px;background:linear-gradient(135deg,color-mix(in srgb,var(--blue) 14%,var(--surface)),var(--surface))}
+.price-band .big{font-size:clamp(2.6rem,6vw,3.6rem);font-weight:800;letter-spacing:-.04em;line-height:1}
+.price-band .big small{font-size:1rem;font-weight:650;color:var(--muted);letter-spacing:0}
+.price-band ul{margin:0;padding-left:18px;color:var(--muted)}
+.hero-viewer{margin-top:28px}
+@media(max-width:900px){.duo,.price-band{grid-template-columns:1fr}.hv-plate{grid-template-columns:1fr}.hv-params{border-left:0;border-top:1px solid var(--line)}.kpis{grid-template-columns:repeat(2,1fr)}.who{grid-template-columns:1fr}.hv-cut{margin-left:0}}

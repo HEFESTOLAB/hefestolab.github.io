@@ -23,13 +23,13 @@
 
 [data-theme="dark"]{
   color-scheme:dark;
-  --bg:#06101e;
-  --surface:#0c1c30;
-  --surface-2:#091728;
+  --bg:#020810;
+  --surface:#07131f;
+  --surface-2:#040c18;
   --text:#f1f7ff;
   --muted:#a8b8cb;
-  --line:#203650;
-  --deep:#020911;
+  --line:#132b44;
+  --deep:#01050b;
   --shadow:0 24px 70px rgba(0,0,0,.34);
 }
 

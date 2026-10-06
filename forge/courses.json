@@ -14,6 +14,19 @@
       "level": "Introducción práctica / profesional",
       "version": "1.0",
       "lastReviewed": "2026-08-20"
+    },
+    {
+      "id": "pre-bim-modeler",
+      "number": "002",
+      "title": "HEFESTO Pre-BIM Modeler",
+      "subtitle": "Modelado BIM, CAD a BIM con IA, nubes de puntos, mediciones y planos",
+      "status": "available",
+      "language": "es",
+      "url": "courses/pre-bim-modeler/index.html",
+      "price": "free",
+      "level": "Profesional",
+      "version": "1.0",
+      "lastReviewed": "2026-09-25"
     }
   ]
 }

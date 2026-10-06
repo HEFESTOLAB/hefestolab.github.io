@@ -1,0 +1,67 @@
+{
+  "platform": "HEFESTO FORGE",
+  "course": "HEFESTO Pre-BIM Modeler",
+  "courseId": "pre-bim-modeler",
+  "version": "1.0",
+  "lastUpdated": "2026-09-25",
+  "language": "es",
+  "access": "free",
+  "product": {
+    "name": "HEFESTO Pre-BIM Modeler",
+    "price": "699",
+    "currency": "EUR",
+    "period": "año",
+    "taxes": "IVA no incluido",
+    "launch": "2026-10-06"
+  },
+  "modules": [
+    {
+      "id": "01-primeros-pasos",
+      "title": "Una base BIM, empieces donde empieces",
+      "url": "01-primeros-pasos.html",
+      "summary": "Interfaz, niveles, vistas, tipos y el formato JSON HEFESTO que viaja entre herramientas."
+    },
+    {
+      "id": "02-modelado-arquitectura",
+      "title": "Modelado BIM manual de una vivienda",
+      "url": "02-modelado-arquitectura.html",
+      "summary": "Muros multicapa, huecos, forjados, cubierta, escalera, barandillas y espacios."
+    },
+    {
+      "id": "03-estructura-instalaciones",
+      "title": "Estructura metálica e instalaciones",
+      "url": "03-estructura-instalaciones.html",
+      "summary": "Ejes, zapatas, perfiles IPE, pórticos, tuberías, conductos y bandejas."
+    },
+    {
+      "id": "04-cad-a-bim-con-ia",
+      "title": "Del plano CAD o PDF al modelo BIM con IA",
+      "url": "04-cad-a-bim-con-ia.html",
+      "summary": "Planos de referencia, hechos trazables, lotes validados y revisión humana."
+    },
+    {
+      "id": "05-nubes-de-puntos",
+      "title": "De la nube de puntos al modelo",
+      "url": "05-nubes-de-puntos.html",
+      "summary": "Scan2JSON, reducción, detección de elementos y comprobación contra el escaneo."
+    },
+    {
+      "id": "06-component-studio",
+      "title": "Componentes paramétricos con datos",
+      "url": "06-component-studio.html",
+      "summary": "Primitivas, parámetros, tipos, propiedades trazables y aprobación humana."
+    },
+    {
+      "id": "07-mediciones-presupuesto",
+      "title": "Mediciones y presupuesto desde el modelo",
+      "url": "07-mediciones-presupuesto.html",
+      "summary": "Tablas de planificación, Excel, BC3 FIEBDC-3 e informes Word."
+    },
+    {
+      "id": "08-planos-documentacion",
+      "title": "Planos y documentación técnica",
+      "url": "08-planos-documentacion.html",
+      "summary": "Plantas, alzados, secciones, cotas asociativas y hojas A3 en PDF y DXF."
+    }
+  ]
+}

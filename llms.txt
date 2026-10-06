@@ -1,6 +1,6 @@
 # HEFESTOLAB
 
-> HEFESTOLAB desarrolla HEFESTO Pre-BIM Modeler y explora flujos de interoperabilidad, automatización e inteligencia artificial para AEC e industria. / HEFESTOLAB develops HEFESTO Pre-BIM Modeler and explores interoperability, automation and AI workflows for AEC and industry.
+> HEFESTO Pre-BIM Modeler: proyectos BIM con 0 clics / BIM projects with 0 clicks. HEFESTOLAB desarrolla HEFESTO Pre-BIM Modeler y explora flujos de interoperabilidad, automatización e inteligencia artificial para AEC e industria. / HEFESTOLAB develops HEFESTO Pre-BIM Modeler and explores interoperability, automation and AI workflows for AEC and industry.
 
 ## Español
 
@@ -33,19 +33,28 @@ The first course covers AI foundations, model selection, context engineering, ag
 
 ## Product state / Estado
 
-HEFESTO and several HEFESTOLAB resources are currently in development. Published pages distinguish current functionality from research and future development targets.
+HEFESTO Pre-BIM Modeler is available now (public launch: 6 October 2026) and keeps evolving with continuous updates. Several other HEFESTOLAB resources are in development; published pages distinguish current functionality from research and future development targets.
 
 ## Scope / Alcance
 
-HEFESTO Pre-BIM Modeler cubre arquitectura, estructura y MEP en una sola aplicacion de escritorio Windows. Incluye modelado 3D por niveles con gestor de cotas de proyecto, biblioteca de perfiles metalicos (SHS, RHS, IPE, UPN, L), redes industriales de tuberia y bandeja, componentes parametricos con clase IFC (Component Studio), importacion y contraste de nubes de puntos (Scan2JSON), compositor de planos con hojas A4-A0, viewports a escala, cotas automaticas, etiquetas de perfil y cajetin, y mediciones enlazadas a bases de precios BC3 que generan el presupuesto de forma automatica. Enfasis particular en ingenieria industrial y de detalle. Exportacion a PDF, DXF 2D y 3D, IFC4 fisico y analitico, BC3 (FIEBDC-3), Excel, Word y JSON. La herramienta esta operativa y en uso en proyectos reales; sigue evolucionando durante la fase beta.
+HEFESTO Pre-BIM Modeler cubre arquitectura, estructura y MEP en una sola aplicacion de escritorio Windows. Incluye modelado 3D por niveles con gestor de cotas de proyecto, biblioteca de perfiles metalicos (SHS, RHS, IPE, UPN, L), redes industriales de tuberia y bandeja, componentes parametricos con clase IFC (Component Studio), importacion y contraste de nubes de puntos (Scan2JSON), compositor de planos con hojas A4-A0, viewports a escala, cotas automaticas, etiquetas de perfil y cajetin, y mediciones enlazadas a bases de precios BC3 que generan el presupuesto de forma automatica. Enfasis particular en ingenieria industrial y de detalle. Exportacion a PDF, DXF 2D y 3D, IFC4 fisico y analitico, BC3 (FIEBDC-3), Excel, Word y JSON. La herramienta esta operativa y en uso en proyectos reales; sigue evolucionando con actualizaciones continuas.
+
+## 0 clics / 0 clicks
+
+"Proyectos BIM con 0 clics": el profesional da ordenes en lenguaje natural a su agente de IA (Claude, ChatGPT u otros) y HEFESTO, conectado por su propio servidor MCP, convierte croquis, planos, CAD (DWG) o nubes de puntos en proyecto BIM, lo corrige, le anade elementos y lo documenta. Cero clics no es cero decision: el tecnico decide y revisa, la IA ejecuta sus ordenes, HEFESTO valida cada lote antes de aplicarlo y todo se puede deshacer.
+
+CEREBRO es el conocimiento local de HEFESTO: aprende de la forma de trabajar del usuario y de las normas y estandares de su empresa (nombres y colores de capas, estilos de cotas y de linea, forma de modelar cada elemento). Se construye solo con cada orden, se queda en el equipo del usuario y sirve con cualquier IA.
+
+- Video de lanzamiento (ES, 1:59): https://hefestolab.github.io/assets/video/hefesto-lanzamiento.mp4
+- Grabacion real con un agente de IA (ES, 3:37): https://hefestolab.github.io/assets/video/hefesto-real.mp4
 
 ## Launch / Lanzamiento
 
-HEFESTO Pre-BIM Modeler: beta publica en septiembre de 2026. Programa Early Access limitado a 25 plazas, 499 EUR/ano (IVA no incluido), con licencia completa durante la beta, actualizaciones, soporte directo y sesion de puesta en marcha. Reserva por correo en info@solucionesbim.com. Las herramientas de HEFESTOLAB Tools (IFC Drawing e IFC Energy Model) siguen siendo gratuitas y sin registro.
+HEFESTO Pre-BIM Modeler: disponible desde su lanzamiento publico el 6 de octubre de 2026. Eslogan: "Proyectos BIM con 0 clics". Licencia anual de 699,00 EUR/ano (IVA no incluido), con todas las disciplinas, actualizaciones y soporte directo. Solicitud en info@solucionesbim.com. Curso gratuito en 8 lecciones: https://hefestolab.github.io/forge/courses/pre-bim-modeler/ Las herramientas de HEFESTOLAB Tools (IFC Drawing e IFC Energy Model) siguen siendo gratuitas y sin registro.
 
 ## Author / Autor
 
-Luis Carlos de la Peña Arribas — AI-Driven BIM Director, Arquitecto Técnico y Autodesk Certified Instructor, con base en Burgos (España). Automatizacion de flujos AEC con Revit, Dynamo e IA. HEFESTOLAB es su laboratorio de I+D aplicada; SB Soluciones BIM es la marca de consultoría, formación y licenciamiento.
+Luis Carlos de la Peña Arribas — AI-Driven BIM Director y Arquitecto Técnico, con base en Burgos (España). Automatizacion de flujos AEC con Revit, Dynamo e IA. HEFESTOLAB es su laboratorio de I+D aplicada; SB Soluciones BIM es la marca de consultoría, formación y licenciamiento.
 
 ## Case studies / Casos
 
