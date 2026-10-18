@@ -116,7 +116,6 @@
 </script>
 <script>(function(){try{document.documentElement.dataset.theme=localStorage.getItem("hefestolab-theme")||"dark"}catch(e){}})();</script>
 <link href="assets/css/home.css?v=3.1" rel="stylesheet"/>
-<link href="forge/assets/prebim.css?v=3.1" rel="stylesheet"/>
 </head>
 <body>
 <a class="skip" href="#contenido">Saltar al contenido</a>
@@ -126,7 +125,7 @@
 <nav aria-label="Navegación principal" class="links"><a href="#producto">Qué hace</a><a href="#demo">En real</a><a href="#cerebro">Cerebro</a><a href="#licencia">Licencia</a><a href="#herramientas">Gratis</a><a href="blog/index.html">Blog</a><a href="#sobre">Sobre mí</a></nav>
 <div class="actions"><button aria-label="Cambiar tema" aria-pressed="true" class="iconbtn" data-to-dark="Cambiar a tema oscuro" data-to-light="Cambiar a tema claro" id="theme" title="Cambiar tema">◐</button><div aria-label="Idioma" class="langswitch"><span aria-current="true" class="active">ES</span><a href="en/index.html" hreflang="en" lang="en">EN</a></div><a class="btn primary small" href="#licencia">Licencia · 699 €</a><button aria-controls="mobile" aria-expanded="false" aria-label="Abrir menú" class="iconbtn menu" data-close="Cerrar menú" data-open="Abrir menú" id="menu">☰</button></div>
 </div>
-<nav aria-label="Menú móvil" class="mobile" id="mobile"><a href="#producto">Qué hace</a><a href="#demo">HEFESTO en real</a><a href="#cerebro">Cerebro</a><a href="#flujo">Del plano al presupuesto</a><a href="#licencia">Licencia · 699 €/año + IVA</a><a href="#casos">Casos</a><a href="#herramientas">Curso y herramientas gratis</a><a href="forge/index.html">Forge</a><a href="blog/index.html">Blog</a><a href="#sobre">Sobre mí</a><a href="#contacto">Contacto</a><a href="en/index.html" hreflang="en" lang="en">English version</a></nav>
+<nav aria-label="Menú móvil" class="mobile" id="mobile"><a href="#producto">Qué hace</a><a href="#demo">HEFESTO en real</a><a href="#cerebro">Cerebro</a><a href="#flujo">Del plano al presupuesto</a><a href="#licencia">Licencia · 699 €/año + IVA</a><a href="#casos">Casos</a><a href="#herramientas">DÉDALO y herramientas gratis</a><a href="blog/index.html">Blog</a><a href="#sobre">Sobre mí</a><a href="#contacto">Contacto</a><a href="en/index.html" hreflang="en" lang="en">English version</a></nav>
 </header>
 
 <main id="contenido">
@@ -298,18 +297,20 @@
 <!-- ═════ Gratis ═════ -->
 <section class="sec alt" id="herramientas">
 <div class="wrap">
-<div class="head"><h2>Pruébalo gratis antes de comprarlo</h2><p>Un curso completo con su proyecto demo y tres herramientas IFC que funcionan en el navegador, sin registro.</p></div>
+<div class="head"><h2>Empieza a crear con DÉDALO, gratis</h2><p>Nuestro modelador 3D gratuito, directamente en el navegador. También tienes tres herramientas IFC sin registro.</p></div>
 <div class="free">
-<div class="viewerBox" id="curso">
-<div data-error="No se ha podido cargar el visor. Ábrelo desde el curso." data-hefesto-viewer data-model="assets/data/hefesto-demo-model.json" data-site="all"></div>
-<p class="cap">El proyecto demo del curso, hecho en HEFESTO. Gíralo, corta por planta y pulsa cualquier elemento para ver sus datos BIM.</p>
-</div>
+<article class="dedaloFeature" id="dedalo">
+<span class="label">Gratis · sin registro</span>
+<div class="dedaloBrand"><img alt="" width="54" height="54" src="dedalo/app/img/dedalo.svg"/><h3>DÉDALO</h3></div>
+<p>Tu espacio de modelado 3D gratuito. Dibuja líneas y caras, da volumen con Empujar/Tirar y trabaja con grupos, componentes y formas libres.</p>
+<ul><li>En el navegador, sin instalación</li><li>Proyectos nativos .dedalo y exportación OBJ / STL</li><li>Tus archivos se quedan en tu equipo</li></ul>
+<a class="btn primary" href="dedalo/index.html?seguro">Abrir DÉDALO gratis →</a>
+<p class="dedaloNote">Se abre en modo gráfico seguro. Territorio España genera entornos editables con datos públicos y árboles registrados. Unir IA te guía para conectar tu propio cliente compatible.</p>
+</article>
 <div class="rows">
-<a href="forge/courses/pre-bim-modeler/index.html"><span><b>Curso HEFESTO Pre-BIM Modeler</b><span>Ocho lecciones gratuitas sobre este proyecto demo.</span></span><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
 <a href="tools/ifc-drawing/index.html"><span><b>IFC Drawing</b><span>Plantas, secciones, cotas y hojas desde un IFC. PDF y DXF.</span></span><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
 <a href="tools/ifc2ia-ready/index.html"><span><b>IFC2IA Ready</b><span>Audita el IFC y saca cantidades para presupuestar con IA.</span></span><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
 <a href="tools/ifc-energy-model/index.html"><span><b>IFC Energy Model</b><span>Prepara el IFC para el modelo analítico de CYPE.</span></span><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
-<a href="forge/index.html" id="academia"><span><b>HEFESTO FORGE</b><span>Formación gratuita sobre IA, agentes, MCP y BIM.</span></span><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
 <a href="blog/json-hefesto-ia-bim.html" id="contenido-tecnico"><span><b>Blog técnico</b><span>JSON HEFESTO: hacia un BIM nativo para inteligencia artificial.</span></span><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
 </div>
 </div>
@@ -343,6 +344,6 @@
 
 </main>
 
-<footer><div class="wrap foot"><div><div class="footBrand"><img alt="" height="27" src="assets/brand/hefesto-symbol.svg" width="22"/> HEFESTOLAB</div><p>HEFESTO Pre-BIM Modeler · Ya disponible.<br/>© 2026 Luis Carlos de la Peña Arribas · Burgos, España</p></div><div class="footlinks"><a href="tools/index.html">Herramientas</a><a href="forge/index.html">Forge</a><a href="blog/index.html">Blog</a><a href="blog/feed.xml">RSS</a><a href="mailto:info@solucionesbim.com">Contacto</a><a href="https://www.linkedin.com/in/luiscarlosrevitbimmanager/" rel="noopener" target="_blank">LinkedIn</a><a href="https://github.com/HEFESTOLAB" rel="noopener" target="_blank">GitHub</a><a href="https://solucionesbim.com/" rel="noopener" target="_blank">SB Soluciones BIM</a><a href="legal/aviso-legal.html">Aviso legal</a><a href="legal/privacidad.html">Privacidad</a><a href="llms.txt">llms.txt</a></div></div></footer>
+<footer><div class="wrap foot"><div><div class="footBrand"><img alt="" height="27" src="assets/brand/hefesto-symbol.svg" width="22"/> HEFESTOLAB</div><p>HEFESTO Pre-BIM Modeler · Ya disponible.<br/>© 2026 Luis Carlos de la Peña Arribas · Burgos, España</p></div><div class="footlinks"><a href="tools/index.html">Herramientas</a><a href="dedalo/index.html?seguro">DÉDALO</a><a href="blog/index.html">Blog</a><a href="blog/feed.xml">RSS</a><a href="mailto:info@solucionesbim.com">Contacto</a><a href="https://www.linkedin.com/in/luiscarlosrevitbimmanager/" rel="noopener" target="_blank">LinkedIn</a><a href="https://github.com/HEFESTOLAB" rel="noopener" target="_blank">GitHub</a><a href="https://solucionesbim.com/" rel="noopener" target="_blank">SB Soluciones BIM</a><a href="legal/aviso-legal.html">Aviso legal</a><a href="legal/privacidad.html">Privacidad</a><a href="llms.txt">llms.txt</a></div></div></footer>
 <script src="assets/js/home.js?v=3.1"></script>
 </body></html>
