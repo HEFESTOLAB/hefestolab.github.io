@@ -1,6 +1,5 @@
 /* HEFESTOLAB · portada v3.1 · tema, menú, vídeos y visor bajo demanda */
 (() => {
-  const here = document.currentScript ? document.currentScript.src : location.href;
   const root = document.documentElement;
   const $ = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
@@ -125,15 +124,4 @@
     if (next) next.addEventListener('click', () => step(1));
   }
 
-  /* Visor del proyecto demo: three.js solo se descarga al acercarse */
-  const viewer = $('[data-hefesto-viewer]');
-  if (viewer) {
-    const load = () => import(new URL('hefesto-viewer.js', here).href).catch(() => {
-      viewer.textContent = viewer.dataset.error || '';
-    });
-    if ('IntersectionObserver' in window) {
-      const vo = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { vo.disconnect(); load(); } }, { rootMargin: '600px 0px' });
-      vo.observe(viewer);
-    } else load();
-  }
 })();
