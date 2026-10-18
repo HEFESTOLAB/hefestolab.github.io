@@ -25,7 +25,6 @@
   --max:1180px;
   --display:Montserrat,"Segoe UI",system-ui,sans-serif;
   --body:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
-  /* alias que usa el visor del curso (forge/assets/prebim.css) */
   --deep:#01050b;
 }
 [data-theme="light"]{
@@ -246,8 +245,15 @@ h1,h2,h3{margin:0;font-family:var(--display);font-weight:300;text-transform:uppe
 
 /* Gratis */
 .free{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:48px;align-items:start}
-.viewerBox .hv{border-radius:12px}
-.viewerBox .cap{margin-top:14px;color:var(--muted);font-size:.92rem}
+.dedaloFeature{padding:30px;border:1px solid var(--line-2);border-radius:14px;background:linear-gradient(135deg,color-mix(in srgb,var(--cyan) 7%,var(--surface)),var(--surface));box-shadow:var(--shadow)}
+.dedaloBrand{display:flex;align-items:center;gap:16px;margin:20px 0}
+.dedaloBrand img{flex:none;width:54px;height:54px}
+.dedaloBrand h3{font-size:clamp(1.8rem,4vw,2.7rem);letter-spacing:.14em}
+.dedaloFeature p{color:var(--muted);max-width:56ch}
+.dedaloFeature ul{margin:22px 0 26px;padding-left:20px;color:var(--muted);font-size:.92rem}
+.dedaloFeature li + li{margin-top:7px}
+.dedaloFeature .dedaloNote{margin-top:16px;font-size:.8rem;color:var(--dim)}
+@media(max-width:520px){.dedaloFeature{padding:22px}.dedaloFeature .btn{width:100%;white-space:normal;text-align:center}}
 .rows{border-top:1px solid var(--line)}
 .rows a{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;padding:17px 4px;border-bottom:1px solid var(--line);transition:background .16s,padding .16s}
 .rows a:hover{background:color-mix(in srgb,var(--surface-2) 70%,transparent);padding-left:12px}
