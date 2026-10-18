@@ -1,0 +1,21 @@
+Dédalo 0.5.1
+
+The Dédalo application and its original geometry engine are distributed under
+the MIT license in LICENSE. Territory triangulation additionally includes:
+
+Earcut 2.2.4 by Mapbox, ISC License.
+Official source: https://github.com/mapbox/earcut/tree/v2.2.4
+Vendored source: app/js/vendor/earcut-2.2.4.js
+Full license: app/js/vendor/earcut-LICENSE.txt
+The module is loaded locally; no CDN, build or remote execution is required.
+
+Public geographic data has separate source licenses and attribution:
+Catastro / Dirección General del Catastro, IGN/CNIG, CartoCiudad and OpenStreetMap.
+Each territory import records source URLs, licensing, retrieval dates and warnings.
+See docs/TERRITORIO_ESPANA_0.5.md and the source manifest saved with each model.
+OpenStreetMap contributors: https://www.openstreetmap.org/copyright (ODbL).
+Map preview uses IGNBaseTodo WMTS (IGN/CNIG) for current interactive viewing.
+Tiles are not packaged or exported. Conditions: https://www.ign.es/web/ign/portal/politica-datos
+
+The separately packaged local MCP connector includes its own SDK dependency
+licenses and THIRD_PARTY_NOTICES.txt. These are not part of the browser runtime.

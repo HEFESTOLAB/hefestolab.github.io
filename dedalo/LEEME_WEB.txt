@@ -1,0 +1,47 @@
+DÉDALO 0.5.1 · TERRITORIO ESPAÑA Y UNIR IA · 18/10/2026
+
+CORRECCIÓN 0.5.1: mapa real IGN en planta también al abrir el archivo local.
+El tamaño y la superficie cambian en vivo con el campo o el deslizador.
+Indicador de carga durante consultas, creación y exportación; se impiden
+clics repetidos y cambios de modelo mientras se crea el entorno.
+
+Extrae todo y abre index.html?seguro o Dedalo.html?seguro. El modelado manual
+funciona sin conexión. Para consultar territorio o unir tu IA necesitas internet
+y, si el navegador bloquea los servicios, el conector local incluido.
+
+UNIR IA: botón en la barra superior con guía interactiva. Elige tu aplicación,
+descarga el paquete, confirma su instalación en el cliente y sigue el paso de
+conexión. Claude Desktop: .mcpb; Codex/Claude Code/otros compatibles: ZIP completo
+con dependencias y Node.js 22+. No hace falta npm. La web no puede instalar por ti.
+La instalación es una vez; cada sesión se une con el enlace/código y permisos.
+El código dura 15 minutos PARA EMPEZAR: la conexión no tiene ese límite de uso.
+No pide claves de API. Tu cliente y su proveedor reciben el modelo que autorices.
+Guía: docs/UNIR_IA_0.5.md. Cliente real/MCPB/navegador pendientes de aceptación.
+
+TERRITORIO: busca un lugar o elige coordenadas y recorte (máximo 1 km²). Activa
+parcelas, edificios, relieve, árboles y contexto. Consulta, revisa fuentes/avisos
+y crea el entorno. Los datos proceden de Catastro, IGN/CNIG y OpenStreetMap.
+No se inventan edificios ni árboles registrados. Las alturas calculadas por
+plantas y los árboles simbólicos quedan identificados como estimaciones.
+El resultado se añade en grupos/componentes editables y se deshace en un paso.
+Paleta arquitectónica: blanco, terreno claro, bordes grises y árboles verdes.
+Guía: docs/TERRITORIO_ESPANA_0.5.md; muestra real Burgos en examples/.
+
+Si CORS impide consultar desde la web, usa INICIAR_TERRITORIO.cmd del ZIP MCP:
+solo sirve Dédalo y datos públicos en tu ordenador; no requiere una IA ni claves.
+Los servicios públicos pueden estar ocupados o limitar las peticiones.
+DGC no cubre Navarra ni País Vasco. OSM no contiene todos los árboles.
+Resultados parciales, contornos omitidos y fuentes se muestran y se conservan.
+
+Guarda .dedalo para editar. Exporta IFC4 con metros, origen local, UTM y fuentes
+para importarlo en HEFESTO mediante su importador IFC. El IFC lleva geometría de
+contexto, no elementos constructivos detallados. Su aceptación en HEFESTO real
+está pendiente. También puedes exportar un JSON abierto con el proyecto nativo.
+
+Se conservan Copiar (V), cotas por ejes, guías, grupos, componentes, formas libres
+y la corrección del menú contextual. Sin ejecutables ni modelos privados.
+Pruebas CPU, consultas públicas reales y Burgos guardar/reabrir/exportar IFC.
+No se han arrancado EXE, servidor de escucha, navegador, render ni compilación.
+No se ha medido fluidez ni verificado un cliente IA/importador real.
+
+Originales y entregas anteriores conservados. Código, pruebas y licencias incluidos.
