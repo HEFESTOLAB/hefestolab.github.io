@@ -1,0 +1,205 @@
+{
+  "title": "Burgos · Plaza de España · Territorio",
+  "format": "dedalo.territory-example-sources",
+  "version": 1,
+  "createdAt": "2026-10-18T00:13:53.443Z",
+  "bbox": [
+    -3.6996853980788376,
+    42.34274426069842,
+    -3.6960351290463085,
+    42.3454422217904
+  ],
+  "georeference": {
+    "crs": "EPSG:25830",
+    "datum": "ETRS89",
+    "ellipsoid": "GRS80",
+    "units": "m",
+    "origin": [
+      442517.14873323194,
+      4688217.4592459425,
+      857.673
+    ],
+    "sourceCRS": "EPSG:4326",
+    "center": [
+      -3.697860263562573,
+      42.34409324124441
+    ],
+    "verticalDatum": "Altitudes ortométricas, fuente MDT05 IGN; no es un levantamiento de la parcela.",
+    "horizontalTransform": "Proyección GRS80 de coordenadas WGS84 compatibles; sin corrección de datum/época. Precisión geodésica no certificada.",
+    "verticalOriginStatus": "derived-from-valid-terrain-grid"
+  },
+  "stats": {
+    "parcels": 104,
+    "buildings": 595,
+    "footprintsOnly": 14,
+    "terrainFaces": 2048,
+    "trees": 80,
+    "vegetationAreas": 0,
+    "roads": 239,
+    "waterways": 3,
+    "waterAreas": 4,
+    "skippedFeatures": 2,
+    "faces": 13337,
+    "vertices": 18173
+  },
+  "sourceCounts": {
+    "parcels": 104,
+    "buildingParts": 611,
+    "trees": 80,
+    "roads": 239,
+    "waterways": 3,
+    "waterAreas": 4
+  },
+  "sources": [
+    {
+      "id": "catastro-parcels",
+      "operation": "catastro.parcels",
+      "title": "Dirección General del Catastro",
+      "url": "https://ovc.catastro.meh.es/INSPIRE/wfsCP.aspx?service=WFS&version=2.0.0&request=GetFeature&typeNames=CP.CadastralParcel&srsName=EPSG%3A4326&bbox=42.34274426069842%2C-3.6996853980788376%2C42.3454422217904%2C-3.6960351290463085%2Curn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A4326&count=5000",
+      "crs": "EPSG:4326",
+      "attribution": "Dirección General del Catastro — INSPIRE",
+      "license": "CC BY 4.0 según catálogo HVD datos.gob.es; consultar también condiciones DGC enlazadas",
+      "licenseURL": "https://datos.gob.es/es/catalogo/e0dat0002-spanish-general-directorate-for-cadastre-cadastral-parcel-inspire-download-service-wfs1",
+      "legacyLicenseURL": "https://www.catastro.hacienda.gob.es/webinspire/documentos/Licencia.pdf",
+      "licenseNote": "El catálogo HVD indica CC BY 4.0 y el portal mantiene una licencia histórica con restricciones distintas. Se conservan ambas referencias; revisar el uso de redistribución previsto.",
+      "retrievedAt": "2026-10-18T00:06:30.453Z",
+      "cached": false,
+      "request": {
+        "operation": "catastro.parcels",
+        "bbox": [
+          -3.6996853980788376,
+          42.34274426069842,
+          -3.6960351290463085,
+          42.3454422217904
+        ]
+      },
+      "evidence": "Huellas y atributos catastrales; no alturas de fachadas/tejados medidas ni propietarios. DGC no cubre Navarra ni País Vasco.",
+      "numberMatched": 105,
+      "numberReturned": 105,
+      "originalCRSs": [
+        "http://www.opengis.net/def/crs/EPSG/0/4326"
+      ]
+    },
+    {
+      "id": "catastro-buildings",
+      "operation": "catastro.buildings",
+      "title": "Dirección General del Catastro",
+      "url": "https://ovc.catastro.meh.es/INSPIRE/wfsBU.aspx?service=WFS&version=2.0.0&request=GetFeature&typeNames=BU.BuildingPart&srsName=EPSG%3A4326&bbox=42.34274426069842%2C-3.6996853980788376%2C42.3454422217904%2C-3.6960351290463085%2Curn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A4326&count=5000",
+      "crs": "EPSG:4326",
+      "attribution": "Dirección General del Catastro — INSPIRE",
+      "license": "CC BY 4.0 según catálogo HVD datos.gob.es; consultar también condiciones DGC enlazadas",
+      "licenseURL": "https://datos.gob.es/es/catalogo/e0dat0002-spanish-general-directorate-for-cadastre-cadastral-parcel-inspire-download-service-wfs1",
+      "legacyLicenseURL": "https://www.catastro.hacienda.gob.es/webinspire/documentos/Licencia.pdf",
+      "licenseNote": "El catálogo HVD indica CC BY 4.0 y el portal mantiene una licencia histórica con restricciones distintas. Se conservan ambas referencias; revisar el uso de redistribución previsto.",
+      "retrievedAt": "2026-10-18T00:06:35.591Z",
+      "cached": false,
+      "request": {
+        "operation": "catastro.buildings",
+        "bbox": [
+          -3.6996853980788376,
+          42.34274426069842,
+          -3.6960351290463085,
+          42.3454422217904
+        ]
+      },
+      "evidence": "Huellas y atributos catastrales; no alturas de fachadas/tejados medidas ni propietarios. DGC no cubre Navarra ni País Vasco.",
+      "numberMatched": null,
+      "numberReturned": null,
+      "originalCRSs": [
+        "urn:ogc:def:crs:EPSG::4326"
+      ]
+    },
+    {
+      "id": "ign-terrain",
+      "operation": "ign.terrain",
+      "title": "IGN / CNIG — MDT05",
+      "url": "https://servicios.idee.es/wcs-inspire/mdt?service=WCS&version=1.0.0&request=GetCoverage&coverage=Elevacion4258_5&bbox=-3.6996853980788376%2C42.34274426069842%2C-3.6960351290463085%2C42.3454422217904&crs=EPSG%3A4258&interpolationMethod=bilinear&format=ArcGrid&width=33&height=33",
+      "crs": "EPSG:4258",
+      "attribution": "© Instituto Geográfico Nacional de España / CNIG — MDT05",
+      "license": "Condiciones de reutilización IGN/CNIG",
+      "licenseURL": "https://www.ign.es/resources/licencia/Condiciones_licenciaUso_IGN.pdf",
+      "retrievedAt": "2026-10-18T00:06:35.783Z",
+      "cached": false,
+      "request": {
+        "operation": "ign.terrain",
+        "bbox": [
+          -3.6996853980788376,
+          42.34274426069842,
+          -3.6960351290463085,
+          42.3454422217904
+        ]
+      },
+      "evidence": "MDT del terreno; no superficie de tejados ni árboles."
+    },
+    {
+      "id": "osm-trees",
+      "operation": "osm.trees",
+      "title": "OpenStreetMap / Overpass API",
+      "url": "https://overpass-api.de/api/interpreter",
+      "crs": "EPSG:4326",
+      "attribution": "© OpenStreetMap contributors — ODbL",
+      "license": "ODbL 1.0 — OpenStreetMap contributors",
+      "licenseURL": "https://www.openstreetmap.org/copyright",
+      "retrievedAt": "2026-10-18T00:07:41.574Z",
+      "cached": false,
+      "request": {
+        "operation": "osm.trees",
+        "bbox": [
+          -3.6996853980788376,
+          42.34274426069842,
+          -3.6960351290463085,
+          42.3454422217904
+        ]
+      },
+      "evidence": "Solo objetos cartografiados; una respuesta vacía no acredita ausencia de árboles, vías o agua.",
+      "datasetTimestamp": "2026-10-18T00:06:21Z"
+    },
+    {
+      "id": "osm-context",
+      "operation": "osm.context",
+      "title": "OpenStreetMap / Overpass API",
+      "url": "https://overpass-api.de/api/interpreter",
+      "crs": "EPSG:4326",
+      "attribution": "© OpenStreetMap contributors — ODbL",
+      "license": "ODbL 1.0 — OpenStreetMap contributors",
+      "licenseURL": "https://www.openstreetmap.org/copyright",
+      "retrievedAt": "2026-10-18T00:08:22.739Z",
+      "cached": false,
+      "request": {
+        "operation": "osm.context",
+        "bbox": [
+          -3.6996853980788376,
+          42.34274426069842,
+          -3.6960351290463085,
+          42.3454422217904
+        ]
+      },
+      "evidence": "Solo objetos cartografiados; una respuesta vacía no acredita ausencia de árboles, vías o agua.",
+      "datasetTimestamp": "2026-10-18T00:07:21Z"
+    }
+  ],
+  "warnings": [
+    "El contador WFS declara 105 entidades pero el XML contiene 104 de tipo CadastralParcel. Comprueba la respuesta o reduce el área.",
+    "Entidad ES.SDGC.BU.2786008VM4828N_part11 omitida: Anillo degenerado.",
+    "Los árboles son únicamente puntos natural=tree de OSM. La cobertura es incompleta; no se generan árboles reales aleatorios.",
+    "Contexto OSM: vías lineales y áreas cerradas cartografiadas; sin relaciones multipolígono ni garantía de exhaustividad.",
+    "Catastro aporta huellas y plantas. La altura extruida por plantas es estimada, no una medición de fachada o tejado.",
+    "El contorno OSM osm/way/1276085331 se conserva íntegro y se extiende fuera de la selección.",
+    "El contorno OSM osm/way/1383037559 se conserva íntegro y se extiende fuera de la selección.",
+    "Patios complejos triangulados como caras nativas suaves [ES.SDGC.BU.2582029VM4828S_part2].",
+    "Patios complejos triangulados como caras nativas suaves [ES.SDGC.BU.2582801VM4828S_part1].",
+    "Geometría de fuente omitida [ES.SDGC.BU.2682003VM4828S_part8]: Contorno con intersecciones propias.",
+    "Patios complejos triangulados como caras nativas suaves [ES.SDGC.BU.2685003VM4828N_part2].",
+    "Patios complejos triangulados como caras nativas suaves [ES.SDGC.BU.2685004VM4828S_part2].",
+    "Patios complejos triangulados como caras nativas suaves [ES.SDGC.BU.2783101VM4828S_part1].",
+    "Geometría de fuente omitida [ES.SDGC.BU.2786008VM4828N_part2]: Patio fuera de la huella o tocando su perímetro.",
+    "14 huellas sin altura/planta documentada: se conservan como contornos, sin volumen inventado."
+  ],
+  "limitations": [
+    "Las alturas por plantas son inferidas a 3 m/planta.",
+    "Los 80 árboles son registros OSM: cobertura parcial y copa/tronco simbólicos de altura estimada si no consta fuente.",
+    "Dos geometrías de fuente se omiten con identificación y motivo; 14 huellas no tienen altura documentada.",
+    "La georreferenciación no realiza corrección de datum/época; no es un levantamiento topográfico.",
+    "IFC4 revisado en CPU: sintaxis/referencias/atributos usados y 595 cáscaras cerradas. No validado en la aplicación HEFESTO ni con un validador EXPRESS/MVD completo."
+  ]
+}

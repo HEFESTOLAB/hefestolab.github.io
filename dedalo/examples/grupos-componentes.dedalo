@@ -1,0 +1,3443 @@
+{
+  "format": "dedalo",
+  "version": 2,
+  "app": "Dédalo",
+  "saved": "2026-10-17T22:25:09.103Z",
+  "name": "DÉDALO · grupos y componentes reales",
+  "projectId": "51538e9d-4e10-4b22-afa8-045feda1d5c1",
+  "projectVersion": 10,
+  "scene": {
+    "format": "dedalo.scene",
+    "version": 1,
+    "rootId": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+    "definitions": [
+      {
+        "id": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+        "name": "Modelo",
+        "kind": "root",
+        "model": {
+          "format": "dedalo.model",
+          "version": 1,
+          "nextId": 28,
+          "verts": [],
+          "edges": [],
+          "faces": [],
+          "curves": [],
+          "materials": [],
+          "annots": [
+            {
+              "id": 27,
+              "kind": "text",
+              "p": [
+                0,
+                -0.7,
+                0
+              ],
+              "off": null,
+              "text": "Tres instancias comparten una definición. Doble clic para editar; Esc para salir."
+            }
+          ],
+          "identities": {
+            "27": "08f3dabc-2168-4b89-b0d0-65e8ee50ed48"
+          }
+        },
+        "nodes": [
+          {
+            "id": "efddee51-dff2-47e5-b6b9-0aa58b1e88b6",
+            "kind": "component",
+            "name": "Módulo compartido · editar cualquier instancia",
+            "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+            "matrix": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1
+            ]
+          },
+          {
+            "id": "f54f692f-05d8-49e0-b505-f16251963126",
+            "kind": "group",
+            "name": "Conjunto anidado",
+            "definitionId": "f3dcda1d-9903-4033-a92b-24d1ef570134",
+            "matrix": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              2,
+              0,
+              1
+            ]
+          }
+        ]
+      },
+      {
+        "id": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+        "name": "Módulo compartido · editar cualquier instancia",
+        "kind": "component",
+        "model": {
+          "format": "dedalo.model",
+          "version": 1,
+          "nextId": 27,
+          "verts": [
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              1,
+              0,
+              0
+            ],
+            [
+              4,
+              1,
+              1,
+              0
+            ],
+            [
+              6,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              0,
+              0,
+              1
+            ],
+            [
+              11,
+              1,
+              0,
+              1
+            ],
+            [
+              12,
+              1,
+              1,
+              1
+            ],
+            [
+              13,
+              0,
+              1,
+              1
+            ]
+          ],
+          "edges": [
+            [
+              3,
+              1,
+              2,
+              0,
+              0
+            ],
+            [
+              5,
+              2,
+              4,
+              0,
+              0
+            ],
+            [
+              7,
+              4,
+              6,
+              0,
+              0
+            ],
+            [
+              8,
+              6,
+              1,
+              0,
+              0
+            ],
+            [
+              14,
+              10,
+              11,
+              0,
+              0
+            ],
+            [
+              15,
+              1,
+              10,
+              0,
+              0
+            ],
+            [
+              16,
+              11,
+              12,
+              0,
+              0
+            ],
+            [
+              17,
+              2,
+              11,
+              0,
+              0
+            ],
+            [
+              18,
+              12,
+              13,
+              0,
+              0
+            ],
+            [
+              19,
+              4,
+              12,
+              0,
+              0
+            ],
+            [
+              20,
+              13,
+              10,
+              0,
+              0
+            ],
+            [
+              21,
+              6,
+              13,
+              0,
+              0
+            ]
+          ],
+          "faces": [
+            {
+              "id": 9,
+              "loops": [
+                [
+                  6,
+                  4,
+                  2,
+                  1
+                ]
+              ],
+              "mat": null
+            },
+            {
+              "id": 22,
+              "loops": [
+                [
+                  1,
+                  2,
+                  11,
+                  10
+                ]
+              ],
+              "mat": null
+            },
+            {
+              "id": 23,
+              "loops": [
+                [
+                  2,
+                  4,
+                  12,
+                  11
+                ]
+              ],
+              "mat": null
+            },
+            {
+              "id": 24,
+              "loops": [
+                [
+                  4,
+                  6,
+                  13,
+                  12
+                ]
+              ],
+              "mat": null
+            },
+            {
+              "id": 25,
+              "loops": [
+                [
+                  6,
+                  1,
+                  10,
+                  13
+                ]
+              ],
+              "mat": null
+            },
+            {
+              "id": 26,
+              "loops": [
+                [
+                  10,
+                  11,
+                  12,
+                  13
+                ]
+              ],
+              "mat": null
+            }
+          ],
+          "curves": [],
+          "materials": [],
+          "annots": [],
+          "identities": {
+            "1": "0c424646-84db-4450-a2f1-b2f3ff860793",
+            "2": "7b1b098d-7e1f-4c72-b709-1f4ed421c53e",
+            "3": "f2a8d0f6-68bb-4041-94c6-3b210253a19e",
+            "4": "d48d8b67-8c71-472e-8915-c1f8aa17f515",
+            "5": "c5ec6699-d38c-4924-bef7-0fb33a61c744",
+            "6": "54ca7eaf-6622-4ddd-bd85-06fe54264af4",
+            "7": "70785229-4875-4759-8eb2-704d25cd1d53",
+            "8": "faecfc93-1903-4d8b-9b6f-8f0d1e08a05e",
+            "9": "35fc70d6-bb20-4fba-9962-e73ebb3fa0dd",
+            "10": "ac644620-3c7d-4093-aa8c-bfd6ef07cb4d",
+            "11": "c7b1f31c-0c6e-4b73-8b1e-818bf787b2f0",
+            "12": "d6d4496e-1acc-46ba-a425-0832078dcf2c",
+            "13": "a1cda7d2-5a42-4b65-82ca-731f75ee7666",
+            "14": "bef9d638-3271-4a02-945c-c498fbcfd481",
+            "15": "fd0cca8c-ac87-442c-babd-a07b4ed08d8a",
+            "16": "90666973-6322-4cc1-9c63-3ed9b78771a9",
+            "17": "bda32f08-7868-4c17-8abd-be4800808def",
+            "18": "5d88e8a0-23c8-4366-91de-121b718e3c04",
+            "19": "34785ae8-1b67-4767-8011-1e0c17093125",
+            "20": "d46ebe94-a1a7-4c1c-8caf-b1be3d5afafb",
+            "21": "8a7331d7-8288-4c1d-a053-4b8117103a04",
+            "22": "56b90b95-5478-4aa6-9c19-dfa0a59df127",
+            "23": "b460b7e7-0525-42fe-94f4-a5823dcee4fe",
+            "24": "435d5e11-4781-465b-9b8a-0d0ccd7d69de",
+            "25": "8bdf86e1-debe-4c68-bd9b-8d8effb18e85",
+            "26": "2daa12ec-fe6d-4c3b-a45c-fbc30f2e0232"
+          }
+        },
+        "nodes": []
+      },
+      {
+        "id": "493a2e0f-74d5-4310-aa16-60a20b442e0f",
+        "name": "Pareja de instancias",
+        "kind": "group",
+        "model": {
+          "format": "dedalo.model",
+          "version": 1,
+          "nextId": 27,
+          "verts": [],
+          "edges": [],
+          "faces": [],
+          "curves": [],
+          "materials": [],
+          "annots": [],
+          "identities": {}
+        },
+        "nodes": [
+          {
+            "id": "5de99982-5dfb-44d8-86b1-db648375a6bd",
+            "kind": "component",
+            "name": "Instancia B",
+            "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+            "matrix": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              2,
+              0,
+              0,
+              1
+            ]
+          },
+          {
+            "id": "0d5fe1ac-e93f-4c13-8967-47c8188f7fb3",
+            "kind": "component",
+            "name": "Instancia C",
+            "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+            "matrix": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              4,
+              0,
+              0,
+              1
+            ]
+          }
+        ]
+      },
+      {
+        "id": "f3dcda1d-9903-4033-a92b-24d1ef570134",
+        "name": "Conjunto anidado",
+        "kind": "group",
+        "model": {
+          "format": "dedalo.model",
+          "version": 1,
+          "nextId": 27,
+          "verts": [],
+          "edges": [],
+          "faces": [],
+          "curves": [],
+          "materials": [],
+          "annots": [],
+          "identities": {}
+        },
+        "nodes": [
+          {
+            "id": "7a8a455e-047e-4552-9e64-8afb6766f057",
+            "kind": "group",
+            "name": "Pareja de instancias",
+            "definitionId": "493a2e0f-74d5-4310-aa16-60a20b442e0f",
+            "matrix": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "model": {
+    "format": "dedalo.model",
+    "version": 1,
+    "nextId": 28,
+    "verts": [
+      [
+        -1,
+        0,
+        0,
+        0
+      ],
+      [
+        -2,
+        1,
+        0,
+        0
+      ],
+      [
+        -3,
+        1,
+        1,
+        0
+      ],
+      [
+        -4,
+        0,
+        1,
+        0
+      ],
+      [
+        -5,
+        0,
+        0,
+        1
+      ],
+      [
+        -6,
+        1,
+        0,
+        1
+      ],
+      [
+        -7,
+        1,
+        1,
+        1
+      ],
+      [
+        -8,
+        0,
+        1,
+        1
+      ],
+      [
+        -27,
+        2,
+        2,
+        0
+      ],
+      [
+        -28,
+        3,
+        2,
+        0
+      ],
+      [
+        -29,
+        3,
+        3,
+        0
+      ],
+      [
+        -30,
+        2,
+        3,
+        0
+      ],
+      [
+        -31,
+        2,
+        2,
+        1
+      ],
+      [
+        -32,
+        3,
+        2,
+        1
+      ],
+      [
+        -33,
+        3,
+        3,
+        1
+      ],
+      [
+        -34,
+        2,
+        3,
+        1
+      ],
+      [
+        -53,
+        4,
+        2,
+        0
+      ],
+      [
+        -54,
+        5,
+        2,
+        0
+      ],
+      [
+        -55,
+        5,
+        3,
+        0
+      ],
+      [
+        -56,
+        4,
+        3,
+        0
+      ],
+      [
+        -57,
+        4,
+        2,
+        1
+      ],
+      [
+        -58,
+        5,
+        2,
+        1
+      ],
+      [
+        -59,
+        5,
+        3,
+        1
+      ],
+      [
+        -60,
+        4,
+        3,
+        1
+      ]
+    ],
+    "edges": [
+      [
+        -9,
+        -1,
+        -2,
+        0,
+        0
+      ],
+      [
+        -10,
+        -2,
+        -3,
+        0,
+        0
+      ],
+      [
+        -11,
+        -3,
+        -4,
+        0,
+        0
+      ],
+      [
+        -12,
+        -4,
+        -1,
+        0,
+        0
+      ],
+      [
+        -13,
+        -5,
+        -6,
+        0,
+        0
+      ],
+      [
+        -14,
+        -1,
+        -5,
+        0,
+        0
+      ],
+      [
+        -15,
+        -6,
+        -7,
+        0,
+        0
+      ],
+      [
+        -16,
+        -2,
+        -6,
+        0,
+        0
+      ],
+      [
+        -17,
+        -7,
+        -8,
+        0,
+        0
+      ],
+      [
+        -18,
+        -3,
+        -7,
+        0,
+        0
+      ],
+      [
+        -19,
+        -8,
+        -5,
+        0,
+        0
+      ],
+      [
+        -20,
+        -4,
+        -8,
+        0,
+        0
+      ],
+      [
+        -35,
+        -27,
+        -28,
+        0,
+        0
+      ],
+      [
+        -36,
+        -28,
+        -29,
+        0,
+        0
+      ],
+      [
+        -37,
+        -29,
+        -30,
+        0,
+        0
+      ],
+      [
+        -38,
+        -30,
+        -27,
+        0,
+        0
+      ],
+      [
+        -39,
+        -31,
+        -32,
+        0,
+        0
+      ],
+      [
+        -40,
+        -27,
+        -31,
+        0,
+        0
+      ],
+      [
+        -41,
+        -32,
+        -33,
+        0,
+        0
+      ],
+      [
+        -42,
+        -28,
+        -32,
+        0,
+        0
+      ],
+      [
+        -43,
+        -33,
+        -34,
+        0,
+        0
+      ],
+      [
+        -44,
+        -29,
+        -33,
+        0,
+        0
+      ],
+      [
+        -45,
+        -34,
+        -31,
+        0,
+        0
+      ],
+      [
+        -46,
+        -30,
+        -34,
+        0,
+        0
+      ],
+      [
+        -61,
+        -53,
+        -54,
+        0,
+        0
+      ],
+      [
+        -62,
+        -54,
+        -55,
+        0,
+        0
+      ],
+      [
+        -63,
+        -55,
+        -56,
+        0,
+        0
+      ],
+      [
+        -64,
+        -56,
+        -53,
+        0,
+        0
+      ],
+      [
+        -65,
+        -57,
+        -58,
+        0,
+        0
+      ],
+      [
+        -66,
+        -53,
+        -57,
+        0,
+        0
+      ],
+      [
+        -67,
+        -58,
+        -59,
+        0,
+        0
+      ],
+      [
+        -68,
+        -54,
+        -58,
+        0,
+        0
+      ],
+      [
+        -69,
+        -59,
+        -60,
+        0,
+        0
+      ],
+      [
+        -70,
+        -55,
+        -59,
+        0,
+        0
+      ],
+      [
+        -71,
+        -60,
+        -57,
+        0,
+        0
+      ],
+      [
+        -72,
+        -56,
+        -60,
+        0,
+        0
+      ]
+    ],
+    "faces": [
+      {
+        "id": -21,
+        "loops": [
+          [
+            -4,
+            -3,
+            -2,
+            -1
+          ]
+        ],
+        "mat": null
+      },
+      {
+        "id": -22,
+        "loops": [
+          [
+            -1,
+            -2,
+            -6,
+            -5
+          ]
+        ],
+        "mat": null
+      },
+      {
+        "id": -23,
+        "loops": [
+          [
+            -2,
+            -3,
+            -7,
+            -6
+          ]
+        ],
+        "mat": null
+      },
+      {
+        "id": -24,
+        "loops": [
+          [
+            -3,
+            -4,
+            -8,
+            -7
+          ]
+        ],
+        "mat": null
+      },
+      {
+        "id": -25,
+        "loops": [
+          [
+            -4,
+            -1,
+            -5,
+            -8
+          ]
+        ],
+        "mat": null
+      },
+      {
+        "id": -26,
+        "loops": [
+          [
+            -5,
+            -6,
+            -7,
+            -8
+          ]
+        ],
+        "mat": null
+      },
+      {
+        "id": -47,
+        "loops": [
+          [
+            -30,
+            -29,
+            -28,
+            -27
+          ]
+        ],
+        "mat": null
+      },
+      {
+        "id": -48,
+        "loops": [
+          [
+            -27,
+            -28,
+            -32,
+            -31
+          ]
+        ],
+        "mat": null
+      },
+      {
+        "id": -49,
+        "loops": [
+          [
+            -28,
+            -29,
+            -33,
+            -32
+          ]
+        ],
+        "mat": null
+      },
+      {
+        "id": -50,
+        "loops": [
+          [
+            -29,
+            -30,
+            -34,
+            -33
+          ]
+        ],
+        "mat": null
+      },
+      {
+        "id": -51,
+        "loops": [
+          [
+            -30,
+            -27,
+            -31,
+            -34
+          ]
+        ],
+        "mat": null
+      },
+      {
+        "id": -52,
+        "loops": [
+          [
+            -31,
+            -32,
+            -33,
+            -34
+          ]
+        ],
+        "mat": null
+      },
+      {
+        "id": -73,
+        "loops": [
+          [
+            -56,
+            -55,
+            -54,
+            -53
+          ]
+        ],
+        "mat": null
+      },
+      {
+        "id": -74,
+        "loops": [
+          [
+            -53,
+            -54,
+            -58,
+            -57
+          ]
+        ],
+        "mat": null
+      },
+      {
+        "id": -75,
+        "loops": [
+          [
+            -54,
+            -55,
+            -59,
+            -58
+          ]
+        ],
+        "mat": null
+      },
+      {
+        "id": -76,
+        "loops": [
+          [
+            -55,
+            -56,
+            -60,
+            -59
+          ]
+        ],
+        "mat": null
+      },
+      {
+        "id": -77,
+        "loops": [
+          [
+            -56,
+            -53,
+            -57,
+            -60
+          ]
+        ],
+        "mat": null
+      },
+      {
+        "id": -78,
+        "loops": [
+          [
+            -57,
+            -58,
+            -59,
+            -60
+          ]
+        ],
+        "mat": null
+      }
+    ],
+    "curves": [],
+    "materials": [],
+    "annots": [
+      {
+        "id": 27,
+        "kind": "text",
+        "p": [
+          0,
+          -0.7,
+          0
+        ],
+        "off": null,
+        "text": "Tres instancias comparten una definición. Doble clic para editar; Esc para salir."
+      }
+    ],
+    "identities": {
+      "27": "08f3dabc-2168-4b89-b0d0-65e8ee50ed48",
+      "-1": "25ba1b4b-b5a7-41fe-8298-aa08e0f48a49",
+      "-2": "6291c207-eacd-4fa4-9a6b-aa5c1685fd93",
+      "-3": "0ebc3a44-1793-4635-a1b4-da19349b5063",
+      "-4": "5b8bd5de-8067-46a9-8b7d-96dad093101b",
+      "-5": "3e353dfb-830b-4838-aac5-b2c8c760667a",
+      "-6": "df50145d-833f-4e69-b01e-b5e5262748f6",
+      "-7": "eacdb566-2d6b-4526-942a-d381b1dd31e9",
+      "-8": "8ab1d3eb-242b-4111-84ca-5e8eddd15b03",
+      "-27": "544a8970-2fed-4e91-8442-1975f899d219",
+      "-28": "17b9d6e7-2958-4d1e-acf4-ccc85f3a8710",
+      "-29": "c8a9d5a6-8e74-4a5c-af2e-aa2caab2f352",
+      "-30": "590345af-0529-4524-820b-dcfbc3ba7b4f",
+      "-31": "9da1b197-13de-4a7d-b94f-fc851f5413d6",
+      "-32": "e3fa94c6-5ecc-4a42-9ad4-39d26fc27286",
+      "-33": "8e1aca5e-5b21-400b-b09a-f84b17e07ee2",
+      "-34": "c964bbd2-7ef7-47a3-8e39-e8ad648d492a",
+      "-53": "da5cd596-4ba9-476f-aca8-22ee9cee84b5",
+      "-54": "2f077f4d-56a5-4abe-9605-bf0968a5f4cc",
+      "-55": "06698eaf-0340-4a58-90af-422d0d1a2456",
+      "-56": "f860d434-67cc-425c-abc4-54d0b612ef2e",
+      "-57": "7fdb4fc9-32d7-43ee-8608-d9d46b2e543f",
+      "-58": "c1196ade-9944-4507-9eb4-009c998cb949",
+      "-59": "73f57dfa-11c9-4df5-9b3b-dea26d14250f",
+      "-60": "63e4fafb-ef98-4d1c-a690-c64a654db586",
+      "-9": "a2c2d730-87ff-464b-990a-d029582af0f1",
+      "-10": "b05064bc-7b63-4f08-a2df-458189e567b0",
+      "-11": "27c84de1-4091-4787-ad07-705575ba894a",
+      "-12": "1359d0af-6e10-4377-967c-da5ec0d7b56b",
+      "-13": "e6c81a8a-5b14-43f1-8570-9ac46672420e",
+      "-14": "db5c983d-9e94-420d-a360-4e65824c34ab",
+      "-15": "cbdbacb3-367a-4615-a682-ac397ccb7a6e",
+      "-16": "7d711345-733b-4915-9787-02f9fc2caa86",
+      "-17": "4fc53646-04fb-4132-962e-0678d0ace663",
+      "-18": "f59cff67-9020-4672-8384-fb6b53499531",
+      "-19": "3c00baba-c660-4106-a2c8-cc042f79f88c",
+      "-20": "849440ca-93b0-4868-b06c-cdb466f7c20b",
+      "-35": "4fe5de0c-9c5d-4039-b935-20a1dbb82741",
+      "-36": "8a53a8ef-af68-4317-93c5-328e5727516f",
+      "-37": "cde4f783-d1fa-4884-85cd-b438695190fc",
+      "-38": "0c0de14b-6b33-47cd-a83f-0b0347852583",
+      "-39": "49158c3f-27f9-4b27-8707-22a6ab968dad",
+      "-40": "4f29859a-d60d-4448-b5c8-f69881bfcbfc",
+      "-41": "e6410787-aff4-4c44-acc8-22d2eea4d61f",
+      "-42": "6dd4e832-d7e8-4fb2-a3ea-913c80958f61",
+      "-43": "c69fdc58-fedd-415a-b0e1-01422f043a9a",
+      "-44": "a837ce55-49fd-4e4a-a430-9a24b153655a",
+      "-45": "79bc2674-6b95-4c35-9184-8bcdedee7296",
+      "-46": "76a06e8d-c3de-42e1-8429-21826bbef657",
+      "-61": "c60ab955-eb36-4059-be42-8c53d548eaae",
+      "-62": "c309789e-37c7-4913-9334-46ce946d2faa",
+      "-63": "6410a70e-91ed-44d4-8899-1b07905ef892",
+      "-64": "2e3f9cb2-6923-41d8-ba2e-75860051c45f",
+      "-65": "4b931f67-59a2-4bde-a099-5799bdcb405b",
+      "-66": "a50b1c1b-22fc-42b5-9706-0e22aed75f4f",
+      "-67": "f295f96d-5583-434d-907c-61faf6b94a3c",
+      "-68": "22872938-26c8-4ee1-b9be-1a5eeb6fd09c",
+      "-69": "fdce78c1-7509-4835-8286-2ebe9401cd1c",
+      "-70": "86b86a7d-9403-42ae-b4b7-f99ae7a41975",
+      "-71": "82ad3068-6ff9-4479-b1f1-21090d4d1cb5",
+      "-72": "b7bc1be2-1141-4540-8b98-35a1fa97a008",
+      "-21": "deed8a73-45f3-40ba-a75d-2963ae13767a",
+      "-22": "5aa18e13-7861-465e-a5ce-e4d24688c20b",
+      "-23": "4596b777-45ce-441d-8005-05bed30f0f33",
+      "-24": "d01a0002-4ebd-469f-bbb4-532f8e71808c",
+      "-25": "9b4d8717-7f63-401d-a750-181622d1b652",
+      "-26": "8adebdfe-f0ef-441b-9a1b-313f7631c9c7",
+      "-47": "fbc7a65b-21ed-4c70-84b0-c6cc3a441521",
+      "-48": "fc1f84cc-5365-4816-8036-e7287692e6d8",
+      "-49": "cde561a4-2001-4f54-bd6f-a7fb6b9d63e9",
+      "-50": "cf132da7-511e-4d67-8cc4-e763689cd828",
+      "-51": "4b771054-964d-4b74-863c-c88e30a00fe1",
+      "-52": "e14f1391-9430-4a81-b36f-6bd0987a85d7",
+      "-73": "0fb0cdcd-9188-4ed6-b70f-a4c39bc48faf",
+      "-74": "a3ef3d72-f869-49e5-8112-b955ca95b75d",
+      "-75": "e07fbc66-0394-4a18-be94-58c530a77f2d",
+      "-76": "86ea37af-2573-49fd-8716-accccabff6f6",
+      "-77": "76128a5d-b5b5-4a59-8b00-84460de9b897",
+      "-78": "7ea78c96-6f5e-43e5-94b5-07050064c88a"
+    }
+  },
+  "audit": [
+    {
+      "transactionId": "14711505-488e-45df-843d-4a2bd9f3fb2c",
+      "sessionId": "d5321778-dea6-43c3-ae70-f620ecbcfcd1",
+      "agent": "human",
+      "channel": "command",
+      "timestamp": "2026-10-17T22:25:09.090Z",
+      "projectVersion": 1,
+      "label": "Renombrar proyecto",
+      "changes": [],
+      "command": "project.rename",
+      "params": {
+        "name": "DÉDALO · grupos y componentes reales"
+      },
+      "projectName": {
+        "before": "Sin título",
+        "after": "DÉDALO · grupos y componentes reales"
+      }
+    },
+    {
+      "transactionId": "ac695bad-7cb3-4206-9a5f-f1e797f41dcd",
+      "sessionId": "d5321778-dea6-43c3-ae70-f620ecbcfcd1",
+      "agent": "human",
+      "channel": "command",
+      "timestamp": "2026-10-17T22:25:09.093Z",
+      "projectVersion": 2,
+      "label": "Rectángulo",
+      "changes": [
+        {
+          "objectId": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+          "type": "update",
+          "before": {
+            "id": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+            "name": "Modelo",
+            "kind": "root",
+            "model": {
+              "format": "dedalo.model",
+              "version": 1,
+              "nextId": 1,
+              "verts": [],
+              "edges": [],
+              "faces": [],
+              "curves": [],
+              "materials": [],
+              "annots": [],
+              "identities": {}
+            },
+            "nodes": []
+          },
+          "after": {
+            "id": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+            "name": "Modelo",
+            "kind": "root",
+            "model": {
+              "format": "dedalo.model",
+              "version": 1,
+              "nextId": 10,
+              "verts": [
+                [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  2,
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                [
+                  6,
+                  0,
+                  1,
+                  0
+                ]
+              ],
+              "edges": [
+                [
+                  3,
+                  1,
+                  2,
+                  0,
+                  0
+                ],
+                [
+                  5,
+                  2,
+                  4,
+                  0,
+                  0
+                ],
+                [
+                  7,
+                  4,
+                  6,
+                  0,
+                  0
+                ],
+                [
+                  8,
+                  6,
+                  1,
+                  0,
+                  0
+                ]
+              ],
+              "faces": [
+                {
+                  "id": 9,
+                  "loops": [
+                    [
+                      1,
+                      2,
+                      4,
+                      6
+                    ]
+                  ],
+                  "mat": null
+                }
+              ],
+              "curves": [],
+              "materials": [],
+              "annots": [],
+              "identities": {
+                "1": "0c424646-84db-4450-a2f1-b2f3ff860793",
+                "2": "7b1b098d-7e1f-4c72-b709-1f4ed421c53e",
+                "3": "f2a8d0f6-68bb-4041-94c6-3b210253a19e",
+                "4": "d48d8b67-8c71-472e-8915-c1f8aa17f515",
+                "5": "c5ec6699-d38c-4924-bef7-0fb33a61c744",
+                "6": "54ca7eaf-6622-4ddd-bd85-06fe54264af4",
+                "7": "70785229-4875-4759-8eb2-704d25cd1d53",
+                "8": "faecfc93-1903-4d8b-9b6f-8f0d1e08a05e",
+                "9": "35fc70d6-bb20-4fba-9962-e73ebb3fa0dd"
+              }
+            },
+            "nodes": []
+          }
+        }
+      ],
+      "command": "draw.rectangle",
+      "params": {
+        "origin": [
+          0,
+          0,
+          0
+        ],
+        "width": 1,
+        "height": 1
+      },
+      "projectName": {
+        "before": "DÉDALO · grupos y componentes reales",
+        "after": "DÉDALO · grupos y componentes reales"
+      }
+    },
+    {
+      "transactionId": "f9893346-5fca-4c48-b3d3-fc1a6070a4f5",
+      "sessionId": "d5321778-dea6-43c3-ae70-f620ecbcfcd1",
+      "agent": "human",
+      "channel": "command",
+      "timestamp": "2026-10-17T22:25:09.095Z",
+      "projectVersion": 3,
+      "label": "Empujar/Tirar",
+      "changes": [
+        {
+          "objectId": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+          "type": "update",
+          "before": {
+            "id": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+            "name": "Modelo",
+            "kind": "root",
+            "model": {
+              "format": "dedalo.model",
+              "version": 1,
+              "nextId": 10,
+              "verts": [
+                [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  2,
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                [
+                  6,
+                  0,
+                  1,
+                  0
+                ]
+              ],
+              "edges": [
+                [
+                  3,
+                  1,
+                  2,
+                  0,
+                  0
+                ],
+                [
+                  5,
+                  2,
+                  4,
+                  0,
+                  0
+                ],
+                [
+                  7,
+                  4,
+                  6,
+                  0,
+                  0
+                ],
+                [
+                  8,
+                  6,
+                  1,
+                  0,
+                  0
+                ]
+              ],
+              "faces": [
+                {
+                  "id": 9,
+                  "loops": [
+                    [
+                      1,
+                      2,
+                      4,
+                      6
+                    ]
+                  ],
+                  "mat": null
+                }
+              ],
+              "curves": [],
+              "materials": [],
+              "annots": [],
+              "identities": {
+                "1": "0c424646-84db-4450-a2f1-b2f3ff860793",
+                "2": "7b1b098d-7e1f-4c72-b709-1f4ed421c53e",
+                "3": "f2a8d0f6-68bb-4041-94c6-3b210253a19e",
+                "4": "d48d8b67-8c71-472e-8915-c1f8aa17f515",
+                "5": "c5ec6699-d38c-4924-bef7-0fb33a61c744",
+                "6": "54ca7eaf-6622-4ddd-bd85-06fe54264af4",
+                "7": "70785229-4875-4759-8eb2-704d25cd1d53",
+                "8": "faecfc93-1903-4d8b-9b6f-8f0d1e08a05e",
+                "9": "35fc70d6-bb20-4fba-9962-e73ebb3fa0dd"
+              }
+            },
+            "nodes": []
+          },
+          "after": {
+            "id": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+            "name": "Modelo",
+            "kind": "root",
+            "model": {
+              "format": "dedalo.model",
+              "version": 1,
+              "nextId": 27,
+              "verts": [
+                [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  2,
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                [
+                  6,
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  10,
+                  0,
+                  0,
+                  1
+                ],
+                [
+                  11,
+                  1,
+                  0,
+                  1
+                ],
+                [
+                  12,
+                  1,
+                  1,
+                  1
+                ],
+                [
+                  13,
+                  0,
+                  1,
+                  1
+                ]
+              ],
+              "edges": [
+                [
+                  3,
+                  1,
+                  2,
+                  0,
+                  0
+                ],
+                [
+                  5,
+                  2,
+                  4,
+                  0,
+                  0
+                ],
+                [
+                  7,
+                  4,
+                  6,
+                  0,
+                  0
+                ],
+                [
+                  8,
+                  6,
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  14,
+                  10,
+                  11,
+                  0,
+                  0
+                ],
+                [
+                  15,
+                  1,
+                  10,
+                  0,
+                  0
+                ],
+                [
+                  16,
+                  11,
+                  12,
+                  0,
+                  0
+                ],
+                [
+                  17,
+                  2,
+                  11,
+                  0,
+                  0
+                ],
+                [
+                  18,
+                  12,
+                  13,
+                  0,
+                  0
+                ],
+                [
+                  19,
+                  4,
+                  12,
+                  0,
+                  0
+                ],
+                [
+                  20,
+                  13,
+                  10,
+                  0,
+                  0
+                ],
+                [
+                  21,
+                  6,
+                  13,
+                  0,
+                  0
+                ]
+              ],
+              "faces": [
+                {
+                  "id": 9,
+                  "loops": [
+                    [
+                      6,
+                      4,
+                      2,
+                      1
+                    ]
+                  ],
+                  "mat": null
+                },
+                {
+                  "id": 22,
+                  "loops": [
+                    [
+                      1,
+                      2,
+                      11,
+                      10
+                    ]
+                  ],
+                  "mat": null
+                },
+                {
+                  "id": 23,
+                  "loops": [
+                    [
+                      2,
+                      4,
+                      12,
+                      11
+                    ]
+                  ],
+                  "mat": null
+                },
+                {
+                  "id": 24,
+                  "loops": [
+                    [
+                      4,
+                      6,
+                      13,
+                      12
+                    ]
+                  ],
+                  "mat": null
+                },
+                {
+                  "id": 25,
+                  "loops": [
+                    [
+                      6,
+                      1,
+                      10,
+                      13
+                    ]
+                  ],
+                  "mat": null
+                },
+                {
+                  "id": 26,
+                  "loops": [
+                    [
+                      10,
+                      11,
+                      12,
+                      13
+                    ]
+                  ],
+                  "mat": null
+                }
+              ],
+              "curves": [],
+              "materials": [],
+              "annots": [],
+              "identities": {
+                "1": "0c424646-84db-4450-a2f1-b2f3ff860793",
+                "2": "7b1b098d-7e1f-4c72-b709-1f4ed421c53e",
+                "3": "f2a8d0f6-68bb-4041-94c6-3b210253a19e",
+                "4": "d48d8b67-8c71-472e-8915-c1f8aa17f515",
+                "5": "c5ec6699-d38c-4924-bef7-0fb33a61c744",
+                "6": "54ca7eaf-6622-4ddd-bd85-06fe54264af4",
+                "7": "70785229-4875-4759-8eb2-704d25cd1d53",
+                "8": "faecfc93-1903-4d8b-9b6f-8f0d1e08a05e",
+                "9": "35fc70d6-bb20-4fba-9962-e73ebb3fa0dd",
+                "10": "ac644620-3c7d-4093-aa8c-bfd6ef07cb4d",
+                "11": "c7b1f31c-0c6e-4b73-8b1e-818bf787b2f0",
+                "12": "d6d4496e-1acc-46ba-a425-0832078dcf2c",
+                "13": "a1cda7d2-5a42-4b65-82ca-731f75ee7666",
+                "14": "bef9d638-3271-4a02-945c-c498fbcfd481",
+                "15": "fd0cca8c-ac87-442c-babd-a07b4ed08d8a",
+                "16": "90666973-6322-4cc1-9c63-3ed9b78771a9",
+                "17": "bda32f08-7868-4c17-8abd-be4800808def",
+                "18": "5d88e8a0-23c8-4366-91de-121b718e3c04",
+                "19": "34785ae8-1b67-4767-8011-1e0c17093125",
+                "20": "d46ebe94-a1a7-4c1c-8caf-b1be3d5afafb",
+                "21": "8a7331d7-8288-4c1d-a053-4b8117103a04",
+                "22": "56b90b95-5478-4aa6-9c19-dfa0a59df127",
+                "23": "b460b7e7-0525-42fe-94f4-a5823dcee4fe",
+                "24": "435d5e11-4781-465b-9b8a-0d0ccd7d69de",
+                "25": "8bdf86e1-debe-4c68-bd9b-8d8effb18e85",
+                "26": "2daa12ec-fe6d-4c3b-a45c-fbc30f2e0232"
+              }
+            },
+            "nodes": []
+          }
+        }
+      ],
+      "command": "face.pushPull",
+      "params": {
+        "face": 9,
+        "distance": 1
+      },
+      "projectName": {
+        "before": "DÉDALO · grupos y componentes reales",
+        "after": "DÉDALO · grupos y componentes reales"
+      }
+    },
+    {
+      "transactionId": "6fa6b390-42d9-40f3-bcf5-72f07047a81c",
+      "sessionId": "d5321778-dea6-43c3-ae70-f620ecbcfcd1",
+      "agent": "human",
+      "channel": "command",
+      "timestamp": "2026-10-17T22:25:09.097Z",
+      "projectVersion": 4,
+      "label": "Crear componente",
+      "changes": [
+        {
+          "objectId": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+          "type": "update",
+          "before": {
+            "id": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+            "name": "Modelo",
+            "kind": "root",
+            "model": {
+              "format": "dedalo.model",
+              "version": 1,
+              "nextId": 27,
+              "verts": [
+                [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  2,
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                [
+                  6,
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  10,
+                  0,
+                  0,
+                  1
+                ],
+                [
+                  11,
+                  1,
+                  0,
+                  1
+                ],
+                [
+                  12,
+                  1,
+                  1,
+                  1
+                ],
+                [
+                  13,
+                  0,
+                  1,
+                  1
+                ]
+              ],
+              "edges": [
+                [
+                  3,
+                  1,
+                  2,
+                  0,
+                  0
+                ],
+                [
+                  5,
+                  2,
+                  4,
+                  0,
+                  0
+                ],
+                [
+                  7,
+                  4,
+                  6,
+                  0,
+                  0
+                ],
+                [
+                  8,
+                  6,
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  14,
+                  10,
+                  11,
+                  0,
+                  0
+                ],
+                [
+                  15,
+                  1,
+                  10,
+                  0,
+                  0
+                ],
+                [
+                  16,
+                  11,
+                  12,
+                  0,
+                  0
+                ],
+                [
+                  17,
+                  2,
+                  11,
+                  0,
+                  0
+                ],
+                [
+                  18,
+                  12,
+                  13,
+                  0,
+                  0
+                ],
+                [
+                  19,
+                  4,
+                  12,
+                  0,
+                  0
+                ],
+                [
+                  20,
+                  13,
+                  10,
+                  0,
+                  0
+                ],
+                [
+                  21,
+                  6,
+                  13,
+                  0,
+                  0
+                ]
+              ],
+              "faces": [
+                {
+                  "id": 9,
+                  "loops": [
+                    [
+                      6,
+                      4,
+                      2,
+                      1
+                    ]
+                  ],
+                  "mat": null
+                },
+                {
+                  "id": 22,
+                  "loops": [
+                    [
+                      1,
+                      2,
+                      11,
+                      10
+                    ]
+                  ],
+                  "mat": null
+                },
+                {
+                  "id": 23,
+                  "loops": [
+                    [
+                      2,
+                      4,
+                      12,
+                      11
+                    ]
+                  ],
+                  "mat": null
+                },
+                {
+                  "id": 24,
+                  "loops": [
+                    [
+                      4,
+                      6,
+                      13,
+                      12
+                    ]
+                  ],
+                  "mat": null
+                },
+                {
+                  "id": 25,
+                  "loops": [
+                    [
+                      6,
+                      1,
+                      10,
+                      13
+                    ]
+                  ],
+                  "mat": null
+                },
+                {
+                  "id": 26,
+                  "loops": [
+                    [
+                      10,
+                      11,
+                      12,
+                      13
+                    ]
+                  ],
+                  "mat": null
+                }
+              ],
+              "curves": [],
+              "materials": [],
+              "annots": [],
+              "identities": {
+                "1": "0c424646-84db-4450-a2f1-b2f3ff860793",
+                "2": "7b1b098d-7e1f-4c72-b709-1f4ed421c53e",
+                "3": "f2a8d0f6-68bb-4041-94c6-3b210253a19e",
+                "4": "d48d8b67-8c71-472e-8915-c1f8aa17f515",
+                "5": "c5ec6699-d38c-4924-bef7-0fb33a61c744",
+                "6": "54ca7eaf-6622-4ddd-bd85-06fe54264af4",
+                "7": "70785229-4875-4759-8eb2-704d25cd1d53",
+                "8": "faecfc93-1903-4d8b-9b6f-8f0d1e08a05e",
+                "9": "35fc70d6-bb20-4fba-9962-e73ebb3fa0dd",
+                "10": "ac644620-3c7d-4093-aa8c-bfd6ef07cb4d",
+                "11": "c7b1f31c-0c6e-4b73-8b1e-818bf787b2f0",
+                "12": "d6d4496e-1acc-46ba-a425-0832078dcf2c",
+                "13": "a1cda7d2-5a42-4b65-82ca-731f75ee7666",
+                "14": "bef9d638-3271-4a02-945c-c498fbcfd481",
+                "15": "fd0cca8c-ac87-442c-babd-a07b4ed08d8a",
+                "16": "90666973-6322-4cc1-9c63-3ed9b78771a9",
+                "17": "bda32f08-7868-4c17-8abd-be4800808def",
+                "18": "5d88e8a0-23c8-4366-91de-121b718e3c04",
+                "19": "34785ae8-1b67-4767-8011-1e0c17093125",
+                "20": "d46ebe94-a1a7-4c1c-8caf-b1be3d5afafb",
+                "21": "8a7331d7-8288-4c1d-a053-4b8117103a04",
+                "22": "56b90b95-5478-4aa6-9c19-dfa0a59df127",
+                "23": "b460b7e7-0525-42fe-94f4-a5823dcee4fe",
+                "24": "435d5e11-4781-465b-9b8a-0d0ccd7d69de",
+                "25": "8bdf86e1-debe-4c68-bd9b-8d8effb18e85",
+                "26": "2daa12ec-fe6d-4c3b-a45c-fbc30f2e0232"
+              }
+            },
+            "nodes": []
+          },
+          "after": {
+            "id": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+            "name": "Modelo",
+            "kind": "root",
+            "model": {
+              "format": "dedalo.model",
+              "version": 1,
+              "nextId": 27,
+              "verts": [],
+              "edges": [],
+              "faces": [],
+              "curves": [],
+              "materials": [],
+              "annots": [],
+              "identities": {}
+            },
+            "nodes": [
+              {
+                "id": "efddee51-dff2-47e5-b6b9-0aa58b1e88b6",
+                "kind": "component",
+                "name": "Módulo compartido · editar cualquier instancia",
+                "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "objectId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+          "type": "create",
+          "before": null,
+          "after": {
+            "id": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+            "name": "Módulo compartido · editar cualquier instancia",
+            "kind": "component",
+            "model": {
+              "format": "dedalo.model",
+              "version": 1,
+              "nextId": 27,
+              "verts": [
+                [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  2,
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                [
+                  6,
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  10,
+                  0,
+                  0,
+                  1
+                ],
+                [
+                  11,
+                  1,
+                  0,
+                  1
+                ],
+                [
+                  12,
+                  1,
+                  1,
+                  1
+                ],
+                [
+                  13,
+                  0,
+                  1,
+                  1
+                ]
+              ],
+              "edges": [
+                [
+                  3,
+                  1,
+                  2,
+                  0,
+                  0
+                ],
+                [
+                  5,
+                  2,
+                  4,
+                  0,
+                  0
+                ],
+                [
+                  7,
+                  4,
+                  6,
+                  0,
+                  0
+                ],
+                [
+                  8,
+                  6,
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  14,
+                  10,
+                  11,
+                  0,
+                  0
+                ],
+                [
+                  15,
+                  1,
+                  10,
+                  0,
+                  0
+                ],
+                [
+                  16,
+                  11,
+                  12,
+                  0,
+                  0
+                ],
+                [
+                  17,
+                  2,
+                  11,
+                  0,
+                  0
+                ],
+                [
+                  18,
+                  12,
+                  13,
+                  0,
+                  0
+                ],
+                [
+                  19,
+                  4,
+                  12,
+                  0,
+                  0
+                ],
+                [
+                  20,
+                  13,
+                  10,
+                  0,
+                  0
+                ],
+                [
+                  21,
+                  6,
+                  13,
+                  0,
+                  0
+                ]
+              ],
+              "faces": [
+                {
+                  "id": 9,
+                  "loops": [
+                    [
+                      6,
+                      4,
+                      2,
+                      1
+                    ]
+                  ],
+                  "mat": null
+                },
+                {
+                  "id": 22,
+                  "loops": [
+                    [
+                      1,
+                      2,
+                      11,
+                      10
+                    ]
+                  ],
+                  "mat": null
+                },
+                {
+                  "id": 23,
+                  "loops": [
+                    [
+                      2,
+                      4,
+                      12,
+                      11
+                    ]
+                  ],
+                  "mat": null
+                },
+                {
+                  "id": 24,
+                  "loops": [
+                    [
+                      4,
+                      6,
+                      13,
+                      12
+                    ]
+                  ],
+                  "mat": null
+                },
+                {
+                  "id": 25,
+                  "loops": [
+                    [
+                      6,
+                      1,
+                      10,
+                      13
+                    ]
+                  ],
+                  "mat": null
+                },
+                {
+                  "id": 26,
+                  "loops": [
+                    [
+                      10,
+                      11,
+                      12,
+                      13
+                    ]
+                  ],
+                  "mat": null
+                }
+              ],
+              "curves": [],
+              "materials": [],
+              "annots": [],
+              "identities": {
+                "1": "0c424646-84db-4450-a2f1-b2f3ff860793",
+                "2": "7b1b098d-7e1f-4c72-b709-1f4ed421c53e",
+                "3": "f2a8d0f6-68bb-4041-94c6-3b210253a19e",
+                "4": "d48d8b67-8c71-472e-8915-c1f8aa17f515",
+                "5": "c5ec6699-d38c-4924-bef7-0fb33a61c744",
+                "6": "54ca7eaf-6622-4ddd-bd85-06fe54264af4",
+                "7": "70785229-4875-4759-8eb2-704d25cd1d53",
+                "8": "faecfc93-1903-4d8b-9b6f-8f0d1e08a05e",
+                "9": "35fc70d6-bb20-4fba-9962-e73ebb3fa0dd",
+                "10": "ac644620-3c7d-4093-aa8c-bfd6ef07cb4d",
+                "11": "c7b1f31c-0c6e-4b73-8b1e-818bf787b2f0",
+                "12": "d6d4496e-1acc-46ba-a425-0832078dcf2c",
+                "13": "a1cda7d2-5a42-4b65-82ca-731f75ee7666",
+                "14": "bef9d638-3271-4a02-945c-c498fbcfd481",
+                "15": "fd0cca8c-ac87-442c-babd-a07b4ed08d8a",
+                "16": "90666973-6322-4cc1-9c63-3ed9b78771a9",
+                "17": "bda32f08-7868-4c17-8abd-be4800808def",
+                "18": "5d88e8a0-23c8-4366-91de-121b718e3c04",
+                "19": "34785ae8-1b67-4767-8011-1e0c17093125",
+                "20": "d46ebe94-a1a7-4c1c-8caf-b1be3d5afafb",
+                "21": "8a7331d7-8288-4c1d-a053-4b8117103a04",
+                "22": "56b90b95-5478-4aa6-9c19-dfa0a59df127",
+                "23": "b460b7e7-0525-42fe-94f4-a5823dcee4fe",
+                "24": "435d5e11-4781-465b-9b8a-0d0ccd7d69de",
+                "25": "8bdf86e1-debe-4c68-bd9b-8d8effb18e85",
+                "26": "2daa12ec-fe6d-4c3b-a45c-fbc30f2e0232"
+              }
+            },
+            "nodes": []
+          }
+        }
+      ],
+      "command": "component.create",
+      "params": {
+        "name": "Módulo compartido · editar cualquier instancia"
+      },
+      "projectName": {
+        "before": "DÉDALO · grupos y componentes reales",
+        "after": "DÉDALO · grupos y componentes reales"
+      }
+    },
+    {
+      "transactionId": "92b75600-79f8-420c-931a-bfac6b1d7735",
+      "sessionId": "d5321778-dea6-43c3-ae70-f620ecbcfcd1",
+      "agent": "human",
+      "channel": "command",
+      "timestamp": "2026-10-17T22:25:09.098Z",
+      "projectVersion": 5,
+      "label": "Insertar instancia",
+      "changes": [
+        {
+          "objectId": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+          "type": "update",
+          "before": {
+            "id": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+            "name": "Modelo",
+            "kind": "root",
+            "model": {
+              "format": "dedalo.model",
+              "version": 1,
+              "nextId": 27,
+              "verts": [],
+              "edges": [],
+              "faces": [],
+              "curves": [],
+              "materials": [],
+              "annots": [],
+              "identities": {}
+            },
+            "nodes": [
+              {
+                "id": "efddee51-dff2-47e5-b6b9-0aa58b1e88b6",
+                "kind": "component",
+                "name": "Módulo compartido · editar cualquier instancia",
+                "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              }
+            ]
+          },
+          "after": {
+            "id": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+            "name": "Modelo",
+            "kind": "root",
+            "model": {
+              "format": "dedalo.model",
+              "version": 1,
+              "nextId": 27,
+              "verts": [],
+              "edges": [],
+              "faces": [],
+              "curves": [],
+              "materials": [],
+              "annots": [],
+              "identities": {}
+            },
+            "nodes": [
+              {
+                "id": "efddee51-dff2-47e5-b6b9-0aa58b1e88b6",
+                "kind": "component",
+                "name": "Módulo compartido · editar cualquier instancia",
+                "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              },
+              {
+                "id": "5de99982-5dfb-44d8-86b1-db648375a6bd",
+                "kind": "component",
+                "name": "Instancia B",
+                "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  2,
+                  0,
+                  0,
+                  1
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "command": "component.instantiate",
+      "params": {
+        "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+        "name": "Instancia B",
+        "matrix": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          2,
+          0,
+          0,
+          1
+        ]
+      },
+      "projectName": {
+        "before": "DÉDALO · grupos y componentes reales",
+        "after": "DÉDALO · grupos y componentes reales"
+      }
+    },
+    {
+      "transactionId": "07cfc337-4a19-42de-b229-673c5888a13c",
+      "sessionId": "d5321778-dea6-43c3-ae70-f620ecbcfcd1",
+      "agent": "human",
+      "channel": "command",
+      "timestamp": "2026-10-17T22:25:09.099Z",
+      "projectVersion": 6,
+      "label": "Insertar instancia",
+      "changes": [
+        {
+          "objectId": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+          "type": "update",
+          "before": {
+            "id": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+            "name": "Modelo",
+            "kind": "root",
+            "model": {
+              "format": "dedalo.model",
+              "version": 1,
+              "nextId": 27,
+              "verts": [],
+              "edges": [],
+              "faces": [],
+              "curves": [],
+              "materials": [],
+              "annots": [],
+              "identities": {}
+            },
+            "nodes": [
+              {
+                "id": "efddee51-dff2-47e5-b6b9-0aa58b1e88b6",
+                "kind": "component",
+                "name": "Módulo compartido · editar cualquier instancia",
+                "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              },
+              {
+                "id": "5de99982-5dfb-44d8-86b1-db648375a6bd",
+                "kind": "component",
+                "name": "Instancia B",
+                "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  2,
+                  0,
+                  0,
+                  1
+                ]
+              }
+            ]
+          },
+          "after": {
+            "id": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+            "name": "Modelo",
+            "kind": "root",
+            "model": {
+              "format": "dedalo.model",
+              "version": 1,
+              "nextId": 27,
+              "verts": [],
+              "edges": [],
+              "faces": [],
+              "curves": [],
+              "materials": [],
+              "annots": [],
+              "identities": {}
+            },
+            "nodes": [
+              {
+                "id": "efddee51-dff2-47e5-b6b9-0aa58b1e88b6",
+                "kind": "component",
+                "name": "Módulo compartido · editar cualquier instancia",
+                "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              },
+              {
+                "id": "5de99982-5dfb-44d8-86b1-db648375a6bd",
+                "kind": "component",
+                "name": "Instancia B",
+                "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  2,
+                  0,
+                  0,
+                  1
+                ]
+              },
+              {
+                "id": "0d5fe1ac-e93f-4c13-8967-47c8188f7fb3",
+                "kind": "component",
+                "name": "Instancia C",
+                "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  4,
+                  0,
+                  0,
+                  1
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "command": "component.instantiate",
+      "params": {
+        "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+        "name": "Instancia C",
+        "matrix": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          4,
+          0,
+          0,
+          1
+        ]
+      },
+      "projectName": {
+        "before": "DÉDALO · grupos y componentes reales",
+        "after": "DÉDALO · grupos y componentes reales"
+      }
+    },
+    {
+      "transactionId": "410a89de-7c42-4376-8a34-ae1d6a3cfad8",
+      "sessionId": "d5321778-dea6-43c3-ae70-f620ecbcfcd1",
+      "agent": "human",
+      "channel": "command",
+      "timestamp": "2026-10-17T22:25:09.100Z",
+      "projectVersion": 7,
+      "label": "Crear grupo",
+      "changes": [
+        {
+          "objectId": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+          "type": "update",
+          "before": {
+            "id": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+            "name": "Modelo",
+            "kind": "root",
+            "model": {
+              "format": "dedalo.model",
+              "version": 1,
+              "nextId": 27,
+              "verts": [],
+              "edges": [],
+              "faces": [],
+              "curves": [],
+              "materials": [],
+              "annots": [],
+              "identities": {}
+            },
+            "nodes": [
+              {
+                "id": "efddee51-dff2-47e5-b6b9-0aa58b1e88b6",
+                "kind": "component",
+                "name": "Módulo compartido · editar cualquier instancia",
+                "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              },
+              {
+                "id": "5de99982-5dfb-44d8-86b1-db648375a6bd",
+                "kind": "component",
+                "name": "Instancia B",
+                "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  2,
+                  0,
+                  0,
+                  1
+                ]
+              },
+              {
+                "id": "0d5fe1ac-e93f-4c13-8967-47c8188f7fb3",
+                "kind": "component",
+                "name": "Instancia C",
+                "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  4,
+                  0,
+                  0,
+                  1
+                ]
+              }
+            ]
+          },
+          "after": {
+            "id": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+            "name": "Modelo",
+            "kind": "root",
+            "model": {
+              "format": "dedalo.model",
+              "version": 1,
+              "nextId": 27,
+              "verts": [],
+              "edges": [],
+              "faces": [],
+              "curves": [],
+              "materials": [],
+              "annots": [],
+              "identities": {}
+            },
+            "nodes": [
+              {
+                "id": "efddee51-dff2-47e5-b6b9-0aa58b1e88b6",
+                "kind": "component",
+                "name": "Módulo compartido · editar cualquier instancia",
+                "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              },
+              {
+                "id": "7a8a455e-047e-4552-9e64-8afb6766f057",
+                "kind": "group",
+                "name": "Pareja de instancias",
+                "definitionId": "493a2e0f-74d5-4310-aa16-60a20b442e0f",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "objectId": "493a2e0f-74d5-4310-aa16-60a20b442e0f",
+          "type": "create",
+          "before": null,
+          "after": {
+            "id": "493a2e0f-74d5-4310-aa16-60a20b442e0f",
+            "name": "Pareja de instancias",
+            "kind": "group",
+            "model": {
+              "format": "dedalo.model",
+              "version": 1,
+              "nextId": 27,
+              "verts": [],
+              "edges": [],
+              "faces": [],
+              "curves": [],
+              "materials": [],
+              "annots": [],
+              "identities": {}
+            },
+            "nodes": [
+              {
+                "id": "5de99982-5dfb-44d8-86b1-db648375a6bd",
+                "kind": "component",
+                "name": "Instancia B",
+                "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  2,
+                  0,
+                  0,
+                  1
+                ]
+              },
+              {
+                "id": "0d5fe1ac-e93f-4c13-8967-47c8188f7fb3",
+                "kind": "component",
+                "name": "Instancia C",
+                "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  4,
+                  0,
+                  0,
+                  1
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "command": "group.create",
+      "params": {
+        "name": "Pareja de instancias",
+        "nodes": [
+          "5de99982-5dfb-44d8-86b1-db648375a6bd",
+          "0d5fe1ac-e93f-4c13-8967-47c8188f7fb3"
+        ]
+      },
+      "projectName": {
+        "before": "DÉDALO · grupos y componentes reales",
+        "after": "DÉDALO · grupos y componentes reales"
+      }
+    },
+    {
+      "transactionId": "7bef00cb-b9c7-4249-bab2-0c64ff03be5d",
+      "sessionId": "d5321778-dea6-43c3-ae70-f620ecbcfcd1",
+      "agent": "human",
+      "channel": "command",
+      "timestamp": "2026-10-17T22:25:09.101Z",
+      "projectVersion": 8,
+      "label": "Crear grupo",
+      "changes": [
+        {
+          "objectId": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+          "type": "update",
+          "before": {
+            "id": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+            "name": "Modelo",
+            "kind": "root",
+            "model": {
+              "format": "dedalo.model",
+              "version": 1,
+              "nextId": 27,
+              "verts": [],
+              "edges": [],
+              "faces": [],
+              "curves": [],
+              "materials": [],
+              "annots": [],
+              "identities": {}
+            },
+            "nodes": [
+              {
+                "id": "efddee51-dff2-47e5-b6b9-0aa58b1e88b6",
+                "kind": "component",
+                "name": "Módulo compartido · editar cualquier instancia",
+                "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              },
+              {
+                "id": "7a8a455e-047e-4552-9e64-8afb6766f057",
+                "kind": "group",
+                "name": "Pareja de instancias",
+                "definitionId": "493a2e0f-74d5-4310-aa16-60a20b442e0f",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              }
+            ]
+          },
+          "after": {
+            "id": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+            "name": "Modelo",
+            "kind": "root",
+            "model": {
+              "format": "dedalo.model",
+              "version": 1,
+              "nextId": 27,
+              "verts": [],
+              "edges": [],
+              "faces": [],
+              "curves": [],
+              "materials": [],
+              "annots": [],
+              "identities": {}
+            },
+            "nodes": [
+              {
+                "id": "efddee51-dff2-47e5-b6b9-0aa58b1e88b6",
+                "kind": "component",
+                "name": "Módulo compartido · editar cualquier instancia",
+                "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              },
+              {
+                "id": "f54f692f-05d8-49e0-b505-f16251963126",
+                "kind": "group",
+                "name": "Conjunto anidado",
+                "definitionId": "f3dcda1d-9903-4033-a92b-24d1ef570134",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "objectId": "f3dcda1d-9903-4033-a92b-24d1ef570134",
+          "type": "create",
+          "before": null,
+          "after": {
+            "id": "f3dcda1d-9903-4033-a92b-24d1ef570134",
+            "name": "Conjunto anidado",
+            "kind": "group",
+            "model": {
+              "format": "dedalo.model",
+              "version": 1,
+              "nextId": 27,
+              "verts": [],
+              "edges": [],
+              "faces": [],
+              "curves": [],
+              "materials": [],
+              "annots": [],
+              "identities": {}
+            },
+            "nodes": [
+              {
+                "id": "7a8a455e-047e-4552-9e64-8afb6766f057",
+                "kind": "group",
+                "name": "Pareja de instancias",
+                "definitionId": "493a2e0f-74d5-4310-aa16-60a20b442e0f",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "command": "group.create",
+      "params": {
+        "name": "Conjunto anidado",
+        "nodes": [
+          "7a8a455e-047e-4552-9e64-8afb6766f057"
+        ]
+      },
+      "projectName": {
+        "before": "DÉDALO · grupos y componentes reales",
+        "after": "DÉDALO · grupos y componentes reales"
+      }
+    },
+    {
+      "transactionId": "208022ce-9203-4d27-97c5-6a263bd6fe06",
+      "sessionId": "d5321778-dea6-43c3-ae70-f620ecbcfcd1",
+      "agent": "human",
+      "channel": "command",
+      "timestamp": "2026-10-17T22:25:09.103Z",
+      "projectVersion": 9,
+      "label": "Mover",
+      "changes": [
+        {
+          "objectId": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+          "type": "update",
+          "before": {
+            "id": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+            "name": "Modelo",
+            "kind": "root",
+            "model": {
+              "format": "dedalo.model",
+              "version": 1,
+              "nextId": 27,
+              "verts": [],
+              "edges": [],
+              "faces": [],
+              "curves": [],
+              "materials": [],
+              "annots": [],
+              "identities": {}
+            },
+            "nodes": [
+              {
+                "id": "efddee51-dff2-47e5-b6b9-0aa58b1e88b6",
+                "kind": "component",
+                "name": "Módulo compartido · editar cualquier instancia",
+                "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              },
+              {
+                "id": "f54f692f-05d8-49e0-b505-f16251963126",
+                "kind": "group",
+                "name": "Conjunto anidado",
+                "definitionId": "f3dcda1d-9903-4033-a92b-24d1ef570134",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              }
+            ]
+          },
+          "after": {
+            "id": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+            "name": "Modelo",
+            "kind": "root",
+            "model": {
+              "format": "dedalo.model",
+              "version": 1,
+              "nextId": 27,
+              "verts": [],
+              "edges": [],
+              "faces": [],
+              "curves": [],
+              "materials": [],
+              "annots": [],
+              "identities": {}
+            },
+            "nodes": [
+              {
+                "id": "efddee51-dff2-47e5-b6b9-0aa58b1e88b6",
+                "kind": "component",
+                "name": "Módulo compartido · editar cualquier instancia",
+                "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              },
+              {
+                "id": "f54f692f-05d8-49e0-b505-f16251963126",
+                "kind": "group",
+                "name": "Conjunto anidado",
+                "definitionId": "f3dcda1d-9903-4033-a92b-24d1ef570134",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  2,
+                  0,
+                  1
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "command": "entities.move",
+      "params": {
+        "nodes": [
+          "f54f692f-05d8-49e0-b505-f16251963126"
+        ],
+        "vector": [
+          0,
+          2,
+          0
+        ]
+      },
+      "projectName": {
+        "before": "DÉDALO · grupos y componentes reales",
+        "after": "DÉDALO · grupos y componentes reales"
+      }
+    },
+    {
+      "transactionId": "4de06342-d287-4b8c-beb1-64df1e61c3e2",
+      "sessionId": "d5321778-dea6-43c3-ae70-f620ecbcfcd1",
+      "agent": "human",
+      "channel": "command",
+      "timestamp": "2026-10-17T22:25:09.103Z",
+      "projectVersion": 10,
+      "label": "Texto",
+      "changes": [
+        {
+          "objectId": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+          "type": "update",
+          "before": {
+            "id": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+            "name": "Modelo",
+            "kind": "root",
+            "model": {
+              "format": "dedalo.model",
+              "version": 1,
+              "nextId": 27,
+              "verts": [],
+              "edges": [],
+              "faces": [],
+              "curves": [],
+              "materials": [],
+              "annots": [],
+              "identities": {}
+            },
+            "nodes": [
+              {
+                "id": "efddee51-dff2-47e5-b6b9-0aa58b1e88b6",
+                "kind": "component",
+                "name": "Módulo compartido · editar cualquier instancia",
+                "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              },
+              {
+                "id": "f54f692f-05d8-49e0-b505-f16251963126",
+                "kind": "group",
+                "name": "Conjunto anidado",
+                "definitionId": "f3dcda1d-9903-4033-a92b-24d1ef570134",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  2,
+                  0,
+                  1
+                ]
+              }
+            ]
+          },
+          "after": {
+            "id": "ba6e2e4e-6b1c-4abc-837b-7c6c900a1601",
+            "name": "Modelo",
+            "kind": "root",
+            "model": {
+              "format": "dedalo.model",
+              "version": 1,
+              "nextId": 28,
+              "verts": [],
+              "edges": [],
+              "faces": [],
+              "curves": [],
+              "materials": [],
+              "annots": [
+                {
+                  "id": 27,
+                  "kind": "text",
+                  "p": [
+                    0,
+                    -0.7,
+                    0
+                  ],
+                  "off": null,
+                  "text": "Tres instancias comparten una definición. Doble clic para editar; Esc para salir."
+                }
+              ],
+              "identities": {
+                "27": "08f3dabc-2168-4b89-b0d0-65e8ee50ed48"
+              }
+            },
+            "nodes": [
+              {
+                "id": "efddee51-dff2-47e5-b6b9-0aa58b1e88b6",
+                "kind": "component",
+                "name": "Módulo compartido · editar cualquier instancia",
+                "definitionId": "da5b2c9c-1d78-4d60-92fd-f186e7f82aa8",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              },
+              {
+                "id": "f54f692f-05d8-49e0-b505-f16251963126",
+                "kind": "group",
+                "name": "Conjunto anidado",
+                "definitionId": "f3dcda1d-9903-4033-a92b-24d1ef570134",
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  2,
+                  0,
+                  1
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "command": "text.add",
+      "params": {
+        "point": [
+          0,
+          -0.7,
+          0
+        ],
+        "text": "Tres instancias comparten una definición. Doble clic para editar; Esc para salir."
+      },
+      "projectName": {
+        "before": "DÉDALO · grupos y componentes reales",
+        "after": "DÉDALO · grupos y componentes reales"
+      }
+    }
+  ]
+}
