@@ -3,6 +3,8 @@
   'use strict';
   const D = root.DEDALO = root.DEDALO || {};
   const MAX_AREA_M2 = 1000000, MAX_GML = 16 * 1024 * 1024;
+  // Catastro can legitimately need more than 20 s for a dense city block.
+  const REQUEST_TIMEOUTS = Object.freeze({ catastro: 60000, ign: 35000, osm: 35000, address: 15000 });
   const ENDPOINTS = Object.freeze({
     parcels: 'https://ovc.catastro.meh.es/INSPIRE/wfsCP.aspx',
     buildings: 'https://ovc.catastro.meh.es/INSPIRE/wfsBU.aspx',
@@ -67,7 +69,7 @@
       source: { provider: 'IGN / CNIG — MDT05', crs: 'EPSG:4258', attribution: 'Obra derivada de MDT05 © Instituto Geográfico Nacional de España / CNIG — CC BY 4.0' } };
     if (op === 'osm.trees' || op === 'osm.context') {
       const bb = [s, w, n, e].join(','), selectors = op === 'osm.trees' ? ['node["natural"="tree"]'] :
-        ['way["natural"="wood"]', 'way["landuse"="forest"]', 'way["leisure"="park"]', 'way["highway"]', 'way["waterway"]', 'way["natural"="water"]'];
+        ['node["natural"="tree"]', 'way["natural"="wood"]', 'way["landuse"="forest"]', 'way["leisure"="park"]', 'way["highway"]', 'way["waterway"]', 'way["natural"="water"]'];
       const query = '[out:json][timeout:20][maxsize:16777216];(' + selectors.map(q => q + '(' + bb + ');').join('') + ');out geom;';
       return { url: ENDPOINTS.osm, method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }, body: 'data=' + encodeURIComponent(query),
         format: 'json', maxBytes: 2 * 1024 * 1024, source: { provider: 'OpenStreetMap / Overpass API', crs: 'EPSG:4326', attribution: '© OpenStreetMap contributors — ODbL' } };
@@ -285,12 +287,16 @@
     const controller = typeof AbortController !== 'undefined' ? new AbortController() : null, abort = () => { if (controller) controller.abort(); };
     if (options.signal && options.signal.aborted) throw error('Consulta cancelada.', 'ABORTED');
     if (options.signal) options.signal.addEventListener('abort', abort, { once: true });
-    const timer = controller ? setTimeout(abort, 45000) : null;
+    const timeout = REQUEST_TIMEOUTS[desc.operation.split('.')[0]] || 45000;
+    const timer = controller ? setTimeout(abort, timeout) : null;
     try {
       const headers = Object.assign({ Accept: spec.format === 'json' ? 'application/json' : 'text/plain, application/xml' }, spec.headers);
-      if (typeof window === 'undefined') headers['User-Agent'] = 'DEDALO/' + (D.VERSION || '0.5.0') + ' (HEFESTOLAB; small public geodata query)';
-      const r = await fetcher(spec.url, { method: spec.method, headers, body: spec.body, signal: controller ? controller.signal : options.signal, credentials: 'omit', referrerPolicy: 'no-referrer' });
-      if (!r.ok) throw error('El servicio respondió HTTP ' + r.status + '.', 'HTTP');
+      if (typeof window === 'undefined') headers['User-Agent'] = 'DEDALO/' + (D.VERSION || '0.5.1') + ' (+https://hefestolab.github.io/; small public geodata query)';
+      // Overpass asks clients to identify their app. A web browser owns User-Agent,
+      // so retain just the public site origin as Referer, never a document path.
+      const referrerPolicy = desc.operation.startsWith('osm.') ? 'strict-origin-when-cross-origin' : 'no-referrer';
+      const r = await fetcher(spec.url, { method: spec.method, headers, body: spec.body, signal: controller ? controller.signal : options.signal, credentials: 'omit', referrerPolicy });
+      if (!r.ok) throw Object.assign(error('El servicio respondió HTTP ' + r.status + (r.status === 406 || r.status === 429 ? '. El proveedor limita las consultas; espera al menos 30 segundos o usa el conector local.' : '.'), 'HTTP'), { status: r.status });
       if (+(r.headers && r.headers.get('content-length') || 0) > spec.maxBytes) throw error('Respuesta GIS demasiado grande.', 'SIZE');
       let text;
       if (r.body && typeof r.body.getReader === 'function') {
@@ -344,7 +350,9 @@
     options = options || {}; const validated = validateBBox(options.bbox), layers = Object.assign({ parcels: true, buildings: true, terrain: true, trees: true, context: true }, options.layers || {});
     const out = { format: 'dedalo.territory-data', version: 1, bbox: validated.bbox, crs: 'EPSG:4326', areaM2: validated.areaM2,
       parcels: [], buildingParts: [], terrain: null, trees: [], vegetationAreas: [], roads: [], waterways: [], waterAreas: [], sources: [], warnings: [], layerErrors: [], partial: false };
-    const operations = [['parcels', 'catastro.parcels'], ['buildings', 'catastro.buildings'], ['terrain', 'ign.terrain'], ['trees', 'osm.trees'], ['context', 'osm.context']].filter(([key]) => layers[key]);
+    // One Overpass call supplies trees and context when both are selected.
+    // This avoids a second expensive query to the same free public server.
+    const operations = [['parcels', 'catastro.parcels'], ['buildings', 'catastro.buildings'], ['terrain', 'ign.terrain'], ['trees', 'osm.trees'], ['context', 'osm.context']].filter(([key]) => layers[key] && !(key === 'trees' && layers.context));
     if (!operations.length) throw error('Activa al menos una capa de territorio.', 'LAYERS');
     // Sequential requests avoid burst traffic to free public providers and preserve readable progress.
     for (let i = 0; i < operations.length; i++) {
@@ -361,21 +369,25 @@
         } else if (layer === 'terrain') out.terrain = parseElevationASCII(response.text, { crs: response.source && response.source.crs || 'EPSG:4258' });
         else {
           const parsed = parseOverpass(response.text, { bbox: validated.bbox });
-          for (const key of layer === 'trees' ? ['trees'] : ['vegetationAreas', 'roads', 'waterways', 'waterAreas']) out[key].push(...parsed[key]);
+          const keys = layer === 'trees' ? ['trees'] : [...(layers.trees ? ['trees'] : []), 'vegetationAreas', 'roads', 'waterways', 'waterAreas'];
+          for (const key of keys) { for (const feature of parsed[key]) feature.sourceId = source.id; out[key].push(...parsed[key]); }
           out.warnings.push(...parsed.warnings); source.datasetTimestamp = parsed.timestamp;
           if (parsed.warnings.length) out.partial = true;
         }
       } catch (e) {
         if (e.code === 'ABORTED' || options.signal && options.signal.aborted) throw e;
-        out.partial = true; out.layerErrors.push({ layer, operation, code: e.code || 'DATA', message: e.message }); out.warnings.push(layer + ': ' + e.message);
+        out.partial = true; out.layerErrors.push({ layer, operation, code: e.code || 'DATA', message: e.message });
+        if (layer === 'context' && layers.trees) out.layerErrors.push({ layer: 'trees', operation, code: e.code || 'DATA', message: e.message });
+        out.warnings.push(layer + ': ' + e.message);
       }
     }
     for (const key of ['trees', 'vegetationAreas', 'roads', 'waterways', 'waterAreas']) out[key] = [...new Map(out[key].map(item => [item.id, item])).values()];
     if (layers.trees) out.warnings.push('Los árboles son únicamente puntos natural=tree de OSM. La cobertura es incompleta; no se generan árboles reales aleatorios.');
     if (layers.context) out.warnings.push('Contexto OSM: vías lineales y áreas cerradas cartografiadas; sin relaciones multipolígono ni garantía de exhaustividad.');
     if (layers.buildings) out.warnings.push('Catastro aporta huellas y plantas. La altura extruida por plantas es estimada, no una medición de fachada o tejado.');
-    if (!out.sources.length || out.layerErrors.length === operations.length) throw Object.assign(error('No se pudo obtener ninguna capa real. ' + out.warnings.join(' '), 'NO_DATA'), { details: out.layerErrors });
+    const hasGeometry = !!out.terrain || ['parcels', 'buildingParts', 'trees', 'vegetationAreas', 'roads', 'waterways', 'waterAreas'].some(key => out[key].length);
+    if (!hasGeometry) throw Object.assign(error(out.sources.length && !out.layerErrors.length ? 'Los servicios respondieron, pero no hay geometría en las capas seleccionadas. Cambia el recorte o activa edificios, parcelas o relieve. ' + out.warnings.join(' ') : 'No se pudo obtener ninguna capa real. ' + out.warnings.join(' '), 'NO_DATA'), { details: out.layerErrors });
     return out;
   }
-  D.TerritoryData = { MAX_AREA_M2, ENDPOINTS, LICENSES, validateBBox, bboxAround, buildRequest, parseXML, parseGML, parseElevationASCII, parseOverpass, resolveLocation, resolveCandidate, loadArea };
+  D.TerritoryData = { MAX_AREA_M2, ENDPOINTS, LICENSES, REQUEST_TIMEOUTS, validateBBox, bboxAround, buildRequest, parseXML, parseGML, parseElevationASCII, parseOverpass, resolveLocation, resolveCandidate, loadArea, requestPublic: (descriptor, options) => directRequest(descriptor, options || {}) };
 })(typeof window !== 'undefined' ? window : globalThis);

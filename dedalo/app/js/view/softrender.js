@@ -78,7 +78,9 @@
         const list = alpha < 0.999 ? this.transTris : this.tris;
         const fpk = pack(fc[0], fc[1], fc[2]), bpk = pack(bc[0], bc[1], bc[2]);
         for (const t of model.faceTriangles(f.id)) {
-          list.push({ a: model.P(t[0]).slice(), b: model.P(t[1]).slice(), c: model.P(t[2]).slice(), fc, bc, fpk, bpk, alpha, flag });
+          const points = t.map(id => model.P(id));
+          const clipped = D.SectionBox ? D.SectionBox.polygon(this.opts.sectionBox, points) : points;
+          for (let i = 1; i < clipped.length - 1; i++) list.push({ a:clipped[0].slice(), b:clipped[i].slice(), c:clipped[i+1].slice(), fc, bc, fpk, bpk, alpha, flag });
         }
       }
     }
@@ -86,7 +88,7 @@
     // Misma lógica que Renderer.modelLines: ejes, guías y aristas.
     modelLines(model, sel, hover, extra) {
       const st = this.style;
-      const lines = [];
+      let lines = [];
       const R = 2000;
       if (this.opts.showAxes) {
         const ax = [[st.axisX, [1, 0, 0]], [st.axisY, [0, 1, 0]], [st.axisZ, [0, 0, 1]]];
@@ -116,6 +118,7 @@
         }
       }
       if (extra) lines.push(...extra);
+      if (D.SectionBox) lines = D.SectionBox.lines(this.opts.sectionBox, lines);
       for (const l of lines) {
         const c = hex(l.color || st.edge, l.alpha);
         l.rgb = [c[0] * 255, c[1] * 255, c[2] * 255];

@@ -18,7 +18,7 @@
     for (const g of app.doc.model.annots.values()) {
       if (g.kind !== 'guideLine' || !app.renderer.opts.showGuides) continue;
       const c = geom.lineLineClosest(g.p, g.dir, ray.o, ray.d);
-      if (!c || c.t <= 0) continue;
+      if (!c || c.t <= 0 || D.SectionBox && !D.SectionBox.contains(app.renderer.opts.sectionBox,c.p1)) continue;
       const s = app.camera.project(c.p1);
       if (Math.hypot(s.x - x, s.y - y) < 5) return { annot: g.id };
     }
@@ -109,12 +109,33 @@
         for (let i = 0; i < 4; i++) if (segX([sa.x, sa.y], [sb.x, sb.y], rect[i], rect[(i + 1) % 4])) return true;
         return false;
       };
+      const section = D.SectionBox && this.app.renderer.opts.sectionBox;
+      // In a sectioned view a window must contain the retained geometry, including
+      // newly clipped boundaries, rather than the hidden original node vertices.
+      const sectionContained = new Map();
+      const noteSection = (node, points) => {
+        if (!section || crossing || !node || !points.length) return;
+        const yes = points.every(inside);
+        sectionContained.set(node, (sectionContained.has(node) ? sectionContained.get(node) : true) && yes);
+      };
       const edges = [], faces = [], annots = [];
       for (const e of m.edges.values()) {
-        const sa = scr.get(e.a), sb = scr.get(e.b);
+        const clipped = D.SectionBox ? D.SectionBox.segment(section,m.P(e.a),m.P(e.b)) : [m.P(e.a),m.P(e.b)];
+        if (!clipped) continue;
+        const sa = cam.project(clipped[0]), sb = cam.project(clipped[1]);
+        noteSection(this.doc.nodeForHit({ edge:e.id }), [sa,sb]);
         if (crossing ? segHits(sa, sb) : (inside(sa) && inside(sb))) edges.push(e.id);
       }
       for (const f of m.faces.values()) {
+        if (section) {
+          const polygons = m.faceTriangles(f.id).map(t => D.SectionBox.polygon(section,t.map(id => m.P(id)))).filter(p => p.length >= 3);
+          const projected = polygons.map(poly => poly.map(p => cam.project(p)));
+          noteSection(this.doc.nodeForHit({ face:f.id }), projected.flat());
+          const center = [(x0+x1)/2,(y0+y1)/2];
+          const hit = crossing ? projected.some(poly => poly.some((p,i) => segHits(p,poly[(i+1)%poly.length])) || geom.pointInPoly2(center,poly.map(p => [p.x,p.y])) > 0) : projected.length && projected.every(poly => poly.every(inside));
+          if (hit) faces.push(f.id);
+          continue;
+        }
         const vs = m.faceVerts(f);
         if (!crossing) { if (vs.every((v) => inside(scr.get(v)))) faces.push(f.id); continue; }
         let hit = false;
@@ -142,9 +163,9 @@
       const nodes = [];
       if (crossing) nodes.push(...touched);
       else {
-        const contained = new Map();
+        const contained = new Map(sectionContained);
         const note = (node, yes) => { if (node) contained.set(node, contained.has(node) ? contained.get(node) && yes : yes); };
-        for (const v of m.verts.values()) note(this.doc.nodeForHit({ vert: v.id }), inside(scr.get(v.id)));
+        if (!section) for (const v of m.verts.values()) note(this.doc.nodeForHit({ vert: v.id }), inside(scr.get(v.id)));
         for (const hit of this.app.overlay.hits || []) {
           const node = this.doc.nodeForHit({ annot: hit.id });
           note(node, hit.x >= x0 && hit.y >= y0 && hit.x + hit.w <= x1 && hit.y + hit.h <= y1);

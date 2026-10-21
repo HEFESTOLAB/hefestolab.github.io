@@ -38,6 +38,8 @@
     ['info', 'Información de la entidad', 'info'],
     ['materials', 'Materiales', 'materials'],
     ['styles', 'Estilos', 'styles'],
+    ['section', 'Caja de sección', 'model'],
+    ['bim', 'BIM · Exportar IFC', 'model'],
     ['views', 'Vistas', 'views'],
     ['model', 'Información del modelo', 'model'],
     ['console', 'Consola de comandos', 'console'],
@@ -87,6 +89,8 @@
       t.append(views);
       this.mcpButton = h('button', { class: 'chip', title: 'Unir tu IA paso a paso', onclick: () => { if (this.panel !== 'ai') this.openPanel('ai'); } }, 'Unir IA');
       t.append(h('button', { class: 'chip', title: 'Crear un entorno desde datos de España', onclick: () => { if (this.panel !== 'territory') this.openPanel('territory'); } }, 'Territorio'));
+      t.append(h('button', { class:'chip', title:'Recortar la vista con seis planos', onclick:() => { if(this.panel !== 'section') this.openPanel('section'); } }, 'Sección'));
+      t.append(h('button', { class:'primary', title:'Clasificar elementos y exportar a IFC', onclick:() => { if(this.panel !== 'bim') this.openPanel('bim'); } }, 'IFC'));
       t.append(this.mcpButton);
       t.append(h('button', { class: 'primary', title: 'Guardar (Ctrl+S)', onclick: () => this.app.files.save() }, I.save + '<span>Guardar</span>'));
       this.refreshTitle();
@@ -657,6 +661,8 @@
       item('Guardar como…', 'Ctrl+Mayús+S', () => app.files.save(true));
       item('Exportar OBJ', '', () => app.files.exportOBJ());
       item('Exportar STL', '', () => app.files.exportSTL());
+      item('Exportar IFC · BIM', '', () => { if(this.panel !== 'bim') this.openPanel('bim'); });
+      item('Caja de sección', '', () => { if(this.panel !== 'section') this.openPanel('section'); });
       item('Captura de pantalla (PNG)', '', () => app.files.screenshot());
       for (const p of D.plugins) {
         for (const ex of p.exporters || []) item(ex.label, '', () => ex.run(app));

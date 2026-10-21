@@ -51,15 +51,16 @@
       if (local) body.append(el('p', 'Esta copia de Dédalo ya está servida por el conector de tu ordenador. Si tu IA ya muestra las herramientas Dédalo, continúa.'));
       else {
         const link = el('a', s.client === 'claude' ? 'Descargar conector para Claude (.mcpb)' : 'Descargar conector (.zip)', 'download-cta');
-        link.href = 'downloads/' + (s.client === 'claude' ? 'DEDALO_MCP_CLAUDE_v0.5.1.mcpb' : 'DEDALO_MCP_LOCAL_v0.5.1.zip'); link.download = '';
+        link.href = 'downloads/' + (s.client === 'claude' ? 'DEDALO_MCP_CLAUDE_v0.6.0.mcpb' : 'DEDALO_MCP_LOCAL_v0.6.0.zip'); link.download = '';
         link.addEventListener('click', () => { s.downloadRequested = true; const n = body.querySelector('.download-status'); if (n) n.textContent = 'Descarga solicitada. Busca el archivo en Descargas y sigue estos pasos.'; });
         body.append(link, el('p', s.downloadRequested ? 'Descarga solicitada. Busca el archivo en Descargas.' : 'El archivo se descarga al pulsar el botón.', 'download-status muted'));
       }
       if (s.client === 'claude') {
-        const steps = el('ol'); ['En Claude Desktop, abre Ajustes → Extensiones.', 'En Ajustes avanzados, pulsa Instalar extensión y selecciona el .mcpb descargado.', 'Confirma la instalación y activa Dédalo. Si lo pide, reinicia Claude.'].forEach(t => steps.append(el('li', t))); body.append(steps);
+        const steps = el('ol'); ['En Claude Desktop, abre Ajustes → Extensiones.', 'En Ajustes avanzados, pulsa Instalar extensión y selecciona el .mcpb descargado. El ZIP es para otros clientes.', 'Actualiza la extensión Dédalo existente y actívala. Si conservas una entrada antigua de Dédalo en Desarrollador, desactívala para evitar duplicados.', 'Claude conserva la extensión y su runtime; solo tendrás que unir la pestaña de Dédalo en cada sesión.'].forEach(t => steps.append(el('li', t))); body.append(steps);
+        body.append(el('p', 'Este conector funciona en Claude Desktop del ordenador. Un conector remoto de Claude web no puede alcanzar el localhost de tu equipo.', 'muted'));
         const a = el('a', 'Ayuda oficial de Claude'); a.href = 'https://support.claude.com/es/articles/10949351-primeros-pasos-con-servidores-mcp-locales-en-claude-desktop'; a.target = '_blank'; a.rel = 'noopener'; body.append(a);
       } else {
-        body.append(el('p', 'Extrae el ZIP completo en una carpeta estable. Necesitas Node.js 22 o posterior; no hace falta ejecutar npm.'));
+        body.append(el('p', 'Extrae el ZIP completo en una carpeta estable y conserva esa carpeta. Necesitas Node.js 20 o posterior; no hace falta ejecutar npm.'));
         const field = el('label', 'Ruta del archivo server.mjs', 'field'), path = el('input'); path.className = 'wide'; path.value = s.path || 'C:/Herramientas/DEDALO_MCP_LOCAL/server.mjs'; field.append(path); body.append(field); path.addEventListener('change', () => { s.path = path.value; draw(); });
         body.append(el('p', s.client === 'codex' ? 'En Ajustes → Servidores MCP → Añadir servidor, elige STDIO, nombre dedalo, comando node y como argumento esta ruta. Guarda y reinicia el cliente. Si tienes Codex CLI, también puedes ejecutar esta orden una vez.' : s.client === 'code' ? 'Ejecuta esta orden una vez en tu terminal y vuelve a abrir Claude Code:' : 'Añade dedalo a la configuración MCP de tu cliente con comando node y la ruta como argumento. Conserva los demás servidores y ajustes. Este ejemplo es para clientes que usan mcpServers:'));
         try { copy(config(s.client, path.value), s.client === 'other' ? 'configuración' : 'orden'); } catch (e) { body.append(el('p', e.message)); }
@@ -68,7 +69,7 @@
       body.append(el('p', 'La web no puede confirmar la instalación por ti: esa confirmación se hace en tu aplicación de IA.', 'muted'), button('Ya está instalado · continuar', () => { s.step = 2; draw(); }, true));
     } else if (s.step === 2) {
       body.append(el('h3', '3. Une esta sesión de Dédalo'), el('p', 'Copia este mensaje en tu chat de IA:')); copy(PROMPT, 'mensaje');
-      body.append(el('p', 'El enlace que responde tu IA abre el paso de conexión con el código preparado. Para conservar el modelo de esta pestaña, pega aquí el código.'));
+      body.append(el('p', 'El enlace que responde tu IA abre el paso de conexión con el código preparado. Para conservar el modelo de esta pestaña, pega aquí el código y usa el puerto que devuelve dedalo_connection en Opciones.'));
       const code = el('input'); code.className = 'wide'; code.placeholder = 'Código de 8 caracteres'; code.value = s.code || ''; code.maxLength = 32; code.autocomplete = 'off'; code.spellcheck = false;
       const label = el('label', 'Código de conexión', 'field'); label.append(code); body.append(label); code.addEventListener('input', () => { s.code = code.value; });
       body.append(el('p', 'El código dura 15 minutos para iniciar la conexión. La sesión continúa mientras Dédalo y el conector estén abiertos; no tienes un límite de 15 minutos para modelar.', 'wizard-note'));
@@ -87,6 +88,7 @@
     } else {
       body.append(el('h3', bridge.status().connected ? '4. IA conectada' : 'La sesión se ha cerrado'), el('p', bridge.status().connected ? 'Ya puedes modelar desde tu chat de IA. Adjunta allí la foto y añade una medida conocida para dar escala al modelo.' : 'Pide un código nuevo a tu IA y vuelve a unir esta pestaña.'));
       if (bridge.status().connected) {
+        body.append(el('p', 'Conexión activa.', 'connection-health'));
         copy('Consulta el estado y los comandos de Dédalo. A partir de la foto adjunta, crea una aproximación editable. Antes de modelar, aclara conmigo la escala y las medidas desconocidas. Conserva la geometría que ya existe.', 'ejemplo con foto');
         body.append(button('Desconectar mi IA', () => { s.step = 2; void bridge.disconnect(); draw(); }));
       } else body.append(button('Volver a conectar', () => { s.step = 2; draw(); }, true));
@@ -95,13 +97,17 @@
   };
   D.UI.prototype.refreshMCP = function () {
     const bridge = this.app.mcpBridge; if (!bridge) return; const state = bridge.status();
-    if (this.mcpButton) this.mcpButton.textContent = state.connected ? 'IA conectada' : state.connecting ? 'Conectando IA…' : 'Unir IA';
+    if (this.mcpButton) this.mcpButton.textContent = state.recovering ? 'Recuperando IA…' : state.connected ? 'IA conectada' : state.connecting ? 'Conectando IA…' : 'Unir IA';
+    if (this.panel === 'ai') {
+      const health = this.el.panel.querySelector('.connection-health');
+      if (health) health.textContent = state.recovering ? state.error : state.error || 'Conexión activa.';
+    }
     if (this.panel === 'ai' && this.aiWizard && this.aiWizard.renderedConnected !== state.connected) {
       const body = this.el.panel.querySelector('.panel-body');
       if (body) { this.panel_ai(body, true); return; }
     }
     const f = this.mcpFields; if (f && f.body.isConnected && f.code.isConnected) {
-      f.status.textContent = state.connected ? 'Conexión activa.' : state.connecting ? 'Uniendo tu IA…' : state.error || 'Listo para conectar.';
+      f.status.textContent = state.recovering ? state.error : state.connected ? 'Conexión activa.' : state.connecting ? 'Uniendo tu IA…' : state.error || 'Listo para conectar.';
       for (const input of [f.code, f.port, f.write, f.snapshot, f.connect]) input.disabled = state.connected || state.connecting;
     }
   };

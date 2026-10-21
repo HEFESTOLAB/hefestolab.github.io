@@ -9,7 +9,8 @@
     'group.create', 'component.create', 'component.instantiate', 'component.makeUnique', 'group.explode', 'node.rename', 'project.rename',
     'context.enter', 'context.exit', 'select', 'select.all', 'select.none', 'select.connected', 'edit.undo', 'edit.redo',
     'mesh.ellipsoid', 'mesh.patch', 'mesh.subdivide', 'mesh.deform', 'transaction.batch', 'geo.import', 'geo.info',
-    'view.zoomExtents', 'view.set', 'view.option', 'view.projection', 'view.camera'
+    'view.zoomExtents', 'view.set', 'view.option', 'view.projection', 'view.camera', 'view.sectionBox', 'view.sectionBoxFit',
+    'bim.categories', 'bim.assign', 'bim.get', 'bim.clear', 'bim.validate', 'bim.classifyNamed', 'export.ifc'
   ]);
   const bytes = value => new TextEncoder().encode(JSON.stringify(value)).byteLength;
   function finiteJSON(value, depth) {
@@ -32,9 +33,10 @@
       this.setTimer = o.setTimeout || root.setTimeout.bind(root); this.clearTimer = o.clearTimeout || root.clearTimeout.bind(root);
       this.token = null; this.sessionId = null; this.base = null; this.revision = 0; this.generation = 0; this.attempt = 0;
       this.permissions = { write: false, snapshot: false }; this.listeners = new Set(); this.error = ''; this.connecting = false;
-      this.timer = null; this.inflight = new Set(); this.seen = new Map();
+      this.timer = null; this.inflight = new Set(); this.seen = new Map(); this.readCache = new Map(); this.pendingResult = null; this.failures = 0;
       this.unlisten = app.doc.on(kind => {
         if (['model', 'selection', 'context', 'reset'].includes(kind)) this.revision++;
+        if (['model', 'selection', 'context', 'reset'].includes(kind)) this.readCache.clear();
         if (kind === 'reset' && (this.token || this.connecting)) void this.disconnect('El modelo ha cambiado. Conecta de nuevo para compartirlo.');
       });
     }
@@ -46,11 +48,11 @@
         projectVersion: doc.projectVersion, appVersion: D.VERSION, busy: !!(doc._busy || this.app.territoryBusy || this.app.navDrag || this.app.tool && this.app.tool.state !== 0),
         permissions: { ...this.permissions } };
     }
-    status() { return { connected: !!this.token, connecting: this.connecting, error: this.error, state: this.state(), endpoint: this.base }; }
+    status() { return { connected: !!this.token, connecting: this.connecting, recovering: !!this.token && this.failures > 0, error: this.error, state: this.state(), endpoint: this.base }; }
     async post(route, body) {
       if (!this.fetch) throw new Error('Este navegador no dispone de fetch.');
       const abort = new AbortController(); this.inflight.add(abort);
-      const timeout = this.setTimer(() => abort.abort(), 12000);
+      const timeout = this.setTimer(() => abort.abort(), 30000);
       try {
         const response = await this.fetch(this.base + '/v1/' + route, {
           method: 'POST', mode: 'cors', credentials: 'omit', cache: 'no-store', redirect: 'error', referrerPolicy: 'no-referrer',
@@ -59,7 +61,10 @@
         const text = await response.text();
         if (text.length > 12 * 1024 * 1024) throw new Error('Respuesta del conector demasiado grande.');
         let result; try { result = JSON.parse(text); } catch (_) { throw new Error('Respuesta del conector no válida.'); }
-        if (!response.ok || result.ok === false) throw new Error(result.error || 'El conector rechazó la petición (' + response.status + ').');
+        if (!response.ok || result.ok === false) {
+          const error = new Error(result.error || 'El conector rechazó la petición (' + response.status + ').');
+          error.code = result.code; error.status = response.status; throw error;
+        }
         return result;
       } finally { this.clearTimer(timeout); this.inflight.delete(abort); }
     }
@@ -76,7 +81,7 @@
         const result = await this.post('pair', { code, client: { name: 'Dédalo', version: D.VERSION }, permissions: this.permissions, state: this.state() });
         if (generation !== this.generation) return false;
         if (typeof result.token !== 'string' || result.token.length < 32 || typeof result.sessionId !== 'string') throw new Error('Emparejamiento del conector no válido.');
-        this.token = result.token; this.sessionId = result.sessionId; this.connecting = false; this.seen.clear(); this.notify();
+        this.token = result.token; this.sessionId = result.sessionId; this.connecting = false; this.seen.clear(); this.failures = 0; this.notify();
         this.schedule(generation, 0); return true;
       } catch (error) {
         if (generation !== this.generation) return false;
@@ -91,6 +96,13 @@
       if (!this.token || generation !== this.generation) return;
       try {
         const auth = { token: this.token, sessionId: this.sessionId };
+        // Keep the exact response until its acknowledgement arrives. Never rerun a
+        // modelling command to recover a dropped HTTP response.
+        if (this.pendingResult) {
+          await this.post('result', { ...auth, ...this.pendingResult });
+          if (generation !== this.generation || !this.token) return;
+          this.pendingResult = null;
+        }
         const message = await this.post('poll', { ...auth, state: this.state() });
         if (generation !== this.generation || !this.token) return;
         if (message.request) {
@@ -101,17 +113,61 @@
             result = this.handle(request); this.seen.set(request.id, result);
             if (this.seen.size > 200) this.seen.delete(this.seen.keys().next().value);
           }
-          await this.post('result', { ...auth, id: request.id, result });
+          this.pendingResult = { id: request.id, result };
+          await this.post('result', { ...auth, ...this.pendingResult });
           if (generation !== this.generation) return;
+          this.pendingResult = null;
         }
+        if (this.failures) { this.failures = 0; this.error = ''; this.notify(); }
         this.schedule(generation, 300);
       } catch (error) {
         if (generation !== this.generation) return;
-        // No reconexión automática: una respuesta perdida nunca se reejecuta.
-        await this.disconnect('Conexión detenida: ' + error.message + '. Consulta el estado antes de repetir una operación.');
+        if (['D_UNKNOWN_REQUEST'].includes(error.code)) {
+          this.pendingResult = null; this.error = 'La petición caducó. Consulta el estado antes de repetir una operación.'; this.notify(); this.schedule(generation, 300);
+        } else if (error.status >= 400 && error.status < 500) {
+          await this.disconnect('Conexión detenida: ' + error.message + '. Consulta el estado antes de repetir una operación.');
+        } else {
+          this.failures++; this.error = 'Recuperando conexión local: ' + error.message;
+          this.notify(); this.schedule(generation, Math.min(5000, 500 * 2 ** Math.min(4, this.failures - 1)));
+        }
       }
     }
     commands() { return this.app.doc.commandList().filter(command => ALLOWED.has(command.name)); }
+    projectRead() {
+      const doc = this.app.doc;
+      // The saved legacy projection expands every component instance. The scene
+      // is authoritative and carries all geometry exactly once per definition.
+      // Reading a pagoda must not rebuild a 140 MiB compatibility mesh.
+      if (!doc.scene) return doc.fileJSON();
+      return { format: 'dedalo', version: 2, app: 'Dédalo', name: doc.name, projectId: doc.projectId, projectVersion: doc.projectVersion,
+        scene: doc.scene.toJSON(), representation: 'canonical-scene', legacyProjectionOmitted: true, auditQuery: 'audit' };
+    }
+    definitionRead(id) {
+      const doc = this.app.doc, definition = doc.scene && doc.scene.definitions.get(id);
+      if (!definition) throw new Error('definitionId no existe; consulta tree para obtener sus IDs.');
+      return { id: definition.id, kind: definition.kind, name: definition.name, model: definition.model.toJSON(), nodes: definition.nodes,
+        ...(definition.metadata === undefined ? {} : { metadata: definition.metadata }), coordinates: 'definition-local' };
+    }
+    readPage(query, payload, get) {
+      const offset = payload.offset === undefined ? 0 : payload.offset, limit = payload.limit === undefined ? 16384 : payload.limit;
+      if (!Number.isSafeInteger(offset) || offset < 0 || !Number.isSafeInteger(limit) || limit < 256 || limit > 65536) throw new Error('offset debe ser un entero positivo y limit entre 256 y 65536 caracteres.');
+      if (offset > 0 && !Number.isSafeInteger(payload.expectedRevision)) throw new Error('Las páginas siguientes requieren expectedRevision de la primera respuesta.');
+      if (payload.expectedRevision !== undefined && payload.expectedRevision !== this.revision) return { ok: false, code: 'STALE_STATE', error: 'La revisión ha cambiado. Empieza la lectura de nuevo.' };
+      const key = query + ':' + (payload.definitionId || '') + ':' + this.revision;
+      let cached = this.readCache.get(key);
+      if (!cached) {
+        const value = get(), json = JSON.stringify(value);
+        cached = { value, json }; this.readCache.set(key, cached);
+        // Cache only the most recent bulky query to avoid retaining several full models.
+        if (this.readCache.size > 1) this.readCache.delete(this.readCache.keys().next().value);
+      }
+      if (offset > cached.json.length) throw new Error('offset supera el final de la consulta.');
+      if (payload.offset === undefined && payload.limit === undefined && cached.json.length <= limit) return cached.value;
+      const end = Math.min(cached.json.length, offset + limit);
+      return { format: 'json-fragment', query, json: cached.json.slice(offset, end), offset, nextOffset: end < cached.json.length ? end : null,
+        totalChars: cached.json.length, projectId: this.app.doc.projectId, revision: this.revision,
+        instructions: 'Concatena json por offset y analiza el JSON al terminar. Usa nextOffset y expectedRevision en dedalo_read; si cambia la revisión, reinicia la lectura.' };
+    }
     checkCommand(command, params) {
       if (!ALLOWED.has(command) || !this.app.doc.commands.has(command)) throw new Error('Comando MCP no permitido: ' + command);
       if (command === 'draw.line' && (!Array.isArray(params.points) || params.points.length > 512)) throw new Error('Dibuja polilíneas de hasta 512 puntos por comando.');
@@ -139,7 +195,7 @@
         const payload = request.payload || {}, doc = this.app.doc;
         let result;
         if (request.action === 'read') {
-          const queries = { project: () => doc.fileJSON(), commands: () => this.commands(), tree: () => doc.execute('scene.tree'),
+          const queries = { project: () => this.projectRead(), definition: () => this.definitionRead(payload.definitionId), commands: () => this.commands(), tree: () => doc.execute('scene.tree'),
             scene: () => doc.execute('scene.get'), selection: () => doc.selectionItems(), audit: () => doc.execute('trace.get'),
             faces: () => doc.execute('model.faces'), edges: () => doc.execute('model.edges'), status: () => this.state() };
           if (payload.query === 'snapshot') {
@@ -148,7 +204,7 @@
             result = { png: this.app.snapshot() };
           } else {
             if (!Object.prototype.hasOwnProperty.call(queries, payload.query)) throw new Error('Consulta MCP no admitida.');
-            result = queries[payload.query]();
+            result = payload.query === 'status' || payload.query === 'commands' ? queries[payload.query]() : this.readPage(payload.query, payload, queries[payload.query]);
           }
         } else if (request.action === 'execute') {
           if (!this.permissions.write) throw new Error('La conexión es de solo lectura.');
@@ -171,7 +227,7 @@
     async disconnect(reason, preserveAttempt) {
       if (!preserveAttempt) ++this.attempt;
       const token = this.token, sessionId = this.sessionId; ++this.generation;
-      this.token = null; this.sessionId = null; this.connecting = false; this.seen.clear();
+      this.token = null; this.sessionId = null; this.connecting = false; this.seen.clear(); this.readCache.clear(); this.pendingResult = null; this.failures = 0;
       if (this.timer !== null) this.clearTimer(this.timer); this.timer = null;
       for (const abort of this.inflight) abort.abort();
       this.permissions = { write: false, snapshot: false }; this.error = reason || ''; this.notify();

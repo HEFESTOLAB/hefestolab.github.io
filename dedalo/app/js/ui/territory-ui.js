@@ -12,6 +12,23 @@
       if (typeof root.requestAnimationFrame === 'function') root.requestAnimationFrame(() => root.requestAnimationFrame(finish));
     });
   }
+  async function connectorRequest(base, descriptor, signal) {
+    const controller = new AbortController(), relay = () => controller.abort();
+    if (signal) { if (signal.aborted) relay(); else signal.addEventListener('abort', relay, { once: true }); }
+    const timer = setTimeout(relay, 75000);
+    try {
+      const r = await root.fetch(base + '/v1/geodata', { method: 'POST', mode: 'cors', credentials: 'omit', cache: 'no-store', redirect: 'error', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(descriptor), signal: controller.signal });
+      if (r.status === 404) throw Object.assign(new Error('Conector territorial antiguo.'), { code: 'CONNECTOR_MISSING' });
+      if (+(r.headers.get('content-length') || 0) > 32 * 1024 * 1024) throw new Error('Respuesta GIS demasiado grande. Reduce la zona.');
+      const text = await r.text(); if (text.length > 32 * 1024 * 1024) throw new Error('Respuesta GIS demasiado grande.'); const json = JSON.parse(text);
+      if (!r.ok || !json.ok) throw Object.assign(new Error(json.error && json.error.message || json.error || 'El conector no pudo consultar la capa.'), { code: json.error && json.error.code || 'CONNECTOR' });
+      return json;
+    } catch (e) {
+      if (signal && signal.aborted) throw Object.assign(new Error('Consulta cancelada.'), { code: 'ABORTED' });
+      if (controller.signal.aborted) throw Object.assign(new Error('El conector tardó demasiado. Reduce el recorte o vuelve a iniciarlo.'), { code: 'CONNECTOR_TIMEOUT' });
+      throw e;
+    } finally { clearTimeout(timer); if (signal) signal.removeEventListener('abort', relay); }
+  }
   async function transport(options) {
     const port = Number(options.port || 43127); if (!Number.isInteger(port) || port < 1024 || port > 65535) throw new Error('Puerto local inválido.');
     const base = 'http://127.0.0.1:' + port, controller = new AbortController(), relay = () => controller.abort(), timer = setTimeout(relay, 1800);
@@ -22,11 +39,18 @@
     finally { clearTimeout(timer); if (options.signal) options.signal.removeEventListener('abort', relay); }
     if (options.signal && options.signal.aborted) throw new Error('Consulta cancelada.');
     if (!local) return { request: undefined, label: 'Acceso directo a servicios públicos' };
-    return { label: 'Conector local · datos públicos', request: async (descriptor, call) => {
-      const r = await root.fetch(base + '/v1/geodata', { method: 'POST', mode: 'cors', credentials: 'omit', cache: 'no-store', redirect: 'error', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(descriptor), signal: call && call.signal || options.signal });
-      if (+(r.headers.get('content-length') || 0) > 32 * 1024 * 1024) throw new Error('Respuesta GIS demasiado grande. Reduce la zona.');
-      const text = await r.text(); if (text.length > 32 * 1024 * 1024) throw new Error('Respuesta GIS demasiado grande.'); const json = JSON.parse(text);
-      if (!r.ok || !json.ok) throw new Error(json.error && json.error.message || json.error || 'El conector no pudo consultar la capa.'); return json;
+    let connected = true;
+    return { label: 'Datos públicos · conector local y recuperación directa', request: async (descriptor, call) => {
+      const signal = call && call.signal || options.signal;
+      if (!connected) return D.TerritoryData.requestPublic(descriptor, { signal });
+      // A stopped AI host may take its stdio connector with it between two layers.
+      // Recover only a lost transport, never repeat a rejected provider query.
+      try { return await connectorRequest(base, descriptor, signal); }
+      catch (e) {
+        if (signal && signal.aborted || e.name === 'AbortError' || e.code === 'ABORTED') throw e;
+        if (!(e instanceof TypeError) && e.code !== 'CONNECTOR_MISSING') throw e;
+        connected = false; return D.TerritoryData.requestPublic(descriptor, { signal });
+      }
     } };
   }
   D.TerritoryUI = { center, transport, safeSourceLink, paint };
@@ -124,6 +148,7 @@
       review.replaceChildren(); if (!s.data) return; const data = s.data;
       review.append(el('h3', data.partial ? 'Datos preparados · resultado parcial' : 'Datos preparados'), el('p', data.parcels.length + ' parcelas · ' + data.buildingParts.length + ' partes de edificios · ' + data.trees.length + ' árboles · terreno ' + (data.terrain ? 'disponible' : 'sin datos')));
       if (data.partial) review.append(el('p', 'Alguna capa no llegó completa. Revisa los avisos antes de crear el entorno.', 'wizard-note'));
+      if (data.layerErrors && data.layerErrors.length) review.append(el('p', 'Capas no disponibles: ' + data.layerErrors.map(item => ({ parcels: 'parcelas', buildings: 'edificios', terrain: 'relieve', trees: 'árboles', context: 'calles y zonas verdes' }[item.layer] || item.layer)).join(', ') + '. Puedes crear el entorno con las capas que sí llegaron.', 'wizard-note'));
       const details = el('details'); details.append(el('summary', 'Fuentes y avisos (' + data.warnings.length + ')'));
       const list = el('ul'); for (const warning of data.warnings) list.append(el('li', warning)); details.append(list);
       for (const source of data.sources) { const href = safeSourceLink(source.licenseURL), a = el(href ? 'a' : 'span', source.title + ' · ' + source.attribution); if (href) { a.href = href; a.target = '_blank'; a.rel = 'noopener'; } details.append(a, el('br')); } review.append(details);
@@ -163,7 +188,7 @@
     const cancel = button('Cancelar consulta', () => { if (s.phase === 'network' && s.abort) s.abort.abort(); }); cancel.disabled = !s.loading || s.phase !== 'network';
     body.append(controls, status, cancel, review, exports);
     const fallback = el('details'); fallback.append(el('summary', 'Si los datos no llegan · conector y archivo local'), el('p', 'Algunos servicios públicos bloquean consultas directas del navegador. Descarga el conector ZIP y ejecuta INICIAR_TERRITORIO.cmd con Node.js 22+. No requiere una IA ni claves. Después vuelve a consultar desde Dédalo.'));
-    const zip = el('a', 'Descargar conector local'); zip.href = 'downloads/DEDALO_MCP_LOCAL_v0.5.1.zip'; zip.download = ''; if (!new URLSearchParams(root.location.search).has('conector')) fallback.append(zip);
+    const zip = el('a', 'Descargar conector local'); zip.href = 'downloads/DEDALO_MCP_LOCAL_v0.6.0.zip'; zip.download = ''; if (!new URLSearchParams(root.location.search).has('conector')) fallback.append(zip);
     const localPort = Number(port()), local = el('a', 'Abrir Dédalo desde el conector iniciado'); local.href = 'http://127.0.0.1:' + (Number.isInteger(localPort) && localPort >= 1024 && localPort <= 65535 ? localPort : 43127) + '/dedalo/?seguro&conector=1'; local.target = '_blank'; local.rel = 'noopener';
     fallback.append(el('p', 'Una vez iniciado, abre su copia local. Guarda antes los cambios de esta pestaña.'), local);
     fallback.append(button('Abrir guía Unir IA', () => this.openPanel('ai')));

@@ -31,8 +31,23 @@
 
     safeName() { return (this.app.doc.name || 'modelo').replace(/[\\/:*?"<>|]+/g, '_').trim() || 'modelo'; }
 
-    fileJSON() {
-      return this.app.doc.fileJSON({ camera: this.app.camera.toJSON(), view: Object.assign({}, this.app.renderer.opts), style: Object.assign({}, this.app.renderer.style) });
+    fileJSON(options) {
+      const view = Object.assign({}, this.app.renderer.opts);
+      // The serialized model reopens at root; section limits are context-local.
+      if (this.app.doc.editPath && this.app.doc.editPath.length) view.sectionBox = null;
+      return this.app.doc.fileJSON({ camera: this.app.camera.toJSON(), view, style: Object.assign({}, this.app.renderer.style) }, options);
+    }
+
+    restoreView(j) {
+      this.app.renderer.opts.sectionBox = null;
+      if (j.view) {
+        for (const k of ['xray','showAxes','showGuides','showEdges','showHidden','monochrome']) if (typeof j.view[k] === 'boolean') this.app.renderer.opts[k] = j.view[k];
+        try { this.app.renderer.opts.sectionBox = D.SectionBox.normalize(j.view.sectionBox); } catch (_) { this.app.toast('Se omitió una caja de sección con límites inválidos.', 'warn'); }
+      }
+      if (j.style && this.app.renderer.style) for (const key of Object.keys(D.STYLE)) {
+        if (typeof j.style[key] === 'string' && /^#[0-9a-f]{6}$/i.test(j.style[key])) this.app.renderer.style[key] = j.style[key];
+      }
+      this.app._fk = this.app._lk = null;
     }
 
     async save(as) {
@@ -114,15 +129,20 @@
       try {
         this.app.doc.loadJSON(j, base);
         if (j.camera) this.app.camera.load(j.camera);
-        if (j.view) Object.assign(this.app.renderer.opts, j.view);
-        if (j.style && this.app.renderer.style) for (const key of Object.keys(D.STYLE)) {
-          if (typeof j.style[key] === 'string' && /^#[0-9a-f]{6}$/i.test(j.style[key])) this.app.renderer.style[key] = j.style[key];
-        }
+        this.restoreView(j);
         this.app.afterLoad(base, !j.camera);
       } catch (e) { this.app.toast('No se pudo abrir: ' + e.message, 'error'); }
     }
 
     /* ---------- exportar ---------- */
+
+    exportIFC(options) {
+      const p = options || {};
+      const result = D.IFC.export(this.app.doc, { schema:p.schema || 'IFC4', strictClassification:p.strictClassification !== false });
+      if (p.download !== false) this.download(this.safeName() + '_' + (p.schema || 'IFC4') + '.ifc', result.text, 'application/x-step');
+      return Object.assign({ ok:true, schema:p.schema || 'IFC4', report:D.IFC.summarizeReport(result.report) }, p.download === false ? { text:result.text } : { downloaded:true });
+    }
+
 
     exportOBJ() {
       const m = this.app.doc.worldModel();
@@ -179,7 +199,9 @@
       this._autoT = setTimeout(() => {
         try {
           if (!this.app.doc.hasContent()) { localStorage.removeItem(AUTOSAVE_KEY); return; }
-          localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(Object.assign(this.fileJSON(), { name: this.app.doc.name })));
+          // Store each component definition once. A flattened copy can be hundreds
+          // of MB and block the viewer before localStorage rejects its size.
+          localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(Object.assign(this.fileJSON({ compact:true, omitAudit:true }), { name: this.app.doc.name })));
         } catch (e) { /* sin almacenamiento: no pasa nada */ }
       }, 1200);
     }

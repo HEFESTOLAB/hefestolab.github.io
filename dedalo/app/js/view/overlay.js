@@ -216,6 +216,8 @@
       const fmt = D.units.fmtLen;
       this.hits = [];
       for (const a of model.annots.values()) {
+        const section = this.app.renderer.opts.sectionBox;
+        if (D.SectionBox && section && (a.p && !D.SectionBox.contains(section,a.p) || a.a && a.b && !D.SectionBox.segment(section,a.a,a.b))) continue;
         if (a.kind === 'dim' && this.app.tool && this.app.tool.id === 'dim' && this.app.tool.state === 2 && this.app.tool.editId === a.id) continue;
         const isSel = sel && sel.annots.has(a.id);
         const isHov = hoverAnnot === a.id;

@@ -6,7 +6,7 @@
   const D = root.DEDALO;
   const { V, geom } = D;
 
-  D.VERSION = '0.5.1';
+  D.VERSION = '0.6.0';
 
   D.TOOL_DEFS = [
     { group: 'sel', id: 'select', label: 'Seleccionar', key: 'Espacio', icon: 'select' },
@@ -76,6 +76,8 @@
       this.ui = new D.UI(this);
       this.mcpBridge.on(() => this.ui.refreshMCP());
       this.registerAppCommands();
+      D.SectionBox.install(this);
+      D.IFC.install(this.doc);
       this.bindEvents();
       this.resize();
       this.setTool('select');
@@ -435,7 +437,7 @@
         (geometry(d.model) || Array.isArray(d.nodes) && d.nodes.length)));
       if (!sceneContent && !geometry(a.model)) return;
       this.toast('Hay un modelo sin guardar de la última sesión.', 'info', [
-        { label: 'Recuperar', run: () => { this.doc.loadJSON(a, a.name || 'Recuperado'); if (a.camera) this.camera.load(a.camera); this.doc.dirty = true; this.afterLoad(a.name || 'Recuperado', !a.camera); } },
+        { label: 'Recuperar', run: () => { this.doc.loadJSON(a, a.name || 'Recuperado'); if (a.camera) this.camera.load(a.camera); this.files.restoreView(a); this.doc.dirty = true; this.afterLoad(a.name || 'Recuperado', !a.camera); } },
         { label: 'Descartar', run: () => this.files.clearAutosave() }
       ]);
     }
@@ -500,7 +502,7 @@
       R('view.option', {
         title: 'Opción de visualización', params: { name: 'showEdges | showHidden | showAxes | showGuides | xray | monochrome', value: 'bool' },
         run: (p) => {
-          if (!(p.name in this.renderer.opts)) return { ok: false, error: 'Opción desconocida: ' + p.name };
+          if (!['showEdges','showHidden','showAxes','showGuides','xray','monochrome'].includes(p.name)) return { ok: false, error: 'Opción desconocida: ' + p.name };
           this.renderer.opts[p.name] = !!p.value; this.requestRender(); this.ui.refreshPanels(); return { ok: true };
         }
       });
@@ -518,6 +520,7 @@
         }
       });
       R('tool.set', { title: 'Activar herramienta', params: { id: Object.keys(this.tools).join(' | ') }, run: (p) => (this.setTool(p.id) ? { ok: true } : { ok: false, error: 'Herramienta desconocida' }) });
+      R('export.ifc', { title: 'Exportar BIM a IFC', params: { schema: 'IFC4 | IFC2X3', strictClassification: 'bool; rechazar objetos sin categoría', download: 'bool; true por defecto' }, run: p => this.files.exportIFC(p) });
       R('app.snapshot', { title: 'Captura (PNG en base64)', run: () => ({ ok: true, png: this.snapshot() }) });
     }
 

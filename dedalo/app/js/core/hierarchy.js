@@ -293,11 +293,14 @@
       this.audit = Array.isArray(json.audit) ? clone(json.audit).slice(-100) : [];
       this.dirty = false; this._syncProjection(); this.emit('context'); this.emit('model'); this.emit('reset');
     }
-    fileJSON(extra) {
+    fileJSON(extra, options) {
+      options = options || {};
       // A flattened root fallback permits inspection by old readers; scene is authoritative.
       const file = Object.assign({}, extra || {}, { format: 'dedalo', version: 2, app: 'Dédalo', saved: new Date().toISOString(),
         name: this.name, projectId: this.projectId, projectVersion: this.projectVersion, scene: clone(this.scene.toJSON()),
-        model: this.scene.project([]).model.toJSON(), audit: clone(this.audit) });
+        audit: options.omitAudit ? [] : clone(this.audit) });
+      if (!options.compact) file.model = this.scene.project([]).model.toJSON();
+      if (options.omitAudit) file.autosave = { compact: true, auditOmitted: true };
       // The existing camera is in local coordinates while a definition is open.
       if (this.editPath.length) delete file.camera;
       return file;

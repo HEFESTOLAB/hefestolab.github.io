@@ -163,6 +163,10 @@ details.cmds summary { cursor: pointer; font-weight: 600; margin: 10px 0 6px; }
 }
 
 /* Unir IA y Territorio: asistentes dentro del modelador. */
+.section-limits { width: 100%; table-layout: fixed; border-collapse: collapse; margin: 12px 0; }
+.section-limits th, .section-limits td { padding: 4px; text-align: left; }
+.section-limits th:first-child { width: 26px; }
+@media (max-width: 760px) { #topbar { overflow-x: auto; } #topbar > button { flex-shrink: 0; } }
 .ai-wizard p, .territory-ui p { line-height: 1.5; }
 .ai-wizard button, .territory-ui button { border: 1px solid var(--line2); border-radius: 7px; padding: 7px 10px; margin: 4px 4px 4px 0; background: #fff; }
 .ai-wizard button.primary, .territory-ui button.primary, .download-cta { display: inline-block; background: var(--accent); color: #fff; border-color: var(--accent); text-decoration: none; border-radius: 8px; padding: 9px 12px; }

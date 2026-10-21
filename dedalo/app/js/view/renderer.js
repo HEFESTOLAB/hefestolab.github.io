@@ -232,12 +232,15 @@
         const smooth = gsize.get(g) > 1;
         const out = (col[3] < 0.999 || xray) ? trans : opaque;
         for (const tri of model.faceTriangles(f.id)) {
+          const vertices = [];
           for (const v of tri) {
             const p = model.P(v);
             let nrm = f.n;
             if (smooth) { const s = vn.get(g + '|' + v); if (s) { const nn = V.norm(s); if (V.dot(nn, f.n) > 0.2) nrm = nn; } }
-            out.push(p[0], p[1], p[2], nrm[0], nrm[1], nrm[2], col[0], col[1], col[2], col[3], back[0], back[1], back[2], flag);
+            vertices.push([p[0], p[1], p[2], nrm[0], nrm[1], nrm[2], col[0], col[1], col[2], col[3], back[0], back[1], back[2], flag]);
           }
+          const clipped = D.SectionBox ? D.SectionBox.polygon(this.opts.sectionBox, vertices) : vertices;
+          for (let i = 1; i < clipped.length - 1; i++) for (const v of [clipped[0], clipped[i], clipped[i+1]]) out.push(...v);
         }
       }
       const all = new Float32Array(opaque.length + trans.length);
@@ -305,7 +308,7 @@
         }
       }
       if (extra) lines.push(...extra);
-      this.setLines(lines);
+      this.setLines(D.SectionBox ? D.SectionBox.lines(this.opts.sectionBox, lines) : lines);
     }
 
     /* ---------- dibujo ---------- */

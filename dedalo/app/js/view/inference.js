@@ -33,6 +33,7 @@
         const t = (f.d - V.dot(f.n, ray.o)) / den;
         if (t <= 0) continue;
         const p = V.add(ray.o, V.scale(ray.d, t));
+        if (D.SectionBox && !D.SectionBox.contains(this.app.renderer.opts.sectionBox, p)) continue;
         let inside = false;
         for (const [a, b, c] of m.faceTriangles(f.id)) {
           if (inTri3(p, m.P(a), m.P(b), m.P(c), f.n)) { inside = true; break; }
@@ -49,6 +50,7 @@
 
     // ¿Se ve el punto p (ninguna cara delante)?
     visible(p, exclude) {
+      if (D.SectionBox && !D.SectionBox.contains(this.app.renderer.opts.sectionBox, p)) return false;
       if (this.app.renderer.opts.xray) return true;
       const s = this.cam.project(p);
       if (s.behind) return false;
@@ -63,6 +65,7 @@
         const t = (f.d - V.dot(f.n, ray.o)) / den;
         if (t <= 0 || t >= tp - tol) continue;
         const q = V.add(ray.o, V.scale(ray.d, t));
+        if (D.SectionBox && !D.SectionBox.contains(this.app.renderer.opts.sectionBox, q)) continue;
         for (const [a, b, c] of m.faceTriangles(f.id)) {
           if (inTri3(q, m.P(a), m.P(b), m.P(c), f.n)) return false;
         }
@@ -74,6 +77,7 @@
       const out = [];
       for (const v of this.model.verts.values()) {
         if (skip && skip.has(v.id)) continue;
+        if (D.SectionBox && !D.SectionBox.contains(this.app.renderer.opts.sectionBox, v.p)) continue;
         const s = this.cam.project(v.p);
         if (s.behind) continue;
         const d = Math.hypot(s.x - x, s.y - y);
@@ -91,7 +95,8 @@
       for (const e of m.edges.values()) {
         if (skipVerts && (skipVerts.has(e.a) || skipVerts.has(e.b))) continue;
         if (e.soft && !this.app.renderer.opts.showHidden) continue;
-        const A = m.P(e.a), B = m.P(e.b);
+        let A = m.P(e.a), B = m.P(e.b);
+        if (D.SectionBox) { const line = D.SectionBox.segment(this.app.renderer.opts.sectionBox, A, B); if (!line) continue; [A,B] = line; }
         const sa = this.cam.project(A), sb = this.cam.project(B);
         if (sa.behind && sb.behind) continue;
         const d2 = segDist2(x, y, sa, sb);
@@ -138,6 +143,7 @@
     get model() { return this.app.doc.model; }
 
     resetTracking() { this.tracking = []; }
+    inSection(p) { return !D.SectionBox || D.SectionBox.contains(this.app.renderer.opts.sectionBox, p); }
 
     infer(x, y, ctx) {
       ctx = ctx || {};
@@ -214,7 +220,7 @@
         if (ne) {
           const e = m.edges.get(ne.eid);
           const c = geom.lineLineClosest(ctx.start, axisCand.axisDir, m.P(e.a), V.sub(m.P(e.b), m.P(e.a)));
-          if (c && c.t >= 0 && c.t <= 1 && (!ctx.onPlaneOnly || !ctx.plane || Math.abs(geom.planeDist(ctx.plane, c.p2)) < 1e-6) && V.dist(c.p1, c.p2) < cam.pixelSize(c.p1) * 3) {
+          if (c && c.t >= 0 && c.t <= 1 && this.inSection(c.p2) && (!ctx.onPlaneOnly || !ctx.plane || Math.abs(geom.planeDist(ctx.plane, c.p2)) < 1e-6) && V.dist(c.p1, c.p2) < cam.pixelSize(c.p1) * 3) {
             axisCand.p = c.p2; axisCand.label = 'En arista'; axisCand.edge = ne.eid; axisCand.markColor = COLORS.onEdge;
           }
         }
@@ -308,7 +314,7 @@
         const d = Math.hypot(s.x - x, s.y - y);
         if (!s.behind && d <= this.snapR) cands.push({ p: [0, 0, 0], d, prio: 0.5, type: 'endpoint', label: 'Origen', color: COLORS.endpoint });
       }
-      const usable = cands.filter(c => (!ctx.skipStartPoint || !ctx.start || V.dist(c.p, ctx.start) > 1e-6) && (!ctx.onPlaneOnly || !ctx.plane || Math.abs(geom.planeDist(ctx.plane, c.p)) <= 1e-6));
+      const usable = cands.filter(c => this.inSection(c.p) && (!ctx.skipStartPoint || !ctx.start || V.dist(c.p, ctx.start) > 1e-6) && (!ctx.onPlaneOnly || !ctx.plane || Math.abs(geom.planeDist(ctx.plane, c.p)) <= 1e-6));
       if (!usable.length) return null;
       usable.sort((a, b) => (a.prio - b.prio) || (a.d - b.d));
       return usable[0];
@@ -328,10 +334,11 @@
     _trackOnLine(x, y, start, dir) {
       let best = null;
       for (const t of this.tracking) {
+        if (!this.inSection(t.p)) continue;
         for (const a of AXES) {
           if (V.parallel(a.dir, dir)) continue;
           const c = geom.lineLineClosest(start, dir, t.p, a.dir);
-          if (!c || V.dist(c.p1, c.p2) > 1e-6) continue;
+          if (!c || !this.inSection(c.p1) || V.dist(c.p1, c.p2) > 1e-6) continue;
           const s = this.cam.project(c.p1);
           const d = Math.hypot(s.x - x, s.y - y);
           if (d <= this.axisR && (!best || d < best.d)) best = { d, p: c.p1, line: { a: t.p, b: c.p1, color: a.color, dash: 4 } };
@@ -344,6 +351,7 @@
       if (!this.tracking.length) return null;
       let best = null;
       for (const t of this.tracking) {
+        if (!this.inSection(t.p)) continue;
         for (const a of AXES) {
           if (ctx.plane && Math.abs(V.dot(a.dir, ctx.plane.n)) > 1e-6) continue;
           let p;
@@ -355,6 +363,7 @@
             const c = geom.lineLineClosest(t.p, a.dir, ray.o, ray.d);
             if (!c) continue; p = c.p1;
           }
+          if (!this.inSection(p)) continue;
           const s = this.cam.project(p);
           if (s.behind) continue;
           const d = Math.hypot(s.x - x, s.y - y);
@@ -383,6 +392,7 @@
           if (c && c.t <= 0) continue;
           p = c ? c.p1 : a.p;
         }
+        if (!this.inSection(p)) continue;
         if (ctx && ctx.skipStartPoint && ctx.start && V.dist(p, ctx.start) < 1e-6) continue;
         const s = this.cam.project(p);
         if (s.behind) continue;
