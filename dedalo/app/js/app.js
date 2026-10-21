@@ -6,7 +6,7 @@
   const D = root.DEDALO;
   const { V, geom } = D;
 
-  D.VERSION = '0.6.0';
+  D.VERSION = '0.6.1';
 
   D.TOOL_DEFS = [
     { group: 'sel', id: 'select', label: 'Seleccionar', key: 'Espacio', icon: 'select' },
@@ -108,7 +108,7 @@
       ov.addEventListener('pointerdown', (e) => this.onPointerDown(e));
       ov.addEventListener('pointermove', (e) => this.onPointerMove(e));
       ov.addEventListener('pointerup', (e) => this.onPointerUp(e));
-      ov.addEventListener('pointercancel', () => { this.navDrag = null; this.rightDown = null; if (this.tool) this.tool.cancel(); });
+      ov.addEventListener('pointercancel', () => { this.navDrag = null; this.rightDown = null; this.sectionController?.cancel(); if (this.tool) this.tool.cancel(); });
       ov.addEventListener('mousedown', (e) => { if (e.button === 1) e.preventDefault(); });
       ov.addEventListener('wheel', (e) => this.onWheel(e), { passive: false });
       // The popup can be inserted under the pointer before the browser emits
@@ -180,6 +180,7 @@
       ev.clicks = this._clicks;
       if (ev.button === 1) { this.navDrag = { x: ev.x, y: ev.y, pivot: this.pivotAt(ev.x, ev.y) }; this.el.ov.style.cursor = 'grabbing'; return; }
       if (ev.button === 2) { this.rightDown = { x: ev.x, y: ev.y }; return; }
+      if(this.sectionController?.begin(ev)) { this.afterInput(); return; }
       try {
         this.tool.onDown(ev);
         if (ev.clicks === 2) this.tool.onDouble(ev);
@@ -198,6 +199,7 @@
         this.requestRender();
         return;
       }
+      if(this.sectionController?.move(ev)) return;
       try { this.tool.onMove(ev); } catch (err) { console.error(err); }
       const c = this.tool.cursor();
       if (this._cursor !== c) { this._cursor = c; this.el.ov.style.cursor = c; }
@@ -213,6 +215,7 @@
         if (!moved) this.contextMenu(ev);
         return;
       }
+      if(ev.button===0 && this.sectionController?.end()) { this.afterInput(); return; }
       if (ev.button === 0) { try { this.tool.onUp(ev); } catch (err) { console.error(err); } }
       this.afterInput();
     }
@@ -266,6 +269,7 @@
     keyDown(k) {
       const key = k.key;
       const prevent = k.prevent || (() => {});
+      if(key==='Escape' && this.sectionController?.cancel()) { prevent(); this.afterInput(); return; }
       if (this.territoryBusy) { prevent(); return; }
       if (k.ctrl) {
         const c = key.toLowerCase();
@@ -468,6 +472,7 @@
       if (this._rendering) return;
       this._rendering = true;
       try {
+      if(this.sectionController?.drag?.deferred){this.overlay.clear();this.sectionController.draw(this.overlay);return;}
       if (this.tool && this.tool.flushMotion) this.tool.flushMotion();
       const m = this.doc.model;
       const hover = (this.tool.hover && this.tool.hover()) || null;
@@ -480,6 +485,7 @@
       this.overlay.clear();
       this.overlay.drawAnnotations(m, this.doc.sel, hover && hover.annot);
       try { this.tool.drawOverlay(this.overlay); } catch (err) { console.error(err); }
+      this.sectionController?.draw(this.overlay);
       } finally { this._rendering = false; }
     }
     snapshot() {

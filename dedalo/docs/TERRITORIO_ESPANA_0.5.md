@@ -1,5 +1,15 @@
 # Territorio España
 
+## Fiabilidad de las consultas · 20/10/2026
+
+Las peticiones de Catastro admiten hasta 60 segundos para recortes urbanos densos. El acceso al conector tiene un límite de 75 segundos y conserva la cancelación. Si el conector deja de ejecutarse entre capas, la consulta continúa con los servicios públicos HTTPS cuando el navegador permite su acceso. Un rechazo del proveedor no se repite automáticamente: se informa del error y se mantienen las capas que ya llegaron.
+
+Árboles y contexto OSM se obtienen con una sola consulta cuando ambas capas están activadas. La petición web permite identificar el origen público de Dédalo al proveedor. Los límites HTTP 406/429 indican que debe esperarse al menos 30 segundos antes de volver a consultar; el acceso desde un archivo local puede requerir el conector. El panel muestra qué capas no estuvieron disponibles. Una respuesta sin geometría explica la falta de datos y no ofrece crear un entorno vacío.
+
+Comprobación de red del 20/10/2026: CartoCiudad resolvió Plaza España, Burgos; Catastro devolvió 396 parcelas y 2082 partes de edificios en un recorte de 600 m; IGN devolvió MDT 33 × 33. La importación nativa produjo 2000 volúmenes, 77 huellas sin altura y 2048 caras de terreno. Cinco geometrías catastrales inválidas se omitieron con aviso. El servidor Overpass respondió HTTP 406 con el origen del navegador en esta red; su disponibilidad sigue dependiendo del proveedor. La comprobación de importación fue en CPU, sin certificar su aspecto gráfico ni la cobertura exhaustiva del servicio.
+
+Referencias de los servicios: [Catastro INSPIRE](https://www.catastro.hacienda.gob.es/webinspire/index.html), [CartoCiudad](https://www.cartociudad.es/web/portal/directorio-de-servicios/geoprocesamiento), [MDT05 IGN](https://www.idee.es/csw-codsi-idee/srv/api/records/spaignMDT05), [uso de Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API#Public_Overpass_API_instances).
+
 ## Corrección 0.5.1
 
 La vista previa en planta usa el mapa base oficial IGN y también carga al abrir Dédalo directamente como archivo local (necesita internet). El recorte se encuadra al cambiar los metros. El número y el deslizador actualizan al momento sus dimensiones y superficie; el zoom del mapa no altera los metros. Las consultas y la creación/exportación muestran un indicador de carga. Durante la creación se bloquean entradas y cambios MCP, se conserva el deshacer y se evitan importaciones duplicadas por varios clics.

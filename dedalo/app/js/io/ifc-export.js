@@ -59,6 +59,42 @@
     const a = definition.metadata && definition.metadata.ifc || {}, b = node && node.metadata && node.metadata.ifc || {};
     return Object.assign({}, clone(a), clone(b), { properties: Object.assign({}, a.properties || {}, b.properties || {}), attributes: Object.assign({}, a.attributes || {}, b.attributes || {}) });
   }
+  // A classified object owns its unclassified descendants. An explicitly classified
+  // child is a separate IFC element; no face is claimed by both.
+  function ownedParts(scene, definition) {
+    const parts=[], boundaries=[], M=D.SceneMath;
+    function walk(def,matrix,path,storey) {
+      parts.push({def,matrix,path});
+      for(const node of def.nodes) {
+        const child=scene.definitions.get(node.definitionId), meta=mergedIFC(child,node);
+        const next=M.multiply(matrix,node.matrix), nextPath=path.concat(node.id);
+        if(meta.entity) boundaries.push({def:child,node,matrix:next,path:nextPath,storey:meta.storey||storey});
+        else walk(child,next,nextPath,meta.storey||storey);
+      }
+    }
+    walk(definition,M.identity(),[],null);
+    return {parts,boundaries};
+  }
+  function inventory(doc, options) {
+    const p=options||{}, scene=doc.scene, rows=[], counts={};
+    let faces=0, looseEdges=0;
+    function visit(def,node,path) {
+      const meta=mergedIFC(def,node), own=meta.entity ? ownedParts(scene,def) : null;
+      const parts=own?own.parts:[{def}], faceCount=parts.reduce((n,x)=>n+x.def.model.faces.size,0);
+      const edgeCount=parts.reduce((n,x)=>n+[...x.def.model.edges.values()].filter(e=>!x.def.model.eFaces.get(e.id)?.size).length,0);
+      if(meta.entity || faceCount || edgeCount) {
+        const entity=meta.entity||null; counts[entity||'UNCLASSIFIED']=(counts[entity||'UNCLASSIFIED']||0)+1;
+        rows.push({id:node?node.id:def.id,definitionId:def.id,name:node?node.name:doc.name,path:path.slice(),context:path.slice(0,-1),entity,source:node?.metadata?.ifc?.entity?'instance':def.metadata?.ifc?.entity?'definition':'unclassified',faces:faceCount,looseEdges:edgeCount});
+        faces+=faceCount;looseEdges+=edgeCount;
+      }
+      if(own)for(const b of own.boundaries)visit(b.def,b.node,path.concat(b.path));
+      else for(const child of def.nodes)visit(scene.definitions.get(child.definitionId),child,path.concat(child.id));
+    }
+    visit(scene.current([]),null,[]);
+    const offset=Number.isSafeInteger(p.offset)?Math.max(0,p.offset):0,limit=Number.isSafeInteger(p.limit)?Math.max(0,Math.min(200,p.limit)):50;
+    const selected=p.unclassifiedOnly?rows.filter(r=>!r.entity):rows;
+    return {ok:true,scope:'entire-model',projectId:doc.projectId,projectVersion:doc.projectVersion,total:rows.length,classified:rows.filter(r=>r.entity).length,unclassified:rows.filter(r=>!r.entity).length,faces,looseEdges,categories:counts,offset,limit,totalRows:selected.length,items:selected.slice(offset,offset+limit),nextOffset:limit>0&&offset+limit<selected.length?offset+limit:null};
+  }
   function scalar(value, attribute) {
     if (value === null || value === undefined) { if(!attribute.optional)throw new Error('Falta el atributo IFC obligatorio ' + attribute.name + '.'); return '$'; }
     if (attribute.enum) {
@@ -122,9 +158,10 @@
       if (p.scope && p.scope !== 'instance') throw new Error('scope debe ser instance o definition.');
       const ids = p.nodes || [...doc.sel.nodes];
       if (!Array.isArray(ids) || !ids.length) throw new Error('Selecciona grupos o componentes, o usa scope: definition para la geometría del contexto. Agrupa las caras para clasificar elementos separados.');
-      return ids.map(id => { const node = doc.scene.node(doc.editPath, id); if (!node) throw new Error('Instancia fuera del contexto: ' + id); return node; });
+      return ids.map(id => { const node = doc.scene.node(p.path || doc.editPath, id); if (!node) throw new Error('Instancia fuera del contexto: ' + id); return node; });
     };
     const register = (name, title, run, params, undoable) => doc.register(name, { title, run, params, undoable });
+    register('bim.inventory','Inventario IFC del modelo completo',p=>inventory(doc,p),{offset:'desde 0',limit:'0..200, por defecto 50',unclassifiedOnly:'bool; pendientes de categoría'},false);
     register('bim.categories', 'Consultar categorías IFC', p => ({ ok: true, schema: C.schema(p.schema), categories: C.list(p.schema) }), { schema: 'IFC4 | IFC2X3' }, false);
     register('bim.assign', 'Asignar categoría BIM', p => {
       const input = p.ifc || p.classification, objects = targets(p);
@@ -136,7 +173,7 @@
       });
       objects.forEach((obj,i) => { obj.metadata = Object.assign({}, obj.metadata || {}, { ifc: values[i] }); });
       return { ok: true, count: objects.length, scope: p.scope || 'instance', ifc: values[0] };
-    }, { scope: 'instance | definition', nodes: '[uuid] (instancias del contexto)', definitionId: 'uuid (scope definition)', replace:'true: sustituir todos los metadatos IFC; por defecto conservar propiedades/material/planta', ifc: '{entity,predefinedType?,objectType?,storey?:{name,elevation},attributes?,properties?,material?,classification?}' }, true);
+    }, { path:'[uuid] ruta del contexto de los nodos; opcional', scope: 'instance | definition', nodes: '[uuid] (instancias del contexto)', definitionId: 'uuid (scope definition)', replace:'true: sustituir todos los metadatos IFC; por defecto conservar propiedades/material/planta', ifc: '{entity,predefinedType?,objectType?,storey?:{name,elevation},attributes?,properties?,material?,classification?}' }, true);
     register('bim.clear', 'Quitar clasificación BIM', p => {
       const objects = targets(p); for (const obj of objects) { if (obj.metadata) delete obj.metadata.ifc; }
       return { ok: true, count: objects.length };
@@ -172,12 +209,12 @@
     const errors = scene.validate(); if (errors.length) throw new Error('Escena inválida: ' + errors.join('; '));
     const w = new Writer(schema, doc.name || 'Modelo', options.timestamp || new Date().toISOString());
     w.reportOnly=!!options.reportOnly;
-    const report = { schema, projectId: doc.projectId, projectVersion: doc.projectVersion, elements: 0, groups: 0, types: 0, faces: 0, triangles: 0, looseEdges: 0, annotations: 0, unclassified: [], fallbacks: [], warnings: [], categories: {}, storeys: [], geometry: 'IFC4 tessellation / IFC2X3 faceted BRep or face based surface; metres; Z up', source: C.source };
+    const report = { schema, projectId: doc.projectId, projectVersion: doc.projectVersion, elements: 0, groups: 0, types: 0, faces: 0, triangles: 0, looseEdges: 0, annotations: 0, unclassified: [], fallbacks: [], warnings: [], categories: {}, storeys: [], geometry: 'IFC4 tessellation / IFC2X3 faceted BRep or face based surface; metres; Z up', source: C.source, scope:'entire-model', classificationPolicy:'A classified group/component owns all unclassified descendants; explicit child categories remain separate; every geometric occurrence is exported once.' };
     const pid = doc.projectId || scene.rootId, M = D.SceneMath;
     const person = w.add('IfcPerson', ['$','$',str('Dédalo'),'$','$','$','$','$']);
     const org = w.add('IfcOrganization', ['$',str('HEFESTOLAB'),'$','$','$']);
     const user = w.add('IfcPersonAndOrganization', [ref(person), ref(org), '$']);
-    const app = w.add('IfcApplication', [ref(org),str('0.6'),str('Dédalo'),'\'DEDALO\'']);
+    const app = w.add('IfcApplication', [ref(org),str(D.VERSION||'0.6.1'),str('Dédalo'),'\'DEDALO\'']);
     const unix = Math.floor(Date.parse(w.timestamp)/1000);
     if (!Number.isFinite(unix)) throw new Error('La fecha de exportación IFC no es válida.');
     w.owner = w.add('IfcOwnerHistory', [ref(user),ref(app),'$','.ADDED.',String(unix),ref(user),ref(app),String(unix)]);
@@ -193,7 +230,7 @@
     const building=w.root('IfcBuilding',pid+'/building',options.buildingName||'Edificio',['$',ref(buildingPlacement),'$','$','.ELEMENT.','$','$','$']);
     const aggregate=(id,name,parent,children)=>{ if(children.length)w.root('IfcRelAggregates',id,name,[ref(parent),list(children.map(ref))]); };
     aggregate(pid+'/project-site','Proyecto / solar',project,[site]); aggregate(pid+'/site-building','Solar / edificio',site,[building]);
-    const storeys=new Map(), types=new Map(), materials=new Map(), styles=new Map(), occurrences=new Map(), features=[], geometryCache=new Map(), physicalChildren=new Map(), physicalIds=new Map();
+    const storeys=new Map(), types=new Map(), materials=new Map(), styles=new Map(), occurrences=new Map(), features=[], geometryCache=new Map(), ownedCache=new Map(), physicalChildren=new Map(), physicalIds=new Map();
     function storeyFor(value) {
       const info=value||{name:'Planta 0',elevation:0}, elevation=info.elevation||0, k=info.name+'|'+elevation;
       if(!storeys.has(k)){const pl=placement([0,0,elevation],buildingPlacement), entity=w.root('IfcBuildingStorey',pid+'/storey/'+k,info.name,['$',ref(pl),'$','$','.ELEMENT.',real(elevation)]); storeys.set(k,{entity,placement:pl,elevation,products:[],spaces:[]}); report.storeys.push({name:info.name,elevation});}
@@ -239,12 +276,21 @@
       const ids=[...model.faces.keys()];
       report.annotations+=model.annots.size;
       report.looseEdges += [...model.edges.values()].filter(e=>!(model.eFaces.get(e.id)||new Set()).size).length;
-      if(!ids.length)return {entity:null,materials:[]};
+      const freeEdges=[...model.edges.values()].filter(e=>!model.eFaces.get(e.id)?.size);
+      if(!ids.length&&!freeEdges.length)return {entity:null,materials:[]};
+      const shapes=(items,type,curves)=>{
+        const reps=[];
+        if(items.length)reps.push(w.add('IfcShapeRepresentation',[ref(context),str('Body'),str(type),list(items.map(ref))]));
+        if(curves.length){const set=w.add('IfcGeometricCurveSet',[list(curves.map(ref))]);reps.push(w.add('IfcShapeRepresentation',[ref(context),str('Axis'),str('GeometricCurveSet'),list([ref(set)])]));}
+        return w.add('IfcProductDefinitionShape',['$','$',list(reps.map(ref))]);
+      };
       report.faces+=ids.length;
       // Shape geometry is reusable. Each occurrence still owns its individual
       // IfcProductDefinitionShape (IFC2X3 ShapeOfProduct has cardinality [1:1]).
       const cacheKey=definitionId+'|'+[0,1,2,4,5,6,8,9,10].map(i=>matrix[i]).join(',');
-      if(geometryCache.has(cacheKey)){const cached=geometryCache.get(cacheKey);report.triangles+=cached.triangles;if(!cached.closed)report.warnings.push({id,code:'OPEN_SURFACE',message:'El elemento contiene superficies abiertas.'});const shape=w.add('IfcShapeRepresentation',[ref(context),str('Body'),str(cached.shapeType),list(cached.items.map(ref))]);return Object.assign({},cached,{entity:w.add('IfcProductDefinitionShape',['$','$',list([ref(shape)])])});}
+      if(geometryCache.has(cacheKey)){const cached=geometryCache.get(cacheKey);report.triangles+=cached.triangles;if(!cached.closed&&ids.length)report.warnings.push({id,code:'OPEN_SURFACE',message:'El elemento contiene superficies abiertas.'});return {...cached,entity:shapes(cached.items,cached.shapeType,cached.curves)};}
+      const curves=freeEdges.map(e=>{const points=[e.a,e.b].map(v=>w.add('IfcCartesianPoint',[coord(M.vector(matrix,model.P(v)))]));return w.add('IfcPolyline',[list(points.map(ref))]);});
+      if(!ids.length){const result={items:[],shapeType:'GeometricCurveSet',curves,materials:[],triangles:0,closed:false};geometryCache.set(cacheKey,result);return {...result,entity:shapes([],result.shapeType,curves)};}
       let triangleCount=0;
       const oriented=orientedFaces(model,ids), points=new Map(), pointIds=new Map(), usedMaterials=new Map();
       const determinant=matrix[0]*(matrix[5]*matrix[10]-matrix[9]*matrix[6])-matrix[4]*(matrix[1]*matrix[10]-matrix[9]*matrix[2])+matrix[8]*(matrix[1]*matrix[6]-matrix[5]*matrix[2]);
@@ -262,8 +308,7 @@
         for(const component of oriented.components){const shell=w.add(oriented.closed?'IfcClosedShell':'IfcOpenShell',[list(component.map(i=>ref(faceEntities[i])))]);const item=w.add(oriented.closed?'IfcFacetedBrep':'IfcFaceBasedSurfaceModel',[oriented.closed?ref(shell):list([ref(shell)])]);items.push(item);applyStyle(item,model.materials.get(oriented.faces[component[0]].source.mat));}
       }
       if(!oriented.closed)report.warnings.push({id,code:'OPEN_SURFACE',message:'El elemento contiene superficies abiertas; se conserva su geometría y no se declara un sólido cerrado.'});
-      const shape=w.add('IfcShapeRepresentation',[ref(context),str('Body'),str(schema==='IFC4'?'Tessellation':oriented.closed?'Brep':'SurfaceModel'),list(items.map(ref))]);
-      const result={entity:w.add('IfcProductDefinitionShape',['$','$',list([ref(shape)])]),items,shapeType:schema==='IFC4'?'Tessellation':oriented.closed?'Brep':'SurfaceModel',materials:[...usedMaterials.values()],triangles:triangleCount,closed:oriented.closed};geometryCache.set(cacheKey,result);return result;
+      const result={entity:shapes(items,schema==='IFC4'?'Tessellation':oriented.closed?'Brep':'SurfaceModel',curves),items,curves,shapeType:schema==='IFC4'?'Tessellation':oriented.closed?'Brep':'SurfaceModel',materials:[...usedMaterials.values()],triangles:triangleCount,closed:oriented.closed};geometryCache.set(cacheKey,result);return result;
     }
     function chosen(meta,id,name){
       let declaration=C.resolve(meta,schema),reason;
@@ -291,12 +336,23 @@
       return types.get(k);
     };
     function product(def,node,matrix,path,inheritedStorey,parentPhysical){
-      const meta=mergedIFC(def,node),id=pid+'/'+(path.join('/')||'root'),name=meta.name||(node?node.name:doc.name)||def.name,hasGeometry=def.model.faces.size>0;
+      const meta=mergedIFC(def,node),id=pid+'/'+(path.join('/')||'root'),name=meta.name||(node?node.name:doc.name)||def.name;
+      let model=def.model,boundaries=null,geometryKey=def.id;
+      if(meta.entity && def.nodes.length) {
+        if(!ownedCache.has(def.id)) {
+          const ownership=ownedParts(scene,def), temporary=new D.Scene();
+          temporary.rootId=def.id;
+          temporary.definitions=new Map([...scene.definitions].map(([key,d])=>[key,{...d,nodes:d.nodes.filter(n=>!mergedIFC(scene.definitions.get(n.definitionId),n).entity)}]));
+          ownedCache.set(def.id,{model:temporary.project([]).model,boundaries:ownership.boundaries});
+        }
+        const owned=ownedCache.get(def.id); model=owned.model;boundaries=owned.boundaries;geometryKey='owned:'+def.id;
+      }
+      const hasGeometry=model.faces.size>0||[...model.edges.values()].some(e=>!model.eFaces.get(e.id)?.size);
       const nextStorey=meta.storey||inheritedStorey;
       let entity=null,physical=parentPhysical,group=null, own=[];
       if(hasGeometry||meta.entity){
         const declaration=chosen(meta,id,name),st=storeyFor(nextStorey),offset=[matrix[12],matrix[13],matrix[14]-st.elevation],pl=placement(offset,st.placement);
-        const geom=representation(def.model,matrix,id,def.id),common={GlobalId:str(guid(id)),OwnerHistory:ref(w.owner),Name:str(name),Description:str(meta.description),ObjectType:str(meta.objectType||meta.entity||'Sin clasificar'),ObjectPlacement:ref(pl),Representation:geom.entity?ref(geom.entity):'$',Tag:str(node?node.id:def.id)};
+        const geom=representation(model,matrix,id,geometryKey),common={GlobalId:str(guid(id)),OwnerHistory:ref(w.owner),Name:str(name),Description:str(meta.description),ObjectType:str(meta.objectType||meta.entity||'Sin clasificar'),ObjectPlacement:ref(pl),Representation:geom.entity?ref(geom.entity):'$',Tag:str(node?node.id:def.id)};
         const actualMeta=declaration.entity==='IfcBuildingElementProxy'&&meta.entity!=='IfcBuildingElementProxy'?{}:meta;
         entity=w.add(declaration.exportEntity||declaration.entity,declarationArgs(declaration,actualMeta.predefinedType,actualMeta.attributes||{},common));
         occurrences.set(path.join('/'),entity);
@@ -307,7 +363,7 @@
         if(isFeature)features.push({entity,host:meta.host,path:path.slice(),id,projection:declaration.entity==='IfcProjectionElement'});
         else if(parentPhysical){if(!physicalChildren.has(parentPhysical))physicalChildren.set(parentPhysical,[]);physicalChildren.get(parentPhysical).push(entity);}else (declaration.entity==='IfcSpace'?st.spaces:st.products).push(entity);
         physical=entity;
-        if(schema==='IFC2X3'&&declaration.entity==='IfcRoof'&&hasGeometry&&def.nodes.length){physical=parentPhysical;report.warnings.push({id,code:'ROOF_PARTS_WITH_BODY',message:'IFC2X3 no permite simultáneamente Body y descomposición de cubierta; se conservan sus elementos como productos de planta y la jerarquía queda en OccurrencePath.'});}
+        if(schema==='IFC2X3'&&declaration.entity==='IfcRoof'&&hasGeometry&&(boundaries?boundaries.length:def.nodes.length)){physical=parentPhysical;report.warnings.push({id,code:'ROOF_PARTS_WITH_BODY',message:'IFC2X3 no permite simultáneamente Body y descomposición de cubierta; se conservan sus elementos como productos de planta y la jerarquía queda en OccurrencePath.'});}
         const type=getType(declaration,actualMeta,def,id);if(type)type.products.push(entity);
         const mats=meta.material?[material(meta.material)]:geom.materials.map(material);
         if(mats.length&&!isFeature&&declaration.entity!=='IfcVirtualElement'&&declaration.entity!=='IfcSpace'){const unique=[...new Set(mats)],selection=unique.length===1?unique[0]:w.add('IfcMaterialList',[list(unique.map(ref))]);w.root('IfcRelAssociatesMaterial',id+'/materials','Materiales',[list([ref(entity)]),ref(selection)]);}
@@ -317,7 +373,9 @@
         own.push(entity);
       }else if(node&&def.nodes.length){group=w.root('IfcGroup',id+'/group',name,['$']);report.groups++;}
       else if(def.model.edges.size||def.model.annots.size){report.looseEdges+=def.model.edges.size;report.annotations+=def.model.annots.size;}
-      const children=[];for(const child of def.nodes){const childDef=scene.definitions.get(child.definitionId);children.push(...product(childDef,child,M.multiply(matrix,child.matrix),[...path,child.id],nextStorey,physical));}
+      const children=[];
+      if(boundaries)for(const b of boundaries)children.push(...product(b.def,b.node,M.multiply(matrix,b.matrix),path.concat(b.path),b.storey||nextStorey,physical));
+      else for(const child of def.nodes){const childDef=scene.definitions.get(child.definitionId);children.push(...product(childDef,child,M.multiply(matrix,child.matrix),[...path,child.id],nextStorey,physical));}
       if(group&&children.length)w.root('IfcRelAssignsToGroup',id+'/assign-group',name,[list([...new Set(children)].map(ref)),'$',ref(group)]);
       return [...own,...children];
     }
@@ -331,11 +389,11 @@
     const allStoreys=[...storeys.values()];aggregate(pid+'/building-storeys','Edificio / plantas',building,allStoreys.map(s=>s.entity));
     for(const [k,st]of storeys){if(st.products.length)w.root('IfcRelContainedInSpatialStructure',pid+'/containment/'+k,'Elementos de planta',[list(st.products.map(ref)),ref(st.entity)]);aggregate(pid+'/spaces/'+k,'Espacios de planta',st.entity,st.spaces);}
     for(const t of types.values())if(t.products.length)w.root('IfcRelDefinesByType',t.id+'/instances','Tipo de componente',[list(t.products.map(ref)),ref(t.entity)]);
-    if(report.looseEdges)report.warnings.push({code:'LOOSE_EDGES',count:report.looseEdges,message:'Las aristas sin caras se indican en el informe; no constituyen superficies BIM exportables.'});
+    if(report.looseEdges)report.warnings.push({code:'LOOSE_EDGES',count:report.looseEdges,message:'Las aristas sin caras se conservan como curvas IFC dentro del mismo archivo.'});
     if(report.annotations)report.warnings.push({code:'ANNOTATIONS',count:report.annotations,message:'Las guías, textos y cotas de edición no se exportan como elementos constructivos.'});
     if(!report.elements)throw new Error('El modelo no contiene caras ni elementos BIM clasificados para exportar.');
     return {text:options.reportOnly?null:w.finish(),report};
   }
-  D.IFC={export:exportIFC,install,guid,checkMetadata,summarizeReport};
+  D.IFC={export:exportIFC,install,guid,checkMetadata,summarizeReport,inventory};
 })(typeof window !== 'undefined' ? window : globalThis);
 

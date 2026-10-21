@@ -136,9 +136,10 @@ test('typed loadArea joins genuine layers and provenance, reports progress, pres
   const result = await T.loadArea({ bbox, onProgress: p => progress.push(p.layer), request: async desc => {
     seen.push(desc); return envelope(desc.operation, desc.operation === 'catastro.parcels' ? collection(parcel()) : desc.operation === 'catastro.buildings' ? gml : desc.operation === 'ign.terrain' ? ascii : JSON.stringify(osm), { cached: true, retrievedAt: '2026-10-18T00:00:00Z' });
   } });
-  assert.equal(seen.length, 5); assert.deepEqual(progress, ['parcels', 'buildings', 'terrain', 'trees', 'context']);
+  assert.equal(seen.length, 4); assert.deepEqual(progress, ['parcels', 'buildings', 'terrain', 'context']);
   assert.equal(result.parcels.length, 1); assert.equal(result.buildingParts.length, 1); assert.equal(result.trees.length, 1); assert.equal(result.roads.length, 1); assert.equal(result.partial, false);
-  assert.equal(result.sources.length, 5); assert.equal(result.sources[0].cached, true); assert.equal(result.sources[0].retrievedAt, '2026-10-18T00:00:00Z');
+  assert.equal(result.sources.length, 4); assert.equal(result.sources[0].cached, true); assert.equal(result.sources[0].retrievedAt, '2026-10-18T00:00:00Z');
+  assert.equal(result.trees[0].sourceId, result.sources[3].id, 'trees and context share the provenance of the single Overpass response');
   assert.deepEqual(result, JSON.parse(JSON.stringify(result)), 'Raw loader output must already be finite JSON for geo.import, without undefined metadata.');
   assert.match(result.sources[0].licenseNote, /restricciones distintas/); assert.match(result.sources[3].license, /ODbL/);
   assert.match(result.warnings.join(' '), /estimada/); assert.ok(!JSON.stringify(result).includes('propietario:'));
@@ -182,6 +183,24 @@ test('direct fetch is fixed to public endpoints, omits credentials, decodes lati
   } });
   assert.equal(new URL(called.u).hostname, 'ovc.catastro.meh.es'); assert.equal(called.init.credentials, 'omit'); assert.equal(r.parcels.length, 1);
   await assert.rejects(() => T.loadArea({ bbox, layers: { parcels: true, buildings: false, terrain: false, trees: false, context: false }, fetch: async () => new Response('unavailable', { status: 503 }) }), /HTTP 503/);
+});
+test('an empty successful provider response is not presented as importable geometry', async () => {
+  await assert.rejects(() => T.loadArea({ bbox, layers: { parcels: false, buildings: false, terrain: false, trees: true, context: false }, request: async d => envelope(d.operation, '{"elements":[]}') }), e => e.code === 'NO_DATA' && /no hay geometría/.test(e.message));
+});
+test('an optional combined Overpass failure preserves real Catastro geometry and identifies both unavailable layers', async () => {
+  const seen = [];
+  const result = await T.loadArea({ bbox, layers: { parcels: true, buildings: false, terrain: false, trees: true, context: true }, request: async d => {
+    seen.push(d.operation); if (d.operation.startsWith('osm.')) throw Object.assign(new Error('HTTP 406'), { code: 'HTTP' }); return envelope(d.operation, collection(parcel()));
+  } });
+  assert.deepEqual(seen, ['catastro.parcels', 'osm.context']); assert.equal(result.parcels.length, 1); assert.equal(result.partial, true);
+  assert.deepEqual(result.layerErrors.map(e => e.layer), ['context', 'trees']);
+});
+test('public Overpass retains app origin identity and explicitly reports rate limits without retry loops', async () => {
+  let calls = 0;
+  await assert.rejects(() => T.requestPublic({ operation: 'osm.trees', bbox }, { fetch: async (url, init) => {
+    calls++; assert.equal(init.referrerPolicy, 'strict-origin-when-cross-origin'); assert.match(init.headers['User-Agent'], /https:\/\/hefestolab.github.io/); return new Response('rate limit', { status: 429 });
+  } }), e => e.status === 429 && /30 segundos/.test(e.message));
+  assert.equal(calls, 1);
 });
 
 (async () => {

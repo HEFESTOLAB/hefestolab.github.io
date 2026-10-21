@@ -1,3 +1,9 @@
+# Dédalo 0.6.1
+
+Caja de sección con tiradores 3D, categorías de grupo/componente y un único IFC completo, guardado compacto e iconos diferenciados. [Guía de esta versión](docs/MEJORAS_0.6.1.md) · [Contrato para IA](docs/IA_IFC_Y_SECCION.md).
+
+## Versiones anteriores
+
 # Dédalo 0.5.1
 
 **Territorio España y Unir IA.** Corrección 0.5.1: mapa en planta desde archivo local, tamaño del recorte en vivo e indicador de carga. [Guía de territorio](docs/TERRITORIO_ESPANA_0.5.md) · [Unir IA paso a paso](docs/UNIR_IA_0.5.md).

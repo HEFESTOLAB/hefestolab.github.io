@@ -1,3 +1,11 @@
+# 0.6.1 · 21/10/2026
+
+Guardado canónico compacto también en Guardar como; categoría IFC de grupos/componentes aplicada a su geometría interna; un único archivo con todo el modelo; aristas libres conservadas; inventario IFC paginado para IA; tiradores de cara/esquina/traslación para la caja de sección; iconos y paneles simplificados. Véase docs/MEJORAS_0.6.1.md.
+
+# 0.6.0 · 20/10/2026
+
+MCP: lecturas canónicas paginadas y recuperación de conexión; MCPB Claude revisado. Caja de sección humana/IA en ambos renderizadores. Territorio: tiempos de espera, recuperación y capas parciales. Exportación general IFC4/IFC2X3 con catálogo de esquemas y clasificación explícita. Guía y límites: docs/MEJORAS_0.6.0.md.
+
 # 0.5.1 · 18/10/2026
 
 - Vista previa real IGN en planta también desde archivo local; carga/error/reintento y ajuste al panel.
@@ -68,3 +76,4 @@ equipo del usuario: falta su autorización para pasar las pruebas.
 - 25 pruebas del motor con resultados geométricos exactos.
 - Interfaz completa, inferencias, cuadro Medidas, paneles, consola de comandos, archivos .dedalo,
   OBJ, STL y PNG.
+

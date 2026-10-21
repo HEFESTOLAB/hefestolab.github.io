@@ -4,11 +4,14 @@
 (function (root) {
   'use strict';
   const D = root.DEDALO;
-  const s = (body, extra) => '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"' + (extra || '') + '>' + body + '</svg>';
+  const s = (body, extra) => '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"' + (extra || '') + '>' + body + '</svg>';
   const dot = (x, y, r) => '<circle cx="' + x + '" cy="' + y + '" r="' + (r || 1.9) + '" fill="currentColor" stroke="none"/>';
 
   D.ICONS = {
     logo: '<svg viewBox="0 0 32 32" width="26" height="26" fill="none"><rect x="1.5" y="1.5" width="29" height="29" rx="7" fill="#b4532a"/><path d="M8 9h10l6 6v8H14l-6-6z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 9v8h16M18 9v14" stroke="#fff" stroke-width="1.8" stroke-linejoin="round" opacity=".55"/></svg>',
+    section: s('<path d="M4 8l8-4 8 4v9l-8 4-8-4zM4 8l8 4 8-4M12 12v9"/><path d="M3 13l18-5v5L3 18z" fill="currentColor" fill-opacity=".18"/><rect x="1.5" y="12" width="3" height="3" fill="currentColor"/><rect x="19.5" y="6.5" width="3" height="3" fill="currentColor"/>'),
+    ifc: s('<path d="M5 3h10l4 4v14H5zM15 3v5h4"/><path d="M8 17v-6h6v6M8 14h6M11 11v6M3 20h18"/>'),
+    hierarchy: s('<rect x="9" y="2" width="6" height="5" rx="1"/><path d="M12 7v5M5 16v-4h14v4"/><rect x="2" y="16" width="6" height="5" rx="1"/><rect x="9" y="16" width="6" height="5" rx="1"/><rect x="16" y="16" width="6" height="5" rx="1"/>'),
     menu: s('<path d="M4 7h16M4 12h16M4 17h16"/>'),
     select: s('<path d="M6 3.5l11.5 9.2-5.3.8 3.2 6.2-2.4 1.2-3.2-6.2-3.8 3.8z" fill="currentColor" fill-opacity=".08"/>'),
     erase: s('<path d="M14.5 4.5l5 5-8.5 8.5H6.5l-2-2a1.5 1.5 0 010-2.1z"/><path d="M9.5 9.5l5 5"/><path d="M11 18h8.5"/>'),

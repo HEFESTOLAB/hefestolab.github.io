@@ -51,7 +51,7 @@
       if (local) body.append(el('p', 'Esta copia de Dédalo ya está servida por el conector de tu ordenador. Si tu IA ya muestra las herramientas Dédalo, continúa.'));
       else {
         const link = el('a', s.client === 'claude' ? 'Descargar conector para Claude (.mcpb)' : 'Descargar conector (.zip)', 'download-cta');
-        link.href = 'downloads/' + (s.client === 'claude' ? 'DEDALO_MCP_CLAUDE_v0.6.0.mcpb' : 'DEDALO_MCP_LOCAL_v0.6.0.zip'); link.download = '';
+        link.href = 'downloads/' + (s.client === 'claude' ? 'DEDALO_MCP_CLAUDE_v0.6.1.mcpb' : 'DEDALO_MCP_LOCAL_v0.6.1.zip'); link.download = '';
         link.addEventListener('click', () => { s.downloadRequested = true; const n = body.querySelector('.download-status'); if (n) n.textContent = 'Descarga solicitada. Busca el archivo en Descargas y sigue estos pasos.'; });
         body.append(link, el('p', s.downloadRequested ? 'Descarga solicitada. Busca el archivo en Descargas.' : 'El archivo se descarga al pulsar el botón.', 'download-status muted'));
       }

@@ -74,7 +74,46 @@ test('transport uses only chosen loopback port and typed descriptor with credent
   const controller = new AbortController(), t = await D.TerritoryUI.transport({ port: 43210, signal: controller.signal });
   assert.equal(typeof t.request, 'function'); await t.request({ operation: 'osm.trees', bbox: [-3.7, 42, -3.699, 42.001] }, { signal: controller.signal });
   assert.equal(calls[0].url, 'http://127.0.0.1:43210/health'); assert.equal(calls[1].url, 'http://127.0.0.1:43210/v1/geodata');
-  assert.equal(calls[1].init.credentials, 'omit'); assert.equal(calls[1].init.signal, controller.signal); assert.equal(JSON.parse(calls[1].init.body).operation, 'osm.trees');
+  assert.equal(calls[1].init.credentials, 'omit'); assert.equal(calls[1].init.signal.aborted, false); assert.equal(JSON.parse(calls[1].init.body).operation, 'osm.trees');
+});
+
+test('a connector that stops between layers recovers via fixed public requests and is not probed repeatedly', async () => {
+  const original = D.TerritoryData.requestPublic; let local = 0, direct = 0;
+  globalThis.fetch = async url => { if (url.endsWith('/health')) return { ok: true, json: async () => ({ service: 'dedalo-local-mcp', territory: true }) }; local++; throw new TypeError('connection refused'); };
+  D.TerritoryData.requestPublic = async desc => { direct++; return { ok: true, operation: desc.operation, text: 'public' }; };
+  try {
+    const t = await D.TerritoryUI.transport({});
+    assert.equal((await t.request({ operation: 'catastro.parcels' })).text, 'public');
+    await t.request({ operation: 'catastro.buildings' }); assert.equal(local, 1); assert.equal(direct, 2);
+  } finally { D.TerritoryData.requestPublic = original; }
+});
+
+test('provider rejections never trigger a duplicate direct request and cancellation reaches the local fetch', async () => {
+  const original = D.TerritoryData.requestPublic; let direct = 0;
+  D.TerritoryData.requestPublic = async () => { direct++; };
+  globalThis.fetch = async url => url.endsWith('/health') ? { ok: true, json: async () => ({ service: 'dedalo-local-mcp', territory: true }) } : new Response('{"ok":false,"error":{"code":"D_GEO_UPSTREAM","message":"Provider HTTP 429"}}', { status: 502 });
+  try {
+    const t = await D.TerritoryUI.transport({}); await assert.rejects(() => t.request({ operation: 'osm.trees' }), /HTTP 429/); assert.equal(direct, 0);
+    const controller = new AbortController(); let inner;
+    globalThis.fetch = (url, init) => new Promise((resolve, reject) => { inner = init.signal; inner.addEventListener('abort', () => reject(Object.assign(new Error('aborted'), { name: 'AbortError' })), { once: true }); });
+    const pending = t.request({ operation: 'osm.trees' }, { signal: controller.signal }); controller.abort();
+    await assert.rejects(() => pending, e => e.code === 'ABORTED'); assert.equal(inner.aborted, true); assert.equal(direct, 0);
+  } finally { D.TerritoryData.requestPublic = original; }
+});
+
+test('an unresponsive local connector has a bounded request and releases cancellation resources', async () => {
+  globalThis.fetch = async () => ({ ok: true, json: async () => ({ service: 'dedalo-local-mcp', territory: true }) });
+  const t = await D.TerritoryUI.transport({}), previousTimer = globalThis.setTimeout, previousClear = globalThis.clearTimeout;
+  const controller = new AbortController(); let inner, cleared = false, removed = 0;
+  const remove = controller.signal.removeEventListener.bind(controller.signal);
+  controller.signal.removeEventListener = (...args) => { removed++; return remove(...args); };
+  globalThis.setTimeout = (fn, ms) => { assert.equal(ms, 75000); queueMicrotask(fn); return 'territory-timeout'; };
+  globalThis.clearTimeout = id => { if (id === 'territory-timeout') cleared = true; else previousClear(id); };
+  globalThis.fetch = (url, init) => new Promise((resolve, reject) => { inner = init.signal; inner.addEventListener('abort', () => reject(Object.assign(new Error('timeout'), { name: 'AbortError' })), { once: true }); });
+  try {
+    await assert.rejects(() => t.request({ operation: 'catastro.parcels' }, { signal: controller.signal }), e => e.code === 'CONNECTOR_TIMEOUT');
+    assert.equal(inner.aborted, true); assert.equal(controller.signal.aborted, false); assert.equal(cleared, true); assert.equal(removed, 1);
+  } finally { globalThis.setTimeout = previousTimer; globalThis.clearTimeout = previousClear; }
 });
 test('transport gracefully falls back on absent/incompatible connector and rejects invalid ports or aborted setup', async () => {
   globalThis.fetch = async () => ({ ok: true, json: async () => ({ service: 'another-service', territory: true }) });
@@ -244,7 +283,7 @@ test('imported source attribution is plain text and non-HTTPS license values can
 test('script order loads constructors before app startup, and public download references stay local', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   for (const script of ['core/territory.js', 'view/territory-map.js', 'ui/territory-ui.js', 'io/territory-data.js', 'io/territory-export.js']) assert.ok(html.indexOf(script) < html.indexOf('src="app/js/app.js"'));
-  const f = fixture(), link = find(f.body, n => n.tagName === 'A' && n.textContent === 'Descargar conector local'); assert.equal(link.href, 'downloads/DEDALO_MCP_LOCAL_v0.5.1.zip');
+  const f = fixture(), link = find(f.body, n => n.tagName === 'A' && n.textContent === 'Descargar conector local'); assert.equal(link.href, 'downloads/DEDALO_MCP_LOCAL_v0.6.1.zip');
 });
 test('final review: geo.info command failure hides exports without mutating or crashing the panel', () => {
   const f = fixture(data(), true), before = JSON.stringify(f.app.doc.scene);

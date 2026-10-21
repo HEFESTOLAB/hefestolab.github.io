@@ -1,0 +1,132 @@
+DÉDALO 0.6.1 — UN SOLO IFC DEL MODELO COMPLETO
+
+Seleccionar grupo/componente > Asignar categoría > Exportar modelo completo.
+La categoría abarca sus descendientes sin categoría propia. Los hijos con categoría
+propia conservan su clase y no duplican su geometría en la del padre.
+Las aristas libres se conservan como curvas IFC. La selección y la caja de sección
+no limitan la exportación. La interfaz normal exige resolver categorías pendientes.
+IA: consultar bim.inventory (paginado), asignar con bim.assign, validar y exportar.
+Guía vigente: docs/IA_IFC_Y_SECCION.md y docs/MEJORAS_0.6.1.md.
+
+DETALLES DEL ESQUEMA Y COMPATIBILIDAD
+
+DÉDALO — EXPORTACIÓN BIM IFC4 / IFC2X3
+
+La exportación funciona en el navegador, sin servidor, claves ni bibliotecas
+remotas. IFC4 usa IfcTriangulatedFaceSet; IFC2X3 usa IfcFacetedBrep cuando la
+topología está cerrada y superficies IFC cuando está abierta. Las unidades son
+metros y el eje vertical es Z. No se convierte una superficie abierta en sólido.
+
+CLASIFICAR ANTES DE EXPORTAR
+
+Cada elemento BIM debe tener un grupo o componente propio. Seleccionar varias
+caras sueltas no establece una categoría de elemento. La herramienta de categoría
+BIM permite clasificar la instancia o la definición del componente. Clasificar
+la definición afecta a sus instancias; una clasificación explícita de instancia
+prevalece. Plantas y propiedades se conservan al guardar, abrir, deshacer y rehacer.
+
+Las formas geométricas libres no permiten deducir con certeza que un objeto sea
+un muro, una viga o un mueble. Por eso las categorías se asignan explícitamente.
+El modo estricto rechaza los elementos sin clasificación o sin los atributos IFC
+obligatorios. Si se permite exportar genéricos, cada sustitución por
+IfcBuildingElementProxy queda identificada en el informe. No se ocultan esos casos.
+
+El catálogo procede de las declaraciones oficiales de IFC2X3 TC1 e IFC4 ADD2 TC1
+incluidas en IfcOpenShell 0.9.0.post1: 131 opciones IFC4 y 108 IFC2X3, incluyendo
+los tipos MEP que en IFC2X3 se expresan con ocurrencias más generales. Por ejemplo,
+IfcPipeSegment se conserva en IFC2X3 con IfcFlowSegment + IfcPipeSegmentType y la
+relación IfcRelDefinesByType. No se inventan clases inexistentes en ese esquema.
+
+Los subtipos StandardCase/ElementedCase requieren restricciones paramétricas que
+una malla libre no acredita: se exporta la clase base y se registra el cambio.
+Los atributos obligatorios dimensionales se solicitan; no se inventan diámetros,
+áreas ni espesores para satisfacer un esquema. Los huecos/proyecciones requieren
+un anfitrión explícito (host) y su relación IfcRelVoidsElement/IfcRelProjectsElement.
+
+GUÍA PARA LA IA
+
+1. Consultar bim.categories con schema IFC4 o IFC2X3.
+2. Agrupar cada elemento constructivo, manteniendo huecos y partes diferenciados.
+3. Usar bim.assign. Ejemplo de parámetros:
+   {"scope":"definition","definitionId":"UUID","ifc":{
+     "entity":"IfcWall","predefinedType":"STANDARD",
+     "storey":{"name":"Planta baja","elevation":0},
+     "material":"Madera",
+     "properties":{"Pset_Proyecto":{"Estado":"DOCUMENTADO"}}
+   }}
+   scope instance usa nodes:[UUID] o las instancias seleccionadas del contexto.
+   scope definition sin definitionId clasifica la geometría del contexto actual.
+   attributes contiene atributos adicionales del esquema (medidas en metros).
+   USERDEFINED exige objectType. Las propiedades no verificadas deben conservar
+   su condición estimada o inferida; la exportación no las certifica.
+4. bim.get consulta clasificación propia y efectiva. bim.clear la elimina.
+5. bim.validate revisa la exportación y devuelve contadores exactos y muestras
+   limitadas. export.ifc realiza la descarga desde la aplicación.
+
+bim.assign conserva propiedades, material, planta y clasificación externa cuando
+no se suministran. Cambiar entity limpia predefinedType, attributes, typeAttributes
+y host anteriores. replace:true sustituye toda la metadata IFC del destino.
+
+bim.classifyNamed ofrece una migración opcional de modelos antiguos que ya
+declaran una clase IFC literal en el nombre. Primero ejecutar {apply:false}.
+Solo se proponen tokens completos válidos, como "IfcWall | Muro oeste". No se
+clasifica por palabras corrientes como "muro" o "viga". Nombres ambiguos, clases
+inexistentes y conflictos con metadata existente se muestran para revisión.
+{apply:true} aplica todos los candidatos sin sobrescribir conflictos en una sola
+operación deshacible. No modifica el archivo original del disco.
+
+Los resultados de classifyNamed tienen totalCandidates, totalUnmatched,
+totalConflicts, totalUnchanged y muestras candidates/unmatched/conflicts/unchanged.
+offset y limit permiten paginar (50 por defecto; máximo 500). Aplicar procesa todos
+los candidatos, aunque la muestra sea menor.
+
+INTEGRIDAD Y LÍMITES
+
+Se exportan todas las ocurrencias colocadas, incluidas instancias anidadas,
+rotaciones, escalas no uniformes y reflejos. Cada ocurrencia tiene identidad IFC
+estable basada en el proyecto y su ruta persistente; renombrarla no cambia su
+GUID. Los componentes comparten tipos cuando corresponde. La jerarquía incluye
+proyecto, solar, edificio, plantas, grupos y descomposición de elementos físicos.
+Los materiales, colores/opacidad, propiedades y la transformación original quedan
+representados. La biblioteca sin instancias colocadas no se exporta.
+
+La geometría exportada es de intercambio: una clase IfcWall con malla no garantiza
+que otro programa la convierta en un muro paramétrico editable. La exportación
+no acredita certificación de una MVD. No se promete importación universal.
+Aristas sin caras, cotas, guías y textos de edición se cuentan en el informe y no
+se presentan como sólidos constructivos. La georreferencia existente se conserva
+como propiedad de trazabilidad; no se inventa un sistema geográfico IFC.
+
+D.IFC.export(doc,{schema,strictClassification}) devuelve {text,report} completo.
+D.IFC.summarizeReport(report,limit=50) conserva los contadores y acota las muestras:
+totalUnclassified, totalFallbacks, totalWarnings, sampleLimit y truncated.
+bim.validate usa esta respuesta acotada para no saturar la conexión con la IA.
+El modo de revisión evita construir el texto STEP completo en memoria.
+
+VALIDACIÓN DE DESARROLLO
+
+node tests/ifc-export-tests.js
+Las pruebas cubren clasificación persistente y deshacer, nombres literales,
+rechazo de atributos inventados, identidad estable, anidamiento, escala/reflejo,
+huecos con anfitrión, superficies abiertas y la equivalencia de tipos MEP IFC2X3.
+
+Para generar y comprobar archivos con un lector independiente:
+  Configurar IFC_FIXTURE_DIR con una carpeta de salida.
+  Ejecutar node tests/ifc-export-tests.js.
+  Ejecutar python tests/ifc-independent-validation.py CARPETA.
+Requiere IfcOpenShell y pytest solo en el entorno de desarrollo.
+
+El catálogo se regenera con python tools/generate-ifc-catalog.py.
+
+FUENTES PRIMARIAS
+
+Esquema IFC4 ADD2 TC1, buildingSMART:
+https://standards.buildingsmart.org/IFC/RELEASE/IFC4/ADD2_TC1/HTML/
+Esquema IFC2X3 TC1, buildingSMART:
+https://standards.buildingsmart.org/IFC/RELEASE/IFC2x3/TC1/HTML/
+Consulta de declaraciones de esquema, IfcOpenShell:
+https://docs.ifcopenshell.org/ifcopenshell-python/schema_querying.html
+Validación de esquema y reglas EXPRESS, IfcOpenShell:
+https://docs.ifcopenshell.org/autoapi/ifcopenshell/validate/index.html
+Representación triangulada, buildingSMART:
+https://standards.buildingsmart.org/IFC/RELEASE/IFC4/ADD2_TC1/HTML/schema/ifcgeometricmodelresource/lexical/ifctriangulatedfaceset.htm

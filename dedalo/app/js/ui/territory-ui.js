@@ -188,7 +188,7 @@
     const cancel = button('Cancelar consulta', () => { if (s.phase === 'network' && s.abort) s.abort.abort(); }); cancel.disabled = !s.loading || s.phase !== 'network';
     body.append(controls, status, cancel, review, exports);
     const fallback = el('details'); fallback.append(el('summary', 'Si los datos no llegan · conector y archivo local'), el('p', 'Algunos servicios públicos bloquean consultas directas del navegador. Descarga el conector ZIP y ejecuta INICIAR_TERRITORIO.cmd con Node.js 22+. No requiere una IA ni claves. Después vuelve a consultar desde Dédalo.'));
-    const zip = el('a', 'Descargar conector local'); zip.href = 'downloads/DEDALO_MCP_LOCAL_v0.6.0.zip'; zip.download = ''; if (!new URLSearchParams(root.location.search).has('conector')) fallback.append(zip);
+    const zip = el('a', 'Descargar conector local'); zip.href = 'downloads/DEDALO_MCP_LOCAL_v0.6.1.zip'; zip.download = ''; if (!new URLSearchParams(root.location.search).has('conector')) fallback.append(zip);
     const localPort = Number(port()), local = el('a', 'Abrir Dédalo desde el conector iniciado'); local.href = 'http://127.0.0.1:' + (Number.isInteger(localPort) && localPort >= 1024 && localPort <= 65535 ? localPort : 43127) + '/dedalo/?seguro&conector=1'; local.target = '_blank'; local.rel = 'noopener';
     fallback.append(el('p', 'Una vez iniciado, abre su copia local. Guarda antes los cambios de esta pestaña.'), local);
     fallback.append(button('Abrir guía Unir IA', () => this.openPanel('ai')));

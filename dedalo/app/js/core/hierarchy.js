@@ -294,11 +294,11 @@
       this.dirty = false; this._syncProjection(); this.emit('context'); this.emit('model'); this.emit('reset');
     }
     fileJSON(extra, options) {
-      options = options || {};
-      // A flattened root fallback permits inspection by old readers; scene is authoritative.
+      options = Object.assign({compact:true,auditDetail:false},options || {});
+      // Only an explicit legacy export includes the flattened fallback permits inspection by old readers; scene is authoritative.
       const file = Object.assign({}, extra || {}, { format: 'dedalo', version: 2, app: 'Dédalo', saved: new Date().toISOString(),
         name: this.name, projectId: this.projectId, projectVersion: this.projectVersion, scene: clone(this.scene.toJSON()),
-        audit: options.omitAudit ? [] : clone(this.audit) });
+        audit: options.omitAudit ? [] : options.auditDetail ? clone(this.audit) : this.audit.map(t=>({transactionId:t.transactionId,sessionId:t.sessionId,agent:t.agent,channel:t.channel,timestamp:t.timestamp,projectVersion:t.projectVersion,label:t.label,changes:(t.changes||[]).map(c=>({objectId:c.objectId,type:c.type}))})), storage:'scene-instances', auditMode:options.auditDetail?'detailed':'summary' });
       if (!options.compact) file.model = this.scene.project([]).model.toJSON();
       if (options.omitAudit) file.autosave = { compact: true, auditOmitted: true };
       // The existing camera is in local coordinates while a definition is open.

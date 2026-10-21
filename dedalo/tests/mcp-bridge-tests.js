@@ -40,7 +40,7 @@ function fixture(options) {
     read(query) { return { id: 'read-' + query, action: 'read', payload: { query } }; },
     async poll(request) {
       requests.push(request);
-      const timer = [...timers.entries()].find(([, value]) => value.delay === 0 || value.delay === 300);
+      const timer = [...timers.entries()].find(([, value]) => value.delay < 30000);
       assert.ok(timer, 'poll se agenda explícitamente'); timers.delete(timer[0]); timer[1].fn();
       await settle(() => bridge.inflight.size === 0 && (bridge.timer !== null || !bridge.token));
     } };
@@ -106,11 +106,41 @@ test('petición repetida por ID devuelve el resultado guardado sin doble ejecuci
   assert.equal(f.executions.length, 1); assert.equal(f.doc.undoStack.length, 1); assert.equal(results.length, 2); assert.deepEqual(results[0].body.result, results[1].body.result);
 });
 
-test('respuesta perdida detiene conexión sin reintento ni repetición automática', async () => {
+test('respuesta perdida conserva sesión y reenvía solo el resultado sin repetir el comando', async () => {
   const f = fixture(); await f.connect(); f.transport.failResult = true;
   await f.poll(f.execute('draw.rectangle', { origin: [0, 0, 0], width: 2, height: 1 }));
-  assert.equal(f.doc.model.faces.size, 1); assert.equal(f.executions.length, 1); assert.equal(f.bridge.token, null); assert.match(f.bridge.error, /Conexión detenida/); assert.equal(f.timers.size, 0);
-  const posts = f.posts.length; await f.bridge.poll(f.bridge.generation - 1); assert.equal(f.posts.length, posts); assert.deepEqual(f.bridge.permissions, { write: false, snapshot: false });
+  assert.equal(f.doc.model.faces.size, 1); assert.equal(f.executions.length, 1); assert.ok(f.bridge.token); assert.match(f.bridge.error, /Recuperando/); assert.ok(f.bridge.pendingResult);
+  const posts = f.posts.length; await f.bridge.poll(f.bridge.generation - 1); assert.equal(f.posts.length, posts);
+  f.transport.failResult = false; await f.poll(null);
+  const replies = f.posts.filter(p => p.route === 'result'); assert.equal(replies.length, 2); assert.deepEqual(replies[0].body, replies[1].body);
+  assert.equal(f.executions.length, 1); assert.equal(f.bridge.pendingResult, null); assert.equal(f.bridge.status().recovering, false); assert.deepEqual(f.bridge.permissions, { write: true, snapshot: false });
+});
+
+test('lecturas de más de4MiB se paginan sin perder geometría, IDs ni revisión', async () => {
+  const f = fixture(); await f.connect();
+  const expected = { projectId: f.doc.projectId, geometry: Array.from({ length: 70000 }, (_, i) => ({ id: 'pieza-' + i, name: '木造 pagoda ' + i, points: [i, i + 1, i + 2] })) };
+  f.bridge.projectRead = () => expected;
+  const first = f.bridge.handle(f.read('project')); assert.equal(first.ok, true); assert.equal(first.result.format, 'json-fragment');
+  let combined = first.result.json, offset = first.result.nextOffset, count = 1;
+  while (offset !== null) {
+    const page = f.bridge.handle({ id: 'page-' + offset, action: 'read', payload: { query: 'project', offset, expectedRevision: first.revision } });
+    assert.equal(page.ok, true); assert.ok(page.result.json.length <= 65536); combined += page.result.json; offset = page.result.nextOffset; count++;
+  }
+  assert.ok(count > 60); assert.deepEqual(JSON.parse(combined), expected);
+  f.bridge.revision++;
+  const stale = f.bridge.handle({ id: 'stale', action: 'read', payload: { query: 'project', offset: 1, expectedRevision: first.revision } });
+  assert.equal(stale.ok, false); assert.equal(stale.result.code, 'STALE_STATE');
+  for (const payload of [{ offset: -1 }, { limit: 1e9 }, { offset: 1.5 }]) assert.equal(f.bridge.handle({ id: 'invalid', action: 'read', payload: { query: 'project', ...payload } }).ok, false);
+  assert.ok(f.bridge.token);
+});
+
+test('project comparte la escena canónica y definition evita expandir instancias', async () => {
+  const f = fixture(); await f.connect(); cmd(f.doc, 'draw.rectangle', { origin: [0, 0, 0], width: 2, height: 1 });
+  const scene = f.doc.scene.toJSON(); f.doc.fileJSON = () => { throw new Error('No debe expandir la proyección heredada'); };
+  const project = f.bridge.handle(f.read('project')); assert.equal(project.ok, true); assert.equal(project.result.representation, 'canonical-scene'); assert.deepEqual(project.result.scene, scene); assert.equal(project.result.model, undefined);
+  const id = f.doc.scene.rootId;
+  const definition = f.bridge.handle({ id: 'definition', action: 'read', payload: { query: 'definition', definitionId: id } });
+  assert.equal(definition.ok, true); assert.equal(definition.result.id, id); assert.equal(definition.result.model.faces.length, 1); assert.equal(definition.result.coordinates, 'definition-local');
 });
 
 test('desconectar aborta poll en vuelo y una respuesta tardía no ejecuta nada', async () => {

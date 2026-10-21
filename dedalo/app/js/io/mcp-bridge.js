@@ -10,7 +10,7 @@
     'context.enter', 'context.exit', 'select', 'select.all', 'select.none', 'select.connected', 'edit.undo', 'edit.redo',
     'mesh.ellipsoid', 'mesh.patch', 'mesh.subdivide', 'mesh.deform', 'transaction.batch', 'geo.import', 'geo.info',
     'view.zoomExtents', 'view.set', 'view.option', 'view.projection', 'view.camera', 'view.sectionBox', 'view.sectionBoxFit',
-    'bim.categories', 'bim.assign', 'bim.get', 'bim.clear', 'bim.validate', 'bim.classifyNamed', 'export.ifc'
+    'bim.inventory', 'bim.categories', 'bim.assign', 'bim.get', 'bim.clear', 'bim.validate', 'bim.classifyNamed', 'export.ifc'
   ]);
   const bytes = value => new TextEncoder().encode(JSON.stringify(value)).byteLength;
   function finiteJSON(value, depth) {
@@ -45,7 +45,7 @@
     state() {
       const doc = this.app.doc;
       return { projectId: doc.projectId, revision: this.revision, name: doc.name, context: doc.editPath.slice(),
-        projectVersion: doc.projectVersion, appVersion: D.VERSION, busy: !!(doc._busy || this.app.territoryBusy || this.app.navDrag || this.app.tool && this.app.tool.state !== 0),
+        projectVersion: doc.projectVersion, appVersion: D.VERSION, busy: !!(doc._busy || this.app.territoryBusy || this.app.navDrag || this.app.sectionController?.drag || this.app.tool && this.app.tool.state !== 0),
         permissions: { ...this.permissions } };
     }
     status() { return { connected: !!this.token, connecting: this.connecting, recovering: !!this.token && this.failures > 0, error: this.error, state: this.state(), endpoint: this.base }; }

@@ -3,7 +3,7 @@
 const assert = require('node:assert/strict');
 const path = require('node:path');
 const APP = path.join(__dirname, '..', 'app', 'js');
-for (const file of ['geom', 'model', 'document', 'scene', 'hierarchy']) require(path.join(APP, 'core', file + '.js'));
+for (const file of ['geom', 'model', 'document', 'scene', 'hierarchy', 'section-box']) require(path.join(APP, 'core', file + '.js'));
 require(path.join(APP, 'tools', 'base.js'));
 require(path.join(APP, 'tools', 'select.js'));
 require(path.join(APP, 'tools', 'modify.js'));
@@ -63,6 +63,26 @@ test('box selection keeps loose geometry distinct from atomic nodes', () => {
   assert.deepEqual(selection.nodes, [node]);
   assert.equal(selection.faces.length, 1);
   for (const id of selection.faces) assert.equal(doc.nodeForHit({ face: id }), null);
+});
+test('a sectioned group window contains visible clipped boundaries, not hidden original vertices', () => {
+  const { node, tool, app } = fixture();
+  app.renderer.opts.sectionBox = D.SectionBox.normalize({ min:[0.5,-0.1,-0.1], max:[1.5,1.1,0.1] });
+  const full = tool.boxSelect({ x0:145,y0:90,x1:255,y1:210 });
+  assert.deepEqual(full.nodes,[node], 'hidden original vertices must not prevent selection');
+  const partial = tool.boxSelect({ x0:155,y0:90,x1:245,y1:210 });
+  assert.deepEqual(partial.nodes,[], 'clipped boundary points still have to fit within the window');
+});
+test('section window selects a clipped face interior even when every source vertex and edge is hidden', () => {
+  const { node,tool,app }=fixture();
+  app.renderer.opts.sectionBox=D.SectionBox.normalize({ min:[0.5,0.2,-0.1],max:[1.5,0.8,0.1] });
+  assert.deepEqual(tool.boxSelect({x0:145,y0:115,x1:255,y1:185}).nodes,[node]);
+  assert.deepEqual(tool.boxSelect({x0:155,y0:125,x1:245,y1:175}).nodes,[]);
+});
+test('fully sectioned-out groups are absent from both window and crossing selection', () => {
+  const { node,tool,app }=fixture();
+  app.renderer.opts.sectionBox=D.SectionBox.normalize({ min:[3,-0.1,-0.1],max:[4,1.1,0.1] });
+  assert.deepEqual(tool.boxSelect({x0:90,y0:90,x1:510,y1:210}).nodes,[]);
+  assert.deepEqual(tool.boxSelect({x0:510,y0:210,x1:90,y1:90}).nodes,[]);
 });
 test('Move picking returns complete atomic geometry and a finite hover point for every hit type', () => {
   const { doc, node, app } = fixture(), expected = doc.itemsForNode(node);
